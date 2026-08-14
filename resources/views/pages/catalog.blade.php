@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Katalog Kamar - Mama Anis Group')
+@section('title', 'Katalog Kamar | Mama Anis Kos')
 
 @section('content')
 @php

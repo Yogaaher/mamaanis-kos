@@ -7,15 +7,17 @@
 <nav id="global-navbar" class="{{ $isHome ? 'fixed top-0' : 'sticky top-0' }} w-full z-50 border-b transition-all duration-300 ease-in-out {{ $isHome ? 'bg-transparent border-transparent text-white' : 'bg-white/95 backdrop-blur-md border-gray-100 shadow-xs text-slate-800' }}">
     <!-- Full width container with responsive side paddings -->
     <div class="w-full flex justify-between items-center px-4 sm:px-6 md:px-12 py-3 md:py-4">
-        <!-- Brand Logo with home icon -->
+        <!-- Brand Logo with green vector house icon -->
         <a
             href="/"
             id="brand-logo-link"
-            class="flex items-center gap-1.5 sm:gap-2 font-sans text-lg sm:text-xl md:text-2xl font-bold transition-colors duration-300 shrink-0 {{ $isHome ? 'text-white' : 'text-[#006c49]' }}"
+            class="flex items-center gap-2 font-sans text-lg sm:text-xl md:text-2xl font-bold transition-colors duration-300 shrink-0 {{ $isHome ? 'text-white' : 'text-[#006c49]' }}"
         >
-            <svg id="brand-svg" class="w-5 h-5 sm:w-6 sm:h-6 fill-current shrink-0 transition-colors duration-300 {{ $isHome ? 'text-white' : 'text-[#006c49]' }}" viewBox="0 0 24 24">
-                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
-            </svg>
+            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-emerald-50 border border-emerald-200/80 text-[#006c49] flex items-center justify-center shrink-0 shadow-xs group hover:scale-105 transition-transform duration-300">
+                <svg id="brand-svg" class="w-5 h-5 fill-current text-[#006c49] shrink-0" viewBox="0 0 24 24">
+                    <path d="M12 3L2 12h3v8h14v-8h3L12 3zm-1 15v-5h2v5h-2z"/>
+                </svg>
+            </div>
             <span id="brand-name">Mama Anis Kos</span>
         </a>
 
@@ -185,8 +187,8 @@
                         const heroHeight = window.innerHeight - 80;
                         if (window.scrollY <= heroHeight) {
                             navbar.className = 'fixed top-0 w-full z-50 border-b transition-all duration-300 ease-in-out bg-transparent border-transparent text-white';
-                            brandLogoLink.className = 'flex items-center gap-1.5 sm:gap-2 font-sans text-lg sm:text-xl md:text-2xl font-bold transition-colors duration-300 shrink-0 text-white';
-                            brandSvg.className = 'w-5 h-5 sm:w-6 sm:h-6 fill-current shrink-0 transition-colors duration-300 text-white';
+                            brandLogoLink.className = 'flex items-center gap-2 font-sans text-lg sm:text-xl md:text-2xl font-bold transition-colors duration-300 shrink-0 text-white';
+                            if (brandSvg) brandSvg.className = 'w-5 h-5 fill-current text-[#006c49] shrink-0';
                             toggleBtnIcon.className = 'md:hidden hover:bg-black/5 p-2 rounded-xl cursor-pointer transition-colors duration-300 text-white';
                         }
                     }
@@ -200,15 +202,15 @@
                         if (window.scrollY <= heroHeight) {
                             // In Hero: Use Dark theme
                             navbar.className = 'fixed top-0 w-full z-50 border-b transition-all duration-300 ease-in-out bg-slate-900/98 backdrop-blur-2xl border-slate-800 text-white';
-                            brandLogoLink.className = 'flex items-center gap-1.5 sm:gap-2 font-sans text-lg sm:text-xl md:text-2xl font-bold transition-colors duration-300 shrink-0 text-white';
-                            brandSvg.className = 'w-5 h-5 sm:w-6 sm:h-6 fill-current shrink-0 transition-colors duration-300 text-white';
+                            brandLogoLink.className = 'flex items-center gap-2 font-sans text-lg sm:text-xl md:text-2xl font-bold transition-colors duration-300 shrink-0 text-white';
+                            if (brandSvg) brandSvg.className = 'w-5 h-5 fill-current text-[#006c49] shrink-0';
                             toggleBtnIcon.className = 'md:hidden hover:bg-white/10 p-2 rounded-xl cursor-pointer transition-colors duration-300 text-white';
                             updateDrawerTheme(true);
                         } else {
                             // Below Hero: Use White theme
                             navbar.className = 'fixed top-0 w-full z-50 border-b transition-all duration-300 ease-in-out bg-white/95 backdrop-blur-md border-gray-100 shadow-xs text-slate-800';
-                            brandLogoLink.className = 'flex items-center gap-1.5 sm:gap-2 font-sans text-lg sm:text-xl md:text-2xl font-bold transition-colors duration-300 shrink-0 text-[#006c49]';
-                            brandSvg.className = 'w-5 h-5 sm:w-6 sm:h-6 fill-current shrink-0 transition-colors duration-300 text-[#006c49]';
+                            brandLogoLink.className = 'flex items-center gap-2 font-sans text-lg sm:text-xl md:text-2xl font-bold transition-colors duration-300 shrink-0 text-[#006c49]';
+                            if (brandSvg) brandSvg.className = 'w-5 h-5 fill-current text-[#006c49] shrink-0';
                             toggleBtnIcon.className = 'md:hidden hover:bg-black/5 p-2 rounded-xl cursor-pointer transition-colors duration-300 text-[#006c49]';
                             updateDrawerTheme(false);
                         }
@@ -228,8 +230,8 @@
                 if (window.scrollY > heroHeight) {
                     // Below Hero (Scrolled Down)
                     navbar.className = 'fixed top-0 w-full z-50 border-b transition-all duration-300 ease-in-out bg-white/95 backdrop-blur-md border-gray-100 shadow-xs text-slate-800';
-                    brandLogoLink.className = 'flex items-center gap-1.5 sm:gap-2 font-sans text-lg sm:text-xl md:text-2xl font-bold transition-colors duration-300 shrink-0 text-[#006c49]';
-                    brandSvg.className = 'w-5 h-5 sm:w-6 sm:h-6 fill-current shrink-0 transition-colors duration-300 text-[#006c49]';
+                    brandLogoLink.className = 'flex items-center gap-2 font-sans text-lg sm:text-xl md:text-2xl font-bold transition-colors duration-300 shrink-0 text-[#006c49]';
+                    if (brandSvg) brandSvg.className = 'w-5 h-5 fill-current text-[#006c49] shrink-0';
                     if (toggleBtnIcon) {
                         toggleBtnIcon.className = 'md:hidden hover:bg-black/5 p-2 rounded-xl cursor-pointer transition-colors duration-300 text-[#006c49]';
                     }
@@ -251,16 +253,16 @@
                     // In Hero
                     if (isDrawerOpen) {
                         navbar.className = 'fixed top-0 w-full z-50 border-b transition-all duration-300 ease-in-out bg-slate-900/98 backdrop-blur-2xl border-slate-800 text-white';
-                        brandLogoLink.className = 'flex items-center gap-1.5 sm:gap-2 font-sans text-lg sm:text-xl md:text-2xl font-bold transition-colors duration-300 shrink-0 text-white';
-                        brandSvg.className = 'w-5 h-5 sm:w-6 sm:h-6 fill-current shrink-0 transition-colors duration-300 text-white';
+                        brandLogoLink.className = 'flex items-center gap-2 font-sans text-lg sm:text-xl md:text-2xl font-bold transition-colors duration-300 shrink-0 text-white';
+                        if (brandSvg) brandSvg.className = 'w-5 h-5 fill-current text-[#006c49] shrink-0';
                         if (toggleBtnIcon) {
                             toggleBtnIcon.className = 'md:hidden hover:bg-white/10 p-2 rounded-xl cursor-pointer transition-colors duration-300 text-white';
                         }
                         updateDrawerTheme(true);
                     } else {
                         navbar.className = 'fixed top-0 w-full z-50 border-b transition-all duration-300 ease-in-out bg-transparent border-transparent text-white';
-                        brandLogoLink.className = 'flex items-center gap-1.5 sm:gap-2 font-sans text-lg sm:text-xl md:text-2xl font-bold transition-colors duration-300 shrink-0 text-white';
-                        brandSvg.className = 'w-5 h-5 sm:w-6 sm:h-6 fill-current shrink-0 transition-colors duration-300 text-white';
+                        brandLogoLink.className = 'flex items-center gap-2 font-sans text-lg sm:text-xl md:text-2xl font-bold transition-colors duration-300 shrink-0 text-white';
+                        if (brandSvg) brandSvg.className = 'w-5 h-5 fill-current text-[#006c49] shrink-0';
                         if (toggleBtnIcon) {
                             toggleBtnIcon.className = 'md:hidden hover:bg-black/5 p-2 rounded-xl cursor-pointer transition-colors duration-300 text-white';
                         }

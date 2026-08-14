@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Mama Anis Group | Hunian Modern dan Nyaman')
+@section('title', 'Beranda | Mama Anis Kos - Hunian Modern & Nyaman')
 
 @section('content')
 @php

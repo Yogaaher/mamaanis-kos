@@ -27,6 +27,11 @@
         <!-- Left column: Brand -->
         <div class="flex flex-col items-center md:items-start gap-1">
             <div class="font-sans text-base sm:text-lg font-bold text-[#006c49] flex items-center gap-2">
+                <div class="w-7 h-7 rounded-lg bg-emerald-100/80 border border-emerald-200/60 text-[#006c49] flex items-center justify-center shrink-0 shadow-xs">
+                    <svg class="w-4 h-4 fill-current text-[#006c49]" viewBox="0 0 24 24">
+                        <path d="M12 3L2 12h3v8h14v-8h3L12 3zm-1 15v-5h2v5h-2z"/>
+                    </svg>
+                </div>
                 <span>Mama Anis Kos</span>
             </div>
             <p class="font-sans text-xs text-gray-500 max-w-sm">

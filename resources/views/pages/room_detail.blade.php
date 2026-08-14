@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', ($room['name'] ?? 'Detail Kamar') . ' - Mama Anis Group')
+@section('title', ($room['name'] ?? 'Detail Kamar') . ' | Mama Anis Kos')
 
 @section('content')
 @php

@@ -1,0 +1,35 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Environment & IDE
+.env
+.env.*
+!.env.example
+.idea
+.vscode
+.editorconfig
+.DS_Store
+.phpunit.result.cache
+
+# Dependencies (will be re-installed inside Docker build)
+vendor/
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Build & Storage Cache
+public/build/
+storage/*.key
+storage/framework/cache/data/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/logs/*
+
+# Docker & Tests
+Dockerfile
+.dockerignore
+compose.yaml
+docker-compose.yml
+tests/
