@@ -22,6 +22,7 @@
     }
   ],
   "env": {
+    "VERCEL_PHP_VERSION": "8.3",
     "APP_ENV": "production",
     "APP_DEBUG": "false",
     "APP_CONFIG_CACHE": "/tmp/config.php",
