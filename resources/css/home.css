@@ -1,0 +1,40 @@
+.hero-gradient-bg {
+    background: radial-gradient(circle at top right, rgba(0, 108, 73, 0.05), transparent 60%);
+}
+
+.home-card-hover {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.home-card-hover:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 25px -5px rgba(0, 108, 73, 0.08);
+}
+
+.faq-item {
+    transition: all 0.3s ease;
+}
+
+.faq-item.active {
+    background-color: rgba(0, 108, 73, 0.02);
+    border-color: #006c49;
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s cubic-bezier(0, 1, 0, 1);
+}
+
+.faq-item.active .faq-answer {
+    max-height: 500px;
+    transition: max-height 0.3s cubic-bezier(1, 0, 1, 0);
+}
+
+.faq-chevron {
+    transition: transform 0.3s ease;
+}
+
+.faq-item.active .faq-chevron {
+    transform: rotate(180deg);
+}

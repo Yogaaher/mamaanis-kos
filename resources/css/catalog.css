@@ -1,0 +1,33 @@
+.filter-btn-active {
+    background-color: #006c49 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(0, 108, 73, 0.2);
+}
+
+.search-input-focus:focus {
+    border-color: #006c49;
+    box-shadow: 0 0 0 3px rgba(0, 108, 73, 0.1);
+}
+
+.pagination-btn-active {
+    background-color: #006c49 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 10px rgba(0, 108, 73, 0.15);
+}
+
+.catalog-grid {
+    display: grid;
+    gap: 2rem;
+    animation: fadeInGrid 0.5s ease;
+}
+
+@keyframes fadeInGrid {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

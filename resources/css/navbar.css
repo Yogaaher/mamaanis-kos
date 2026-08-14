@@ -1,0 +1,38 @@
+.navbar-scrolled {
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+    border-color: rgba(243, 244, 246, 1);
+}
+
+.nav-link-active {
+    color: #006c49 !important;
+    font-weight: 700;
+}
+
+.nav-link-active::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: #006c49;
+    border-radius: 9999px;
+}
+
+#mobile-menu {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-menu-hidden {
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+}
+
+.mobile-menu-visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}

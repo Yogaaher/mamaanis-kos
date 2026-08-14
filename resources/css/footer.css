@@ -1,0 +1,17 @@
+.footer-link-hover {
+    transition: all 0.2s ease-in-out;
+}
+
+.footer-link-hover:hover {
+    color: #10b981;
+    transform: translateX(4px);
+}
+
+.footer-social-btn {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.footer-social-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.2);
+}
