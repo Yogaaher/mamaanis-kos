@@ -29,7 +29,7 @@ class AdminAuthController extends Controller
         $adminPassword = (string) config('services.admin.password');
 
         $inputIdentifier = trim($input['email']);
-        $identifierMatches = hash_equals($adminEmail, $inputIdentifier) 
+        $identifierMatches = hash_equals(strtolower($adminEmail), strtolower($inputIdentifier)) 
             || hash_equals(strtolower($adminUsername), strtolower($inputIdentifier));
         $passwordMatches = hash_equals($adminPassword, $input['password']);
 
