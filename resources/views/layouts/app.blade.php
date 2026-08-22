@@ -271,5 +271,8 @@
     </script>
 
     @stack('scripts')
+
+    <!-- Vercel Web Analytics -->
+    <script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>
 </body>
 </html>
