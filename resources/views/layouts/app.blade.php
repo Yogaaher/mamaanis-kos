@@ -6,6 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>@yield('title', 'Mama Anis Kos - Hunian Modern & Nyaman')</title>
+    <meta name="google-site-verification" content="vqfQ0eyfzyXhNNGaBJ6wBiDNDhBET175d-Lv6op8nyA">
     
     <!-- Favicon & Touch Icons for Browsers & Google Search -->
     <link rel="icon" type="image/png" sizes="48x48" href="{{ asset('favicon-48x48.png') }}">
