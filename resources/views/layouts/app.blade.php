@@ -5,8 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'Mama Anis Kos - Hunian Modern & Nyaman')</title>
+    <title>@yield('title', 'Mama Anis Kos - Alam Sutera')</title>
+    <meta name="description" content="@yield('meta_description', 'Mama Anis kost hunian nyaman strategis Alam Sutera')">
     <meta name="google-site-verification" content="vqfQ0eyfzyXhNNGaBJ6wBiDNDhBET175d-Lv6op8nyA">
+    
+    <!-- Open Graph / Facebook / WhatsApp -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="@yield('title', 'Mama Anis Kos - Alam Sutera')">
+    <meta property="og:description" content="@yield('meta_description', 'Mama Anis kost hunian nyaman strategis Alam Sutera')">
+    <meta property="og:image" content="{{ asset('icon-512.png') }}">
+    <meta property="og:url" content="{{ url()->current() }}">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="@yield('title', 'Mama Anis Kos - Alam Sutera')">
+    <meta name="twitter:description" content="@yield('meta_description', 'Mama Anis kost hunian nyaman strategis Alam Sutera')">
+    <meta name="twitter:image" content="{{ asset('icon-512.png') }}">
     
     <!-- Favicon & Touch Icons for Browsers & Google Search -->
     <link rel="icon" type="image/png" sizes="48x48" href="{{ asset('favicon-48x48.png') }}">

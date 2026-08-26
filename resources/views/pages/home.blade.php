@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Beranda | Mama Anis Kos - Hunian Modern & Nyaman')
+@section('title', 'Mama Anis Kos - Alam Sutera')
+@section('meta_description', 'Mama Anis kost hunian nyaman strategis Alam Sutera')
 
 @section('content')
 @php

@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Tentang Kami | Mama Anis Kos')
+@section('meta_description', 'Tentang Mama Anis Kos, hunian kos modern, aman, dan nyaman di kawasan strategis Alam Sutera.')
 
 @section('content')
 <div class="pt-4 sm:pt-8 pb-16 sm:pb-20 font-sans bg-[#f8f9fb] min-h-screen">

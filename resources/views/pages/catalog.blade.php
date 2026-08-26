@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Katalog Kamar | Mama Anis Kos')
+@section('meta_description', 'Pilihan kamar kos eksklusif dan nyaman di Mama Anis Kos Alam Sutera dengan fasilitas lengkap.')
 
 @section('content')
 @php
