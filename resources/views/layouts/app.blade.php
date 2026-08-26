@@ -6,7 +6,17 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>@yield('title', 'Mama Anis Kos - Hunian Modern & Nyaman')</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23006c49'%3E%3Cpath d='M12 3L2 12h3v8h14v-8h3L12 3zm-1 15v-5h2v5h-2z'/%3E%3C/svg%3E">
+    
+    <!-- Favicon & Touch Icons for Browsers & Google Search -->
+    <link rel="icon" type="image/png" sizes="48x48" href="{{ asset('favicon-48x48.png') }}">
+    <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('favicon-96x96.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
+    <link rel="manifest" href="{{ asset('site.webmanifest') }}">
+    <meta name="theme-color" content="#006c49">
 
     <!-- Google Fonts: Montserrat & Plus Jakarta Sans (Modern, Relaxed, Elegant & Friendly) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
