@@ -8,6 +8,15 @@
     <title>@yield('title', 'Mama Anis Kos - Alam Sutera')</title>
     <meta name="description" content="@yield('meta_description', 'Mama Anis kost hunian nyaman strategis Alam Sutera')">
     <meta name="google-site-verification" content="vqfQ0eyfzyXhNNGaBJ6wBiDNDhBET175d-Lv6op8nyA">
+
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z0J9Y49CGN"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-Z0J9Y49CGN');
+    </script>
     
     <!-- Open Graph / Facebook / WhatsApp -->
     <meta property="og:type" content="website">
