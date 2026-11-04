@@ -27,6 +27,10 @@ class DatabaseSeeder extends Seeder
             'max_occupants' => 1,
             'image_url' => '/images/Kamar no 5.jpg',
             'bathroom_image_url' => '/images/Kamar mandi.jpg',
+            'gallery_images' => [
+                ['url' => '/images/Kamar no 5.jpg', 'label' => 'Foto Kamar Tidur'],
+                ['url' => '/images/Kamar mandi.jpg', 'label' => 'Foto Kamar Mandi Dalam'],
+            ],
             'amenities' => [
                 'Kamar Mandi Dalam',
                 'AC Sejuk',

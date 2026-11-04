@@ -19,6 +19,38 @@
     $views = $roomData['views'] ?? 0;
     $image = $roomData['image_url'] ?? 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=1200&q=85';
     $bathroomImage = $roomData['bathroom_image_url'] ?? 'https://images.unsplash.com/photo-1584622781867-46d5a47a07c5?auto=format&fit=crop&w=1200&q=85';
+
+    // Build dynamic gallery items list
+    $rawGallery = [];
+    if ($room instanceof \App\Models\Room) {
+        $rawGallery = $room->getGalleryList();
+    } elseif (!empty($roomData['gallery_images']) && is_array($roomData['gallery_images'])) {
+        foreach ($roomData['gallery_images'] as $gIdx => $gItem) {
+            if (is_string($gItem) && trim($gItem) !== '') {
+                $rawGallery[] = ['url' => trim($gItem), 'label' => 'Foto Kamar ' . ($gIdx + 1)];
+            } elseif (is_array($gItem) && !empty($gItem['url'])) {
+                $rawGallery[] = [
+                    'url' => trim((string) $gItem['url']),
+                    'label' => !empty($gItem['label']) ? trim((string) $gItem['label']) : ('Foto Kamar ' . ($gIdx + 1)),
+                ];
+            }
+        }
+    }
+    if (count($rawGallery) === 0) {
+        $rawGallery = [
+            ['url' => $image, 'label' => 'Foto Kamar Tidur'],
+            ['url' => $bathroomImage, 'label' => 'Foto Kamar Mandi Dalam'],
+        ];
+    }
+    $totalPhotos = count($rawGallery);
+    $galleryJsItems = [];
+    foreach ($rawGallery as $gIdx => $gItem) {
+        $galleryJsItems[] = [
+            'url' => $gItem['url'],
+            'label' => $gItem['label'],
+            'title' => ($gIdx + 1) . ' / ' . $totalPhotos . ' • ' . $gItem['label'],
+        ];
+    }
     $minStay = $roomData['min_stay'] ?? '1 Bulan';
     $maxOccupants = $roomData['max_occupants'] ?? 1;
     $amenities = $roomData['amenities'] ?? ['Kamar Mandi Dalam', 'AC', 'WiFi Cepat', 'Kasur Springbed', 'Lemari Pakaian', 'Meja Kerja'];
@@ -66,7 +98,7 @@
                     <div id="gallery-carousel-container" class="relative aspect-[16/10] w-full overflow-hidden rounded-xl sm:rounded-2xl bg-slate-100 select-none cursor-grab active:cursor-grabbing">
                         <img
                             id="main-room-gallery"
-                            src="{{ $image }}"
+                            src="{{ $galleryJsItems[0]['url'] ?? $image }}"
                             alt="{{ $name }}"
                             class="w-full h-full object-cover transition-opacity duration-300"
                             onerror="handleImgError(this)"
@@ -98,49 +130,35 @@
 
                         <!-- Caption Badge -->
                         <div id="gallery-badge" class="absolute bottom-2.5 left-2.5 sm:bottom-3.5 sm:left-3.5 bg-black/65 backdrop-blur-md text-white text-[10px] sm:text-xs font-bold px-3 py-1 rounded-full shadow-md z-20">
-                            1 / 2 • Foto Kamar Tidur
+                            {{ $galleryJsItems[0]['title'] ?? '1 / 1 • Foto Kamar' }}
                         </div>
 
                         <!-- Dots Indicator -->
-                        <div class="absolute bottom-2.5 right-2.5 sm:bottom-3.5 sm:right-3.5 flex items-center gap-1.5 z-20 bg-black/40 backdrop-blur-xs px-2.5 py-1 rounded-full">
-                            <button type="button" onclick="setGalleryIndex(0)" id="gallery-dot-0" class="w-2 h-2 rounded-full bg-white transition-all cursor-pointer" aria-label="Slide 1"></button>
-                            <button type="button" onclick="setGalleryIndex(1)" id="gallery-dot-1" class="w-2 h-2 rounded-full bg-white/40 transition-all cursor-pointer" aria-label="Slide 2"></button>
+                        <div class="absolute bottom-2.5 right-2.5 sm:bottom-3.5 sm:right-3.5 flex items-center gap-1.5 z-20 bg-black/40 backdrop-blur-xs px-2.5 py-1 rounded-full max-w-[50%] overflow-x-auto">
+                            @foreach($galleryJsItems as $gIdx => $gItem)
+                                <button type="button" onclick="setGalleryIndex({{ $gIdx }})" id="gallery-dot-{{ $gIdx }}" class="{{ $gIdx === 0 ? 'w-4 h-2 rounded-full bg-white' : 'w-2 h-2 rounded-full bg-white/40' }} transition-all cursor-pointer shrink-0" aria-label="Slide {{ $gIdx + 1 }}"></button>
+                            @endforeach
                         </div>
                     </div>
                     
                     <!-- Clickable Thumbnails row under placeholder -->
-                    <div class="grid grid-cols-2 gap-2 sm:gap-3">
-                        <!-- Thumbnail 1: Foto Kamar Utama -->
-                        <button 
-                            type="button"
-                            id="thumb-btn-0"
-                            onclick="setGalleryIndex(0)" 
-                            class="gallery-thumb flex items-center gap-2 sm:gap-3 p-1.5 sm:p-2 rounded-xl sm:rounded-2xl border-2 border-[#006c49] bg-emerald-50/50 focus:outline-none transition-all cursor-pointer text-left"
-                        >
-                            <div class="w-12 h-10 sm:w-16 sm:h-12 rounded-lg sm:rounded-xl overflow-hidden shrink-0 bg-slate-200">
-                                <img src="{{ $image }}" class="w-full h-full object-cover" alt="Foto Kamar" onerror="handleImgError(this)">
-                            </div>
-                            <div class="truncate">
-                                <span class="text-[11px] sm:text-xs font-bold text-gray-900 block truncate">1. Kamar Tidur</span>
-                                <span class="text-[9px] sm:text-[10px] text-gray-500">Tampilan Utama</span>
-                            </div>
-                        </button>
-
-                        <!-- Thumbnail 2: Foto Kamar Mandi Dalam -->
-                        <button 
-                            type="button"
-                            id="thumb-btn-1"
-                            onclick="setGalleryIndex(1)" 
-                            class="gallery-thumb flex items-center gap-2 sm:gap-3 p-1.5 sm:p-2 rounded-xl sm:rounded-2xl border border-gray-200 hover:border-gray-300 bg-white focus:outline-none transition-all cursor-pointer text-left"
-                        >
-                            <div class="w-12 h-10 sm:w-16 sm:h-12 rounded-lg sm:rounded-xl overflow-hidden shrink-0 bg-slate-200">
-                                <img src="{{ $bathroomImage }}" class="w-full h-full object-cover" alt="Foto Kamar Mandi" onerror="handleImgError(this)">
-                            </div>
-                            <div class="truncate">
-                                <span class="text-[11px] sm:text-xs font-bold text-gray-900 block truncate">2. Kamar Mandi</span>
-                                <span class="text-[9px] sm:text-[10px] text-gray-500">Kamar Mandi Dalam</span>
-                            </div>
-                        </button>
+                    <div class="grid {{ count($galleryJsItems) > 2 ? 'grid-cols-2 sm:grid-cols-3' : 'grid-cols-2' }} gap-2 sm:gap-3">
+                        @foreach($galleryJsItems as $gIdx => $gItem)
+                            <button 
+                                type="button"
+                                id="thumb-btn-{{ $gIdx }}"
+                                onclick="setGalleryIndex({{ $gIdx }})" 
+                                class="gallery-thumb flex items-center gap-2 sm:gap-3 p-1.5 sm:p-2 rounded-xl sm:rounded-2xl {{ $gIdx === 0 ? 'border-2 border-[#006c49] bg-emerald-50/50' : 'border border-gray-200 hover:border-gray-300 bg-white' }} focus:outline-none transition-all cursor-pointer text-left"
+                            >
+                                <div class="w-12 h-10 sm:w-16 sm:h-12 rounded-lg sm:rounded-xl overflow-hidden shrink-0 bg-slate-200">
+                                    <img src="{{ $gItem['url'] }}" class="w-full h-full object-cover" alt="{{ $gItem['label'] }}" onerror="handleImgError(this)">
+                                </div>
+                                <div class="truncate">
+                                    <span class="text-[11px] sm:text-xs font-bold text-gray-900 block truncate">{{ $gIdx + 1 }}. {{ $gItem['label'] }}</span>
+                                    <span class="text-[9px] sm:text-[10px] text-gray-500">{{ $gIdx === 0 ? 'Tampilan Utama' : 'Galeri Kamar' }}</span>
+                                </div>
+                            </button>
+                        @endforeach
                     </div>
                 </div>
 
@@ -415,10 +433,7 @@
 
 @push('scripts')
 <script>
-    const galleryItems = [
-        { url: @json($image), title: '1 / 2 • Foto Kamar Tidur' },
-        { url: @json($bathroomImage), title: '2 / 2 • Foto Kamar Mandi Dalam' }
-    ];
+    const galleryItems = @json($galleryJsItems);
     let currentGalleryIdx = 0;
 
     function setGalleryIndex(idx) {
@@ -432,6 +447,7 @@
         if (mainImg) {
             mainImg.style.opacity = '0.3';
             setTimeout(() => {
+                mainImg.removeAttribute('data-error-handled');
                 mainImg.src = galleryItems[currentGalleryIdx].url;
                 mainImg.style.opacity = '1';
             }, 120);

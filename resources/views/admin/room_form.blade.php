@@ -142,112 +142,165 @@
                 </div>
             </article>
 
-            <!-- Media & Photos Card: Foto Kamar Utama & Foto Kamar Mandi -->
+            <!-- Media & Photos Card: Dynamic Unlimited Gallery Photos -->
+            @php
+                $initialGallery = [];
+                if (is_array(old('gallery_urls')) && count(old('gallery_urls')) > 0) {
+                    $oldUrls = old('gallery_urls', []);
+                    $oldLabels = old('gallery_labels', []);
+                    foreach ($oldUrls as $k => $u) {
+                        $initialGallery[] = [
+                            'url' => $u ?? '',
+                            'label' => $oldLabels[$k] ?? ('Foto Kamar ' . (count($initialGallery) + 1)),
+                        ];
+                    }
+                } elseif ($editing) {
+                    $initialGallery = $room->getGalleryList();
+                } else {
+                    $initialGallery = [
+                        ['url' => '/images/Kamar no 5.jpg', 'label' => 'Foto Kamar Tidur'],
+                        ['url' => '/images/Kamar mandi.jpg', 'label' => 'Foto Kamar Mandi Dalam'],
+                    ];
+                }
+            @endphp
             <article class="bg-white rounded-2xl border border-slate-100 shadow-soft p-6 sm:p-8 flex flex-col gap-6">
-                <h2 class="text-base font-black text-slate-900 font-display border-b border-slate-100 pb-3 flex items-center gap-2">
-                    <svg class="w-4.5 h-4.5 text-brand" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+                    <div>
+                        <div class="flex items-center gap-2.5">
+                            <h2 class="text-base font-black text-slate-900 font-display flex items-center gap-2">
+                                <svg class="w-4.5 h-4.5 text-brand" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                </svg>
+                                <span>Galeri Foto Kamar</span>
+                            </h2>
+                            <span id="gallery-count-badge" class="bg-emerald-50 text-brand border border-emerald-200 px-2.5 py-0.5 rounded-full text-[11px] font-extrabold">
+                                {{ count($initialGallery) }} Foto
+                            </span>
+                        </div>
+                        <p class="text-[11px] text-slate-400 mt-1">
+                            Tambahkan foto kamar sebanyak yang Anda inginkan. Foto urutan pertama (#1) akan menjadi foto sampul utama.
+                        </p>
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-2">
+                        <!-- Multi-file quick upload -->
+                        <input 
+                            type="file" 
+                            id="multi_photo_picker" 
+                            multiple 
+                            accept="image/png, image/jpeg, image/jpg, image/webp" 
+                            class="hidden" 
+                            onchange="handleMultiPhotoSelect(this)"
+                        />
+                        <button 
+                            type="button" 
+                            onclick="document.getElementById('multi_photo_picker').click()"
+                            class="inline-flex items-center gap-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-brand border border-emerald-200 px-3.5 py-2 text-xs font-bold transition-all cursor-pointer active:scale-95"
+                        >
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                            </svg>
+                            <span>Upload Banyak Sekaligus</span>
+                        </button>
+
+                        <button 
+                            type="button" 
+                            onclick="addGallerySlot()"
+                            class="inline-flex items-center gap-1.5 rounded-xl bg-brand hover:bg-brandHover text-white px-3.5 py-2 text-xs font-bold shadow-xs transition-all cursor-pointer active:scale-95"
+                        >
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+                            </svg>
+                            <span>Tambah Foto</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Dynamic Gallery Slots Container -->
+                <div id="gallery-slots-container" class="flex flex-col gap-4">
+                    @foreach($initialGallery as $idx => $item)
+                        <div class="gallery-slot-card p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col gap-4 transition-all" data-slot-id="{{ $idx }}">
+                            <div class="flex items-center justify-between gap-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="slot-order-badge inline-flex items-center px-2.5 py-1 rounded-lg text-[11px] font-extrabold {{ $idx === 0 ? 'bg-brand text-white' : 'bg-slate-200 text-slate-700' }}">
+                                        {{ $idx === 0 ? '#1 • Foto Utama (Sampul)' : '#' . ($idx + 1) . ' • Foto Tambahan' }}
+                                    </span>
+                                </div>
+                                <button 
+                                    type="button" 
+                                    onclick="removeGallerySlot(this)"
+                                    class="inline-flex items-center gap-1 text-[11px] font-bold text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 border border-red-200/70 px-2.5 py-1 rounded-lg transition-colors cursor-pointer"
+                                    title="Hapus foto ini"
+                                >
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                    </svg>
+                                    <span>Hapus</span>
+                                </button>
+                            </div>
+
+                            <div class="grid gap-4 sm:grid-cols-12 items-center">
+                                <div class="sm:col-span-7 space-y-3">
+                                    <div>
+                                        <label class="text-[11px] font-bold text-slate-600 block mb-1">Judul / Keterangan Foto</label>
+                                        <input 
+                                            type="text"
+                                            name="gallery_labels[{{ $idx }}]" 
+                                            value="{{ $item['label'] }}" 
+                                            placeholder="Contoh: Foto Kamar Tidur / Kamar Mandi / Meja Belajar" 
+                                            class="w-full rounded-xl border border-slate-200 px-3.5 py-2 text-xs outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 font-bold text-slate-800 bg-white"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label class="text-[11px] font-bold text-slate-600 block mb-1">Upload File Gambar (Maks 5MB)</label>
+                                        <input 
+                                            type="file" 
+                                            name="gallery_files[{{ $idx }}]" 
+                                            accept="image/png, image/jpeg, image/jpg, image/webp" 
+                                            onchange="previewSlotFile(this)"
+                                            class="slot-file-input w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-brand/10 file:text-brand hover:file:bg-brand/20 border border-slate-200 rounded-xl p-1 bg-white cursor-pointer"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label class="text-[11px] font-bold text-slate-600 block mb-1">Atau Gunakan URL Gambar</label>
+                                        <input 
+                                            type="text"
+                                            name="gallery_urls[{{ $idx }}]" 
+                                            value="{{ $item['url'] }}" 
+                                            placeholder="https://... atau /images/..." 
+                                            oninput="previewSlotUrl(this)"
+                                            class="slot-url-input w-full rounded-xl border border-slate-200 px-3.5 py-2 text-xs outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 font-mono bg-white"
+                                        />
+                                    </div>
+                                </div>
+
+                                <!-- Live Preview -->
+                                <div class="sm:col-span-5">
+                                    <div class="relative w-full h-40 rounded-xl overflow-hidden border border-slate-200 bg-slate-200 flex items-center justify-center shadow-2xs">
+                                        <img 
+                                            src="{{ $item['url'] ?: '/images/Kamar no 5.jpg' }}" 
+                                            alt="{{ $item['label'] }}"
+                                            class="slot-preview-img w-full h-full object-cover"
+                                            onerror="handleImgError(this)"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+                <!-- Bottom Add More Photos Button -->
+                <button 
+                    type="button" 
+                    onclick="addGallerySlot()"
+                    class="w-full py-3.5 px-4 rounded-2xl border-2 border-dashed border-emerald-300 hover:border-brand bg-emerald-50/40 hover:bg-emerald-50 text-brand font-extrabold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer active:scale-[0.99]"
+                >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
                     </svg>
-                    <span>Galeri Foto (Foto Kamar & Kamar Mandi)</span>
-                </h2>
-
-                <!-- 1. Foto Kamar Utama -->
-                <div class="p-5 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col gap-4">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <span class="text-xs font-bold text-slate-900 block">1. Foto Kamar Utama (Bedroom View)</span>
-                            <span class="text-[10px] text-slate-400">Tampilan utama ruangan kamar, tempat tidur, & perabotan.</span>
-                        </div>
-                    </div>
-
-                    <div class="grid gap-4 sm:grid-cols-2 items-center">
-                        <div class="space-y-3">
-                            <div>
-                                <label class="text-[11px] font-bold text-slate-600 block mb-1">Upload File Foto Kamar</label>
-                                <input 
-                                    type="file" 
-                                    name="image_file" 
-                                    id="image_file_input"
-                                    accept="image/png, image/jpeg, image/jpg, image/webp" 
-                                    onchange="previewUploadedFile(this, 'preview_image')"
-                                    class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-brand/10 file:text-brand hover:file:bg-brand/20 border border-slate-200 rounded-xl p-1 bg-white"
-                                />
-                            </div>
-                            <div>
-                                <label class="text-[11px] font-bold text-slate-600 block mb-1">Atau URL Foto Kamar</label>
-                                <input 
-                                    type="text"
-                                    name="image_url" 
-                                    id="image_url_input"
-                                    value="{{ old('image_url', $room->image_url) }}" 
-                                    placeholder="https://images.unsplash.com/photo-..." 
-                                    oninput="updateImagePreview(this.value, 'preview_image')"
-                                    class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 font-mono bg-white"
-                                />
-                            </div>
-                        </div>
-
-                        <!-- Live Preview Kamar -->
-                        <div class="relative w-full h-36 rounded-xl overflow-hidden border border-slate-200 bg-slate-200 flex items-center justify-center">
-                            <img 
-                                id="preview_image"
-                                src="{{ old('image_url', $room->image_url ?: '/images/Kamar no 5.jpg') }}" 
-                                alt="Foto Kamar"
-                                class="w-full h-full object-cover"
-                                onerror="handleImgError(this)"
-                            />
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 2. Foto Kamar Mandi Dalam -->
-                <div class="p-5 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col gap-4">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <span class="text-xs font-bold text-slate-900 block">2. Foto Kamar Mandi Dalam (Bathroom View)</span>
-                            <span class="text-[10px] text-slate-400">Tampilan area mandi, wastafel, & toilet yang bersih.</span>
-                        </div>
-                    </div>
-
-                    <div class="grid gap-4 sm:grid-cols-2 items-center">
-                        <div class="space-y-3">
-                            <div>
-                                <label class="text-[11px] font-bold text-slate-600 block mb-1">Upload File Foto Kamar Mandi</label>
-                                <input 
-                                    type="file" 
-                                    name="bathroom_image_file" 
-                                    id="bathroom_image_file_input"
-                                    accept="image/png, image/jpeg, image/jpg, image/webp" 
-                                    onchange="previewUploadedFile(this, 'preview_bathroom_image')"
-                                    class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-brand/10 file:text-brand hover:file:bg-brand/20 border border-slate-200 rounded-xl p-1 bg-white"
-                                />
-                            </div>
-                            <div>
-                                <label class="text-[11px] font-bold text-slate-600 block mb-1">Atau URL Foto Kamar Mandi</label>
-                                <input 
-                                    type="text"
-                                    name="bathroom_image_url" 
-                                    id="bathroom_image_url_input"
-                                    value="{{ old('bathroom_image_url', $room->bathroom_image_url) }}" 
-                                    placeholder="https://images.unsplash.com/photo-..." 
-                                    oninput="updateImagePreview(this.value, 'preview_bathroom_image')"
-                                    class="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 font-mono bg-white"
-                                />
-                            </div>
-                        </div>
-
-                        <!-- Live Preview Kamar Mandi -->
-                        <div class="relative w-full h-36 rounded-xl overflow-hidden border border-slate-200 bg-slate-200 flex items-center justify-center">
-                            <img 
-                                id="preview_bathroom_image"
-                                src="{{ old('bathroom_image_url', $room->bathroom_image_url ?: '/images/Kamar mandi.jpg') }}" 
-                                alt="Foto Kamar Mandi"
-                                class="w-full h-full object-cover"
-                                onerror="handleImgError(this)"
-                            />
-                        </div>
-                    </div>
-                </div>
+                    <span>+ Tambah Foto Kamar Lainnya (Sepuasnya)</span>
+                </button>
             </article>
         </div>
 
@@ -416,25 +469,238 @@
 
 @push('scripts')
 <script>
-    function updateImagePreview(url, targetImgId) {
-        const previewImg = document.getElementById(targetImgId);
-        if (previewImg) {
-            if (url && url.trim().length > 5) {
-                previewImg.src = url;
+    let nextSlotCounter = {{ count($initialGallery) + 10 }};
+
+    function refreshSlotBadges() {
+        const container = document.getElementById('gallery-slots-container');
+        if (!container) return;
+        const cards = container.querySelectorAll('.gallery-slot-card');
+        const countBadge = document.getElementById('gallery-count-badge');
+        if (countBadge) {
+            countBadge.textContent = cards.length + ' Foto';
+        }
+
+        cards.forEach((card, index) => {
+            const badge = card.querySelector('.slot-order-badge');
+            if (badge) {
+                if (index === 0) {
+                    badge.className = 'slot-order-badge inline-flex items-center px-2.5 py-1 rounded-lg text-[11px] font-extrabold bg-brand text-white';
+                    badge.textContent = '#1 • Foto Utama (Sampul)';
+                } else {
+                    badge.className = 'slot-order-badge inline-flex items-center px-2.5 py-1 rounded-lg text-[11px] font-extrabold bg-slate-200 text-slate-700';
+                    badge.textContent = '#' + (index + 1) + ' • Foto Tambahan';
+                }
             }
+        });
+    }
+
+    function addGallerySlot(options = {}) {
+        const container = document.getElementById('gallery-slots-container');
+        if (!container) return null;
+
+        const slotId = nextSlotCounter++;
+        const currentCount = container.querySelectorAll('.gallery-slot-card').length;
+        const defaultLabel = options.label || ('Foto Kamar ' + (currentCount + 1));
+        const defaultUrl = options.url || '';
+        const previewSrc = defaultUrl || window.MAMA_ANIS_PLACEHOLDER || '/images/Kamar no 5.jpg';
+
+        const card = document.createElement('div');
+        card.className = 'gallery-slot-card p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col gap-4 transition-all rise';
+        card.setAttribute('data-slot-id', slotId);
+
+        card.innerHTML = `
+            <div class="flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2">
+                    <span class="slot-order-badge inline-flex items-center px-2.5 py-1 rounded-lg text-[11px] font-extrabold bg-slate-200 text-slate-700">
+                        #${currentCount + 1} • Foto Tambahan
+                    </span>
+                </div>
+                <button 
+                    type="button" 
+                    onclick="removeGallerySlot(this)"
+                    class="inline-flex items-center gap-1 text-[11px] font-bold text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 border border-red-200/70 px-2.5 py-1 rounded-lg transition-colors cursor-pointer"
+                    title="Hapus foto ini"
+                >
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                    </svg>
+                    <span>Hapus</span>
+                </button>
+            </div>
+
+            <div class="grid gap-4 sm:grid-cols-12 items-center">
+                <div class="sm:col-span-7 space-y-3">
+                    <div>
+                        <label class="text-[11px] font-bold text-slate-600 block mb-1">Judul / Keterangan Foto</label>
+                        <input 
+                            type="text"
+                            name="gallery_labels[${slotId}]" 
+                            value="" 
+                            placeholder="Contoh: Foto Kamar Tidur / Kamar Mandi / Meja Belajar" 
+                            class="slot-label-input w-full rounded-xl border border-slate-200 px-3.5 py-2 text-xs outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 font-bold text-slate-800 bg-white"
+                        />
+                    </div>
+                    <div>
+                        <label class="text-[11px] font-bold text-slate-600 block mb-1">Upload File Gambar (Maks 5MB)</label>
+                        <input 
+                            type="file" 
+                            name="gallery_files[${slotId}]" 
+                            accept="image/png, image/jpeg, image/jpg, image/webp" 
+                            onchange="previewSlotFile(this)"
+                            class="slot-file-input w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-brand/10 file:text-brand hover:file:bg-brand/20 border border-slate-200 rounded-xl p-1 bg-white cursor-pointer"
+                        />
+                    </div>
+                    <div>
+                        <label class="text-[11px] font-bold text-slate-600 block mb-1">Atau Gunakan URL Gambar</label>
+                        <input 
+                            type="text"
+                            name="gallery_urls[${slotId}]" 
+                            value="" 
+                            placeholder="https://... atau /images/..." 
+                            oninput="previewSlotUrl(this)"
+                            class="slot-url-input w-full rounded-xl border border-slate-200 px-3.5 py-2 text-xs outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 font-mono bg-white"
+                        />
+                    </div>
+                </div>
+
+                <!-- Live Preview -->
+                <div class="sm:col-span-5">
+                    <div class="relative w-full h-40 rounded-xl overflow-hidden border border-slate-200 bg-slate-200 flex items-center justify-center shadow-2xs">
+                        <img 
+                            src="${previewSrc}" 
+                            alt="Preview Foto"
+                            class="slot-preview-img w-full h-full object-cover"
+                            onerror="handleImgError(this)"
+                        />
+                    </div>
+                </div>
+            </div>
+        `;
+
+        const labelInput = card.querySelector('.slot-label-input');
+        if (labelInput) labelInput.value = defaultLabel;
+
+        const urlInput = card.querySelector('.slot-url-input');
+        if (urlInput) urlInput.value = defaultUrl;
+
+        container.appendChild(card);
+
+        if (options.file) {
+            const fileInput = card.querySelector('.slot-file-input');
+            if (fileInput) {
+                try {
+                    const dt = new DataTransfer();
+                    dt.items.add(options.file);
+                    fileInput.files = dt.files;
+                } catch (e) {}
+                previewSlotFile(fileInput, options.file);
+            }
+        }
+
+        refreshSlotBadges();
+        return card;
+    }
+
+    function removeGallerySlot(btn) {
+        const container = document.getElementById('gallery-slots-container');
+        const card = btn.closest('.gallery-slot-card');
+        if (!container || !card) return;
+
+        const allCards = container.querySelectorAll('.gallery-slot-card');
+        if (allCards.length <= 1) {
+            // Reset the last remaining card instead of leaving zero slots
+            const fileInput = card.querySelector('.slot-file-input');
+            const urlInput = card.querySelector('.slot-url-input');
+            const previewImg = card.querySelector('.slot-preview-img');
+            if (fileInput) fileInput.value = '';
+            if (urlInput) urlInput.value = '';
+            if (previewImg) previewImg.src = window.MAMA_ANIS_PLACEHOLDER || '/images/Kamar no 5.jpg';
+            return;
+        }
+
+        card.remove();
+        refreshSlotBadges();
+    }
+
+    function compressImageFileToDataUrl(file) {
+        return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const rawDataUrl = e.target.result;
+                const img = new Image();
+                img.onload = function() {
+                    try {
+                        const maxDim = 1280;
+                        let width = img.width;
+                        let height = img.height;
+                        if (width > maxDim || height > maxDim) {
+                            const ratio = Math.min(maxDim / width, maxDim / height);
+                            width = Math.max(1, Math.round(width * ratio));
+                            height = Math.max(1, Math.round(height * ratio));
+                        }
+                        const canvas = document.createElement('canvas');
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.fillStyle = '#FFFFFF';
+                        ctx.fillRect(0, 0, width, height);
+                        ctx.drawImage(img, 0, 0, width, height);
+                        const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.80);
+                        resolve(compressedDataUrl || rawDataUrl);
+                    } catch (err) {
+                        resolve(rawDataUrl);
+                    }
+                };
+                img.onerror = function() {
+                    resolve(rawDataUrl);
+                };
+                img.src = rawDataUrl;
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    function previewSlotFile(input, explicitFile = null) {
+        const card = input.closest('.gallery-slot-card');
+        if (!card) return;
+        const previewImg = card.querySelector('.slot-preview-img');
+        const urlInput = card.querySelector('.slot-url-input');
+        const file = explicitFile || (input.files && input.files[0]);
+        if (file && previewImg) {
+            compressImageFileToDataUrl(file).then((dataUrl) => {
+                previewImg.removeAttribute('data-error-handled');
+                previewImg.src = dataUrl;
+                if (urlInput && dataUrl) {
+                    urlInput.value = dataUrl;
+                    // Clear raw file input after converting to compressed Base64 so Vercel 4.5MB limit is never exceeded
+                    try { input.value = ''; } catch (e) {}
+                }
+            });
         }
     }
 
-    function previewUploadedFile(input, targetImgId) {
-        const previewImg = document.getElementById(targetImgId);
-        if (input.files && input.files[0]) {
-            const file = input.files[0];
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                if (previewImg) previewImg.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
+    function previewSlotUrl(input) {
+        const card = input.closest('.gallery-slot-card');
+        if (!card) return;
+        const previewImg = card.querySelector('.slot-preview-img');
+        const url = input.value ? input.value.trim() : '';
+        if (previewImg && url.length > 3) {
+            previewImg.removeAttribute('data-error-handled');
+            previewImg.src = url;
         }
+    }
+
+    function handleMultiPhotoSelect(input) {
+        if (!input.files || input.files.length === 0) return;
+        const files = Array.from(input.files);
+
+        files.forEach((file) => {
+            const rawName = file.name.replace(/\.[^/.]+$/, '').replace(/[-_]+/g, ' ').trim();
+            const label = rawName ? ('Foto ' + rawName.charAt(0).toUpperCase() + rawName.slice(1)) : '';
+            addGallerySlot({ label: label, file: file });
+        });
+
+        input.value = '';
     }
 </script>
 @endpush

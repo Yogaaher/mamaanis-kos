@@ -17,8 +17,9 @@ return new class extends Migration
             $table->string('status')->default('Tersedia');
             $table->decimal('rating', 2, 1)->default(4.5);
             $table->unsignedInteger('views')->default(0);
-            $table->string('image_url', 2048)->nullable();
-            $table->string('bathroom_image_url', 2048)->nullable();
+            $table->text('image_url')->nullable();
+            $table->text('bathroom_image_url')->nullable();
+            $table->json('gallery_images')->nullable();
             $table->string('min_stay', 50)->default('1 Bulan');
             $table->unsignedSmallInteger('max_occupants')->default(1);
             $table->json('amenities')->nullable();
