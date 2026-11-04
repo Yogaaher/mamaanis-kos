@@ -3,7 +3,27 @@
 @section('title', ($mode === 'edit' ? 'Edit Kamar' : 'Tambah Kamar Baru') . ' | Admin Mama Anis Group')
 
 @section('content')
-@php($editing = $mode === 'edit')
+@php
+    $editing = $mode === 'edit';
+    $initialGallery = [];
+    if (is_array(old('gallery_urls')) && count(old('gallery_urls')) > 0) {
+        $oldUrls = old('gallery_urls', []);
+        $oldLabels = old('gallery_labels', []);
+        foreach ($oldUrls as $k => $u) {
+            $initialGallery[] = [
+                'url' => $u ?? '',
+                'label' => $oldLabels[$k] ?? ('Foto Kamar ' . (count($initialGallery) + 1)),
+            ];
+        }
+    } elseif ($editing) {
+        $initialGallery = $room->getGalleryList();
+    } else {
+        $initialGallery = [
+            ['url' => '/images/Kamar no 5.jpg', 'label' => 'Foto Kamar Tidur'],
+            ['url' => '/images/Kamar mandi.jpg', 'label' => 'Foto Kamar Mandi Dalam'],
+        ];
+    }
+@endphp
 <main class="w-full max-w-full p-3.5 sm:p-8 lg:p-10 flex flex-col gap-4 sm:gap-6 rise overflow-x-hidden">
     <!-- Top Bar Navigation -->
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 border-b border-slate-100 pb-4 sm:pb-5">
@@ -143,26 +163,6 @@
             </article>
 
             <!-- Media & Photos Card: Dynamic Unlimited Gallery Photos -->
-            @php
-                $initialGallery = [];
-                if (is_array(old('gallery_urls')) && count(old('gallery_urls')) > 0) {
-                    $oldUrls = old('gallery_urls', []);
-                    $oldLabels = old('gallery_labels', []);
-                    foreach ($oldUrls as $k => $u) {
-                        $initialGallery[] = [
-                            'url' => $u ?? '',
-                            'label' => $oldLabels[$k] ?? ('Foto Kamar ' . (count($initialGallery) + 1)),
-                        ];
-                    }
-                } elseif ($editing) {
-                    $initialGallery = $room->getGalleryList();
-                } else {
-                    $initialGallery = [
-                        ['url' => '/images/Kamar no 5.jpg', 'label' => 'Foto Kamar Tidur'],
-                        ['url' => '/images/Kamar mandi.jpg', 'label' => 'Foto Kamar Mandi Dalam'],
-                    ];
-                }
-            @endphp
             <article class="bg-white rounded-2xl border border-slate-100 shadow-soft p-6 sm:p-8 flex flex-col gap-6">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
                     <div>
