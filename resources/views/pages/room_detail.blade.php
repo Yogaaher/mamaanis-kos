@@ -433,7 +433,7 @@
 
 @push('scripts')
 <script>
-    const galleryItems = @json($galleryJsItems);
+    const galleryItems = @json(array_map(fn($it) => ['title' => $it['title']], $galleryJsItems));
     let currentGalleryIdx = 0;
 
     function setGalleryIndex(idx) {
@@ -443,12 +443,13 @@
 
         const mainImg = document.getElementById('main-room-gallery');
         const badge = document.getElementById('gallery-badge');
+        const thumbImg = document.querySelector(`#thumb-btn-${currentGalleryIdx} img`);
         
-        if (mainImg) {
+        if (mainImg && thumbImg) {
             mainImg.style.opacity = '0.3';
             setTimeout(() => {
                 mainImg.removeAttribute('data-error-handled');
-                mainImg.src = galleryItems[currentGalleryIdx].url;
+                mainImg.src = thumbImg.src;
                 mainImg.style.opacity = '1';
             }, 120);
         }

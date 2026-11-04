@@ -8,7 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class AdminRoomController extends Controller
 {
@@ -51,7 +53,7 @@ class AdminRoomController extends Controller
 
     public function update(Request $request, Room $room)
     {
-        $room->update($this->validated($request));
+        $room->update($this->validated($request, $room));
 
         return redirect()->route('admin.dashboard')->with('success', 'Data kamar berhasil diperbarui. Halaman publik ikut diperbarui.');
     }
@@ -118,7 +120,7 @@ class AdminRoomController extends Controller
         }
     }
 
-    private function validated(Request $request): array
+    private function validated(Request $request, ?Room $existingRoom = null): array
     {
         try {
             if (Schema::hasTable('rooms')) {
@@ -139,7 +141,7 @@ class AdminRoomController extends Controller
             // Ignore schema check errors if read-only or already altered
         }
 
-        $data = $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:120'],
             'type' => ['required', 'string', 'max:50'],
             'location' => ['required', 'string', 'max:180'],
@@ -151,6 +153,14 @@ class AdminRoomController extends Controller
             'image_url' => ['nullable', 'string'],
             'bathroom_image_file' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:5120'],
             'bathroom_image_url' => ['nullable', 'string'],
+            'photo_label' => ['nullable', 'array'],
+            'photo_label.*' => ['nullable', 'string', 'max:120'],
+            'photo_link' => ['nullable', 'array'],
+            'photo_link.*' => ['nullable', 'string', 'max:2048'],
+            'photo_b64' => ['nullable', 'array'],
+            'photo_b64.*' => ['nullable', 'string'],
+            'photo_keep' => ['nullable', 'array'],
+            'photo_keep.*' => ['nullable', 'string', 'max:20'],
             'gallery_labels' => ['nullable', 'array'],
             'gallery_labels.*' => ['nullable', 'string', 'max:120'],
             'gallery_urls' => ['nullable', 'array'],
@@ -165,14 +175,28 @@ class AdminRoomController extends Controller
             'description' => ['required', 'string', 'max:2000'],
         ]);
 
+        if ($validator->fails()) {
+            // Remove large base64 strings from request before Laravel flashes input to cookie session
+            $request->request->remove('photo_b64');
+            $request->request->remove('gallery_urls');
+            throw new ValidationException($validator);
+        }
+
+        $data = $validator->validated();
+
         $gallery = [];
-        $labels = $request->input('gallery_labels', []);
-        $urls = $request->input('gallery_urls', []);
+        $labels = $request->input('photo_label', $request->input('gallery_labels', []));
+        $links = $request->input('photo_link', $request->input('gallery_urls', []));
+        $b64s = $request->input('photo_b64', []);
+        $keeps = $request->input('photo_keep', []);
         $files = $request->file('gallery_files', []);
+        $existingList = $existingRoom ? $existingRoom->getGalleryList() : [];
 
         $indices = array_unique(array_merge(
             array_keys(is_array($labels) ? $labels : []),
-            array_keys(is_array($urls) ? $urls : []),
+            array_keys(is_array($links) ? $links : []),
+            array_keys(is_array($b64s) ? $b64s : []),
+            array_keys(is_array($keeps) ? $keeps : []),
             array_keys(is_array($files) ? $files : [])
         ));
         sort($indices, SORT_NUMERIC);
@@ -180,10 +204,24 @@ class AdminRoomController extends Controller
         foreach ($indices as $idx) {
             $finalUrl = null;
 
-            if (isset($files[$idx]) && $files[$idx] && $files[$idx]->isValid()) {
+            if (!empty($b64s[$idx]) && is_string($b64s[$idx])) {
+                $cleanB64 = strtr(trim($b64s[$idx]), '-_', '+/');
+                $pad = strlen($cleanB64) % 4;
+                if ($pad > 0) {
+                    $cleanB64 .= str_repeat('=', 4 - $pad);
+                }
+                if (base64_decode($cleanB64, true) !== false) {
+                    $finalUrl = 'data:image/jpeg;base64,' . $cleanB64;
+                }
+            } elseif (isset($files[$idx]) && $files[$idx] && $files[$idx]->isValid()) {
                 $finalUrl = $this->encodeUploadedImage($files[$idx]);
-            } elseif (!empty($urls[$idx]) && trim((string) $urls[$idx]) !== '') {
-                $finalUrl = trim((string) $urls[$idx]);
+            } elseif (!empty($links[$idx]) && trim((string) $links[$idx]) !== '') {
+                $finalUrl = trim((string) $links[$idx]);
+            } elseif (isset($keeps[$idx]) && $keeps[$idx] !== '' && $keeps[$idx] !== null) {
+                $keepIdx = (int) $keeps[$idx];
+                if (isset($existingList[$keepIdx]['url'])) {
+                    $finalUrl = $existingList[$keepIdx]['url'];
+                }
             }
 
             if ($finalUrl) {
@@ -218,6 +256,10 @@ class AdminRoomController extends Controller
         unset(
             $data['image_file'],
             $data['bathroom_image_file'],
+            $data['photo_label'],
+            $data['photo_link'],
+            $data['photo_b64'],
+            $data['photo_keep'],
             $data['gallery_files'],
             $data['gallery_urls'],
             $data['gallery_labels']
@@ -260,7 +302,7 @@ class AdminRoomController extends Controller
             if ($src !== false) {
                 $width = imagesx($src);
                 $height = imagesy($src);
-                $maxDim = 1280;
+                $maxDim = 960;
 
                 if ($width > $maxDim || $height > $maxDim) {
                     $ratio = min($maxDim / $width, $maxDim / $height);
@@ -277,7 +319,7 @@ class AdminRoomController extends Controller
                 }
 
                 ob_start();
-                imagejpeg($src, null, 80);
+                imagejpeg($src, null, 72);
                 $compressed = ob_get_clean();
                 imagedestroy($src);
 

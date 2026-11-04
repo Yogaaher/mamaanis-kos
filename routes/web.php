@@ -19,7 +19,7 @@ Route::middleware('admin.auth')->prefix('admin')->name('admin.')->group(function
     Route::get('/rooms/create', [AdminRoomController::class, 'create'])->name('rooms.create');
     Route::post('/rooms', [AdminRoomController::class, 'store'])->name('rooms.store');
     Route::get('/rooms/{room}/edit', [AdminRoomController::class, 'edit'])->name('rooms.edit');
-    Route::put('/rooms/{room}', [AdminRoomController::class, 'update'])->name('rooms.update');
+    Route::match(['post', 'put'], '/rooms/{room}', [AdminRoomController::class, 'update'])->name('rooms.update');
     Route::delete('/rooms/{room}', [AdminRoomController::class, 'destroy'])->name('rooms.destroy');
     Route::get('/analytics', [AdminRoomController::class, 'analytics'])->name('analytics');
     Route::get('/settings', [AdminRoomController::class, 'settings'])->name('settings');
