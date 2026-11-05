@@ -1,8 +1,5 @@
 @extends('layouts.app')
 
-@section('title', ($room['name'] ?? 'Detail Kamar') . ' | Mama Anis Kos')
-
-@section('content')
 @php
     $formatRupiah = function($num) {
         return 'Rp ' . number_format($num, 0, ',', '.');
@@ -57,20 +54,105 @@
     $size = $roomData['size'] ?? 16;
     $beds = $roomData['beds'] ?? 1;
     $description = $roomData['description'] ?? 'Unit kamar kost Mama Anis dirancang khusus untuk kenyamanan dan privasi 1 orang penghuni. Dilengkapi fasilitas kamar mandi dalam yang bersih dan higienis, AC, kasur berkualitas, lemari pakaian, meja kerja/belajar, dan koneksi internet WiFi stabil.';
-    
+
+    // Resolve HTTP(S) OpenGraph Image for WhatsApp/Social Previews
+    $primaryGalleryUrl = $galleryJsItems[0]['url'] ?? $image;
+    if (str_starts_with($primaryGalleryUrl, 'http://') || str_starts_with($primaryGalleryUrl, 'https://')) {
+        $ogImageUrl = $primaryGalleryUrl;
+    } elseif (str_starts_with($primaryGalleryUrl, 'data:')) {
+        $ogImageUrl = url('/images/Kamar no 5.jpg');
+    } else {
+        $ogImageUrl = url($primaryGalleryUrl);
+    }
+    $metaDescText = "{$name} ({$type}) di {$location} — {$formatRupiah($price)}/bulan. Luas {$size}m², fasilitas: " . implode(', ', array_slice($amenities, 0, 5)) . ".";
+
     // WhatsApp pre-configured message text
     $whatsappText = "Halo Mama Anis Kos, saya tertarik untuk menyewa unit \"{$name}\" di {$location} dengan tarif sewa {$formatRupiah($price)}/bulan (Minimal sewa {$minStay}, kapasitas max {$maxOccupants} orang). Apakah kamar ini masih tersedia? Terima kasih!";
     $whatsappUrl = "https://wa.me/6287782049784?text=" . rawurlencode($whatsappText);
 
+    // Share to friend/family WA URL
+    $shareFriendText = "Cek kamar kos ini di Mama Anis Kos ({$location}): {$name} — {$formatRupiah($price)}/bulan. Lihat foto & fasilitas lengkapnya di: " . url()->current();
+    $shareFriendWaUrl = "https://wa.me/?text=" . rawurlencode($shareFriendText);
+
+    // Bubble Chat FAQ Items
+    $gmapsUrl = 'https://share.google/j7P9yPSEyOxYYRu47';
+    $faqChats = [
+        [
+            'topic' => 'akses',
+            'time_q' => '09:40',
+            'time_a' => '09:41',
+            'question' => 'Apakah Mama Anis Kos ini kos khusus putri? Bagaimana aturan jam malam & tamu lawan jenis?',
+            'answer' => 'Benar Kak, Mama Anis Kos adalah Kos Khusus Putri. Akses keluar-masuk penghuni bebas 24 jam (pegang kunci akses masing-masing) dan dipantau CCTV 24 jam. Untuk tamu lawan jenis hanya diperbolehkan di ruang tunggu (Lobby Tamu) dan tidak diperkenankan masuk ke area kamar demi privasi serta kenyamanan bersama.',
+        ],
+        [
+            'topic' => 'listrik',
+            'time_q' => '09:42',
+            'time_a' => '09:43',
+            'question' => 'Kak, untuk biaya listrik, air bersih, dan iuran sampah bagaimana aturannya?',
+            'answer' => 'Untuk air bersih sudah GRATIS & mengalir lancar 24 jam, dan iuran sampah juga GRATIS (tidak ada biaya tambahan iuran sampah). Sedangkan listrik menggunakan meteran Token Mandiri di masing-masing kamar, jadi pemakaiannya fleksibel sesuai kebutuhan Kakak sendiri.',
+        ],
+        [
+            'topic' => 'lokasi',
+            'time_q' => '09:44',
+            'time_a' => '09:45',
+            'question' => 'Alamat lengkap Mama Anis Kos di mana Kak? Patokannya apa biar tidak rancu dengan kos lain?',
+            'answer' => 'Lokasi kami di kawasan Alam Sutera, Pinang, Tangerang — patokan paling jelas dan akuratnya persis di Belakang Warteg Barokah Alam Sutera (supaya tidak rancu atau tertukar dengan kos lain di sekitar lokasi). Kakak bisa langsung klik Google Maps resmi kami: ' . $gmapsUrl,
+            'answer_html' => 'Lokasi kami di kawasan Alam Sutera, Pinang, Tangerang — patokan paling jelas dan akuratnya persis di <strong>Belakang Warteg Barokah Alam Sutera</strong> (supaya tidak rancu atau tertukar dengan kos lain di sekitar lokasi).<br><br>📍 Titik Lokasi Resmi: <a href="' . $gmapsUrl . '" target="_blank" rel="noopener" class="inline-flex items-center gap-1 font-extrabold text-[#006c49] underline hover:text-[#005236] bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200 mt-1">Klik Buka Google Maps Mama Anis Kos ↗</a>',
+        ],
+        [
+            'topic' => 'kapasitas',
+            'time_q' => '09:46',
+            'time_a' => '09:46',
+            'question' => 'Satu kamar boleh diisi berapa orang Kak? Dan minimal sewa berapa lama?',
+            'answer' => "Demi menjaga ketenangan, privasi, dan kenyamanan seluruh penghuni putri, kapasitas unit ini maksimal {$maxOccupants} orang per kamar dengan durasi sewa minimal {$minStay}.",
+        ],
+        [
+            'topic' => 'fasilitas',
+            'time_q' => '09:47',
+            'time_a' => '09:48',
+            'question' => 'Untuk cuci baju, cuci piring, dan simpan makanan apakah ada fasilitasnya?',
+            'answer' => 'Lengkap banget Kak! Penghuni bebas pakai Mesin Cuci bersama, Kulkas Bersama, dan Tempat Cuci Piring. Di lingkungan kos juga terintegrasi langsung dengan Sari Prima Laundry (bisa antar-jemput) dan Warung Mama Anis.',
+        ],
+        [
+            'topic' => 'booking',
+            'time_q' => '09:49',
+            'time_a' => '09:50',
+            'question' => 'Gimana cara kalau mau survei lokasi dulu atau langsung booking kamar?',
+            'answer' => 'Bisa banget! Kakak tinggal klik tombol "Tanya & Booking via WA" di halaman ini, pilih opsi "Survei Kos" atau "Booking". Ingat ya Kak, WA resmi hanya 0877-8204-9784 dan rekening resmi hanya Bank Mandiri a.n. MARLIYAH.',
+        ],
+    ];
+
+    $faqSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'FAQPage',
+        'mainEntity' => array_map(fn ($item) => [
+            '@type' => 'Question',
+            'name' => $item['question'],
+            'acceptedAnswer' => [
+                '@type' => 'Answer',
+                'text' => $item['answer'],
+            ],
+        ], $faqChats),
+    ];
+
     // Fetch related rooms dynamically
-    $relatedRooms = \App\Models\Room::query()->where('id', '!=', $id)->latest()->take(3)->get();
+    $relatedRooms = \App\Models\Room::query()->where('id', '!=', $id)->orderBy('id')->take(3)->get();
 @endphp
 
+@section('title', $name . ' | Mama Anis Kos')
+@section('meta_description', $metaDescText)
+@section('og_image', $ogImageUrl)
+
+@push('head')
+    <script type="application/ld+json">{!! json_encode($faqSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
+@endpush
+
+@section('content')
 <div class="pt-4 sm:pt-8 pb-16 sm:pb-20 font-sans bg-[#f8f9fb] min-h-screen">
     <!-- Aligned to max-w-7xl px-4 sm:px-8 for perfect symmetry -->
     <div class="max-w-7xl mx-auto px-4 sm:px-8">
-        <!-- Top Back Navigation Bar -->
-        <div class="mb-4 sm:mb-6 flex items-center justify-between gap-3">
+        <!-- Top Back Navigation Bar + Quick Share Action -->
+        <div class="mb-4 sm:mb-6 flex items-center justify-between gap-2.5">
             <a 
                 href="/catalog" 
                 class="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-gray-700 hover:text-[#006c49] bg-white border border-gray-200 hover:border-emerald-300 px-3.5 py-2 rounded-xl shadow-2xs hover:shadow-xs transition-all cursor-pointer group active:scale-95 shrink-0"
@@ -81,12 +163,28 @@
                 <span>Kembali ke Katalog</span>
             </a>
             
-            <div class="hidden sm:flex items-center gap-2 text-xs text-gray-400 font-medium">
-                <a href="/" class="hover:text-[#006c49] transition-colors">Beranda</a>
-                <span>/</span>
-                <a href="/catalog" class="hover:text-[#006c49] transition-colors">Kamar</a>
-                <span>/</span>
-                <span class="text-gray-600 font-bold truncate max-w-[220px]">{{ $name }}</span>
+            <div class="flex items-center gap-2.5 sm:gap-4">
+                <div class="hidden md:flex items-center gap-2 text-xs text-gray-400 font-medium">
+                    <a href="/" class="hover:text-[#006c49] transition-colors">Beranda</a>
+                    <span>/</span>
+                    <a href="/catalog" class="hover:text-[#006c49] transition-colors">Kamar</a>
+                    <span>/</span>
+                    <span class="text-gray-600 font-bold truncate max-w-[200px]">{{ $name }}</span>
+                </div>
+
+                <!-- Tombol Bagikan Kamar (Native Share / Copy Link) -->
+                <button
+                    type="button"
+                    id="topShareRoomBtn"
+                    onclick="shareRoomPage()"
+                    class="inline-flex items-center gap-1.5 text-xs font-bold text-[#006c49] bg-emerald-50/90 hover:bg-emerald-100 border border-emerald-200 px-3.5 py-2 rounded-xl shadow-2xs transition-all cursor-pointer active:scale-95 shrink-0"
+                    title="Bagikan Link Kamar Ini"
+                >
+                    <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+                    </svg>
+                    <span id="topShareRoomText">Bagikan Kamar</span>
+                </button>
             </div>
         </div>
 
@@ -95,14 +193,28 @@
             <div class="lg:col-span-8 flex flex-col gap-6 sm:gap-8">
                 <!-- Large Image & Gallery (Foto Kamar & Foto Kamar Mandi) with Arrows, Swipe, and Previews -->
                 <div class="bg-white p-3 sm:p-4 rounded-2xl sm:rounded-3xl border border-gray-100 shadow-xs flex flex-col gap-3 sm:gap-4">
-                    <div id="gallery-carousel-container" class="relative aspect-[16/10] w-full overflow-hidden rounded-xl sm:rounded-2xl bg-slate-100 select-none cursor-grab active:cursor-grabbing">
+                    <div id="gallery-carousel-container" class="relative aspect-[16/10] w-full overflow-hidden rounded-xl sm:rounded-2xl bg-slate-100 select-none cursor-zoom-in group">
                         <img
                             id="main-room-gallery"
                             src="{{ $galleryJsItems[0]['url'] ?? $image }}"
                             alt="{{ $name }}"
+                            onclick="openRoomLightbox()"
                             class="w-full h-full object-cover transition-opacity duration-300"
                             onerror="handleImgError(this)"
                         />
+
+                        <!-- Top Right Fullscreen Zoom Button -->
+                        <button
+                            type="button"
+                            onclick="openRoomLightbox()"
+                            class="absolute top-2.5 right-2.5 sm:top-3.5 sm:right-3.5 bg-black/55 hover:bg-black/80 text-white backdrop-blur-md text-[10px] sm:text-xs font-bold px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-full flex items-center gap-1.5 shadow-md transition-all cursor-pointer z-20"
+                            title="Perbesar Foto Layar Penuh"
+                        >
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/>
+                            </svg>
+                            <span>Perbesar</span>
+                        </button>
 
                         <!-- Floating Left Navigation Arrow -->
                         <button 
@@ -171,14 +283,22 @@
                                     {{ $name }}
                                 </h1>
                                 <x-badge-status :status="$status" />
+                                <span class="bg-pink-50 text-pink-700 border border-pink-200 px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-extrabold">
+                                    👩 Kos Khusus Putri
+                                </span>
                             </div>
-                            <p class="text-xs text-gray-400 mt-1 flex items-center gap-1.5 font-medium">
-                                <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                </svg>
-                                <span>{{ $location }}</span>
-                            </p>
+                            <div class="text-xs text-gray-500 mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 font-medium">
+                                <span class="inline-flex items-center gap-1">
+                                    <svg class="w-3.5 h-3.5 text-[#006c49]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    </svg>
+                                    <span>{{ $location }} (<strong>Belakang Warteg Barokah Alam Sutera</strong>)</span>
+                                </span>
+                                <a href="{{ $gmapsUrl }}" target="_blank" rel="noopener" class="inline-flex items-center gap-1 text-[#006c49] hover:text-[#005236] font-extrabold underline">
+                                    <span>📍 Buka Google Maps ↗</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
 
@@ -255,6 +375,130 @@
                                 </div>
                             @endforelse
                         </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Bubble Chat FAQ Section (Tanya Jawab Seputar Kos) -->
+                <div id="room-faq-chat" class="bg-white rounded-2xl sm:rounded-3xl border border-gray-100 shadow-xs overflow-hidden flex flex-col">
+                    <!-- Chat Room Header Bar -->
+                    <div class="bg-gradient-to-r from-[#004d31] via-[#006c49] to-[#005a3c] px-4 py-3.5 sm:px-6 sm:py-4 text-white flex items-center justify-between gap-3">
+                        <div class="flex items-center gap-3">
+                            <div class="relative shrink-0">
+                                <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/20 border-2 border-emerald-300/60 flex items-center justify-center font-black text-sm sm:text-base shadow-inner">
+                                    MA
+                                </div>
+                                <span class="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-emerald-400 border-2 border-[#004d31]"></span>
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-1.5">
+                                    <h3 class="font-extrabold text-sm sm:text-base font-display leading-tight">Tanya Jawab Kos (FAQ)</h3>
+                                    <span class="bg-white/20 text-emerald-100 text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-full">Resmi</span>
+                                </div>
+                                <p class="text-[11px] sm:text-xs text-emerald-100/90 mt-0.5 flex items-center gap-1.5">
+                                    <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-300 animate-pulse"></span>
+                                    <span>Pengelola Mama Anis Kos • Klik topik di bawah</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <span class="hidden sm:inline-flex items-center gap-1 text-[11px] font-bold bg-black/20 px-3 py-1 rounded-full text-emerald-100">
+                            💬 {{ count($faqChats) }} Pertanyaan Populer
+                        </span>
+                    </div>
+
+                    <!-- Quick Topic Filter Pills -->
+                    <div class="px-4 py-2.5 sm:px-6 sm:py-3 bg-emerald-50/60 border-b border-emerald-100/80 flex items-center gap-1.5 sm:gap-2 overflow-x-auto">
+                        <button type="button" onclick="filterFaqTopic('ALL')" data-faq-btn="ALL" class="faq-topic-pill px-3 py-1 rounded-full text-[11px] font-bold bg-[#006c49] text-white shadow-2xs transition-all cursor-pointer shrink-0">
+                            Semua ({{ count($faqChats) }})
+                        </button>
+                        <button type="button" onclick="filterFaqTopic('akses')" data-faq-btn="akses" class="faq-topic-pill px-3 py-1 rounded-full text-[11px] font-bold bg-white text-gray-600 hover:bg-emerald-100/60 border border-emerald-100 transition-all cursor-pointer shrink-0">
+                            👩 Khusus Putri & Tamu
+                        </button>
+                        <button type="button" onclick="filterFaqTopic('listrik')" data-faq-btn="listrik" class="faq-topic-pill px-3 py-1 rounded-full text-[11px] font-bold bg-white text-gray-600 hover:bg-emerald-100/60 border border-emerald-100 transition-all cursor-pointer shrink-0">
+                            ⚡ Listrik, Air & Sampah
+                        </button>
+                        <button type="button" onclick="filterFaqTopic('lokasi')" data-faq-btn="lokasi" class="faq-topic-pill px-3 py-1 rounded-full text-[11px] font-bold bg-white text-gray-600 hover:bg-emerald-100/60 border border-emerald-100 transition-all cursor-pointer shrink-0">
+                            📍 Alamat & Maps
+                        </button>
+                        <button type="button" onclick="filterFaqTopic('kapasitas')" data-faq-btn="kapasitas" class="faq-topic-pill px-3 py-1 rounded-full text-[11px] font-bold bg-white text-gray-600 hover:bg-emerald-100/60 border border-emerald-100 transition-all cursor-pointer shrink-0">
+                            👤 Kapasitas & Durasi
+                        </button>
+                        <button type="button" onclick="filterFaqTopic('fasilitas')" data-faq-btn="fasilitas" class="faq-topic-pill px-3 py-1 rounded-full text-[11px] font-bold bg-white text-gray-600 hover:bg-emerald-100/60 border border-emerald-100 transition-all cursor-pointer shrink-0">
+                            🧺 Laundry & Kulkas
+                        </button>
+                        <button type="button" onclick="filterFaqTopic('booking')" data-faq-btn="booking" class="faq-topic-pill px-3 py-1 rounded-full text-[11px] font-bold bg-white text-gray-600 hover:bg-emerald-100/60 border border-emerald-100 transition-all cursor-pointer shrink-0">
+                            🛡️ Survei & Booking
+                        </button>
+                    </div>
+
+                    <!-- Chat Conversation Stream -->
+                    <div class="p-4 sm:p-6 bg-[#f3f6f4] flex flex-col gap-5" style="background-image: radial-gradient(rgba(0, 108, 73, 0.06) 1px, transparent 1px); background-size: 18px 18px;">
+                        @foreach($faqChats as $fIdx => $chat)
+                            <div class="faq-chat-pair flex flex-col gap-2.5 transition-all duration-200" data-faq-topic="{{ $chat['topic'] }}">
+                                <!-- Right Bubble: Calon Penghuni Question -->
+                                <div class="flex items-end justify-end gap-2 pl-6 sm:pl-16">
+                                    <button 
+                                        type="button"
+                                        onclick="toggleFaqAnswer({{ $fIdx }})"
+                                        class="text-left group bg-[#d9fdd3] hover:bg-[#ccf7c4] text-gray-900 px-4 py-2.5 sm:px-4.5 sm:py-3 rounded-2xl rounded-br-xs shadow-2xs border border-emerald-200/80 transition-all cursor-pointer max-w-xl"
+                                    >
+                                        <div class="flex items-center justify-between gap-3 mb-0.5">
+                                            <span class="text-[10px] font-extrabold text-emerald-800 uppercase tracking-wide">Calon Penghuni</span>
+                                            <span class="text-[9px] text-gray-500 font-mono">{{ $chat['time_q'] }} ✓✓</span>
+                                        </div>
+                                        <p class="text-xs sm:text-sm font-bold text-gray-900 leading-snug">
+                                            {{ $chat['question'] }}
+                                        </p>
+                                    </button>
+                                    <div class="w-7 h-7 rounded-full bg-emerald-700 text-white text-[10px] font-extrabold flex items-center justify-center shrink-0 shadow-2xs">
+                                        🙋
+                                    </div>
+                                </div>
+
+                                <!-- Left Bubble: Pengelola Mama Anis Answer -->
+                                <div id="faq-answer-{{ $fIdx }}" class="flex items-end justify-start gap-2 pr-4 sm:pr-14">
+                                    <div class="w-7 h-7 rounded-full bg-[#006c49] text-white text-[10px] font-black flex items-center justify-center shrink-0 shadow-2xs">
+                                        MA
+                                    </div>
+                                    <div class="bg-white text-gray-700 px-4 py-3 sm:px-5 sm:py-3.5 rounded-2xl rounded-bl-xs shadow-2xs border border-gray-200/80 max-w-xl">
+                                        <div class="flex items-center justify-between gap-3 mb-1">
+                                            <span class="text-[10px] font-extrabold text-[#006c49] flex items-center gap-1">
+                                                <span>Mama Anis Kos</span>
+                                                <svg class="w-3 h-3 text-[#006c49]" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                                </svg>
+                                            </span>
+                                            <span class="text-[9px] text-gray-400 font-mono">{{ $chat['time_a'] }}</span>
+                                        </div>
+                                        <div class="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                                            @if(!empty($chat['answer_html']))
+                                                {!! $chat['answer_html'] !!}
+                                            @else
+                                                {{ $chat['answer'] }}
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    <!-- Chat Bottom Input-Like Prompt Bar -->
+                    <div class="px-4 py-3 sm:px-6 sm:py-3.5 bg-white border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-2.5">
+                        <div class="flex items-center gap-2 text-xs text-gray-500 font-medium">
+                            <span class="w-2 h-2 rounded-full bg-[#006c49]"></span>
+                            <span>Punya pertanyaan lain atau ingin jadwalkan survei langsung?</span>
+                        </div>
+                        <button
+                            type="button"
+                            onclick="openBookingSafetyPrompt('{{ $whatsappUrl }}')"
+                            class="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 bg-[#006c49] hover:bg-[#005236] text-white text-xs font-bold px-4 py-2 rounded-full shadow-xs transition-all cursor-pointer active:scale-95 shrink-0"
+                        >
+                            <span>Tanya Langsung di WA</span>
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                            </svg>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -344,6 +588,35 @@
                         @endif
                         <p class="text-[9px] sm:text-[10px] text-gray-400 text-center font-medium">Pengelola: WA 0877-8204-9784</p>
                     </div>
+
+                    <!-- Share Room Box (Bagikan ke Orang Tua / Teman) -->
+                    <div class="pt-3 border-t border-gray-100 flex flex-col gap-2">
+                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider text-center">Bagikan Kamar Ini ke Teman / Keluarga</span>
+                        <div class="grid grid-cols-2 gap-2">
+                            <a
+                                href="{{ $shareFriendWaUrl }}"
+                                target="_blank"
+                                rel="noopener"
+                                class="py-2 px-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-[#006c49] border border-emerald-200/80 text-[11px] font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                            >
+                                <svg class="w-3.5 h-3.5 fill-current shrink-0" viewBox="0 0 24 24">
+                                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.965C16.528 1.977 14.07 1.951 12.01 1.95c-5.438 0-9.864 4.372-9.868 9.8-.001 1.714.463 3.39 1.341 4.877L2.45 21.11l4.197-1.956z"/>
+                                </svg>
+                                <span>Kirim ke WA</span>
+                            </a>
+                            <button
+                                type="button"
+                                id="cardCopyLinkBtn"
+                                onclick="copyRoomLinkOnly()"
+                                class="py-2 px-3 rounded-xl bg-gray-50 hover:bg-gray-100 text-gray-700 border border-gray-200 text-[11px] font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                            >
+                                <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+                                </svg>
+                                <span id="cardCopyLinkText">Salin Link</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -365,47 +638,97 @@
     </div>
 </div>
 
-<!-- Pre-WhatsApp Booking Safety Confirmation Modal -->
+<!-- Pre-WhatsApp Booking Safety & Quick Survey/Booking Form Modal -->
 <div 
     id="bookingSafetyModal" 
-    class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-[100] flex items-center justify-center p-4 transition-opacity duration-300 opacity-0 pointer-events-none"
+    onclick="if(event.target === this) closeBookingSafetyModal()"
+    class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-[100] flex items-center justify-center p-3.5 sm:p-4 transition-opacity duration-300 opacity-0 pointer-events-none overflow-y-auto"
     role="dialog"
     aria-modal="true"
 >
-    <div class="bg-white rounded-3xl border border-amber-100 shadow-2xl max-w-md w-full p-6 sm:p-7 flex flex-col gap-5 transform transition-all duration-300 scale-95">
-        <div class="flex items-center gap-3 border-b border-gray-100 pb-3">
-            <div class="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-sm">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-                </svg>
+    <div class="bg-white rounded-3xl border border-amber-100 shadow-2xl max-w-lg w-full p-5 sm:p-7 flex flex-col gap-4 transform transition-all duration-300 scale-95 my-auto">
+        <div class="flex items-center justify-between gap-3 border-b border-gray-100 pb-3">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-[#006c49] text-white flex items-center justify-center shrink-0 shadow-sm">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="font-extrabold text-gray-900 text-sm sm:text-base font-display">Jadwalkan Survei & Booking WA</h3>
+                    <p class="text-[11px] text-gray-400">Pilih keperluan Anda & verifikasi rekening resmi</p>
+                </div>
             </div>
+            <button type="button" onclick="closeBookingSafetyModal()" class="text-gray-400 hover:text-gray-700 p-1 rounded-lg cursor-pointer">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Quick Interactive Booking / Survey Form -->
+        <div class="space-y-3 text-xs font-sans bg-gray-50/80 p-3.5 sm:p-4 rounded-2xl border border-gray-100">
+            <!-- 1. Keperluan -->
             <div>
-                <h3 class="font-extrabold text-gray-900 text-base font-display">Konfirmasi Keamanan Booking</h3>
-                <p class="text-[11px] text-gray-400">Verifikasi sebelum terhubung ke WhatsApp</p>
+                <label class="text-[11px] font-extrabold text-gray-700 block mb-1.5">1. Pilih Keperluan Anda:</label>
+                <div class="grid grid-cols-3 gap-1.5">
+                    <button type="button" onclick="setBookingOption('intent', 'Tanya Ketersediaan', this)" class="booking-intent-btn py-2 px-2 rounded-xl text-[11px] font-bold border border-[#006c49] bg-emerald-50 text-[#006c49] transition-all cursor-pointer text-center">
+                        💬 Tanya Info
+                    </button>
+                    <button type="button" onclick="setBookingOption('intent', 'Jadwalkan Survei Lokasi', this)" class="booking-intent-btn py-2 px-2 rounded-xl text-[11px] font-bold border border-gray-200 bg-white text-gray-600 hover:border-emerald-200 transition-all cursor-pointer text-center">
+                        📍 Survei Kos
+                    </button>
+                    <button type="button" onclick="setBookingOption('intent', 'Langsung Booking Kamar', this)" class="booking-intent-btn py-2 px-2 rounded-xl text-[11px] font-bold border border-gray-200 bg-white text-gray-600 hover:border-emerald-200 transition-all cursor-pointer text-center">
+                        🔑 Booking
+                    </button>
+                </div>
+            </div>
+
+            <!-- 2. Rencana Masuk / Survei & Durasi Sewa -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <div>
+                    <label for="bookingPlanTime" class="text-[11px] font-extrabold text-gray-700 block mb-1">2. Rencana Masuk / Survei:</label>
+                    <select id="bookingPlanTime" onchange="updateCustomBookingWaLink()" class="w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-xs font-bold text-gray-800 outline-none focus:border-[#006c49]">
+                        <option value="Segera / Minggu Ini">Segera / Minggu Ini</option>
+                        <option value="Bulan Ini">Dalam Bulan Ini</option>
+                        <option value="Awal Bulan Depan">Awal Bulan Depan</option>
+                        <option value="Fleksibel (Tanya Dulu)">Fleksibel (Tanya Dulu)</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="bookingDuration" class="text-[11px] font-extrabold text-gray-700 block mb-1">3. Rencana Durasi Sewa:</label>
+                    <select id="bookingDuration" onchange="updateCustomBookingWaLink()" class="w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-xs font-bold text-gray-800 outline-none focus:border-[#006c49]">
+                        <option value="{{ $minStay }}">{{ $minStay }} (Minimal)</option>
+                        <option value="3 Bulan">3 Bulan</option>
+                        <option value="6 Bulan">6 Bulan (1 Semester)</option>
+                        <option value="1 Tahun">1 Tahun</option>
+                    </select>
+                </div>
             </div>
         </div>
 
-        <div class="space-y-2.5 text-xs text-gray-600 font-sans">
-            <div class="p-3 bg-emerald-50/70 rounded-xl border border-emerald-100 flex items-start gap-2.5">
-                <svg class="w-4 h-4 text-[#006c49] shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+        <!-- Mandatory Anti-Fraud Verification Info -->
+        <div class="space-y-2 text-xs text-gray-600 font-sans">
+            <div class="p-2.5 bg-emerald-50/70 rounded-xl border border-emerald-100 flex items-center gap-2.5">
+                <svg class="w-4 h-4 text-[#006c49] shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
                 </svg>
                 <span>Nomor WA Pengelola Resmi: <strong class="text-gray-900 font-mono">0877-8204-9784</strong></span>
             </div>
 
-            <div class="p-3 bg-amber-50/70 rounded-xl border border-amber-200 flex items-start gap-2.5">
-                <svg class="w-4 h-4 text-amber-700 shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <div class="p-2.5 bg-amber-50/70 rounded-xl border border-amber-200 flex items-center gap-2.5">
+                <svg class="w-4 h-4 text-amber-700 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
                 </svg>
                 <span>Rekening Resmi Pembayaran Sah: <strong class="text-gray-900 font-mono">Bank Mandiri a.n. MARLIYAH</strong></span>
             </div>
 
-            <p class="text-[11px] text-red-600 leading-tight">
+            <p class="text-[10px] sm:text-[11px] text-red-600 leading-tight">
                 ⚠️ Transaksi di luar nomor WA dan rekening Mandiri a.n. MARLIYAH bukan tanggung jawab Mama Anis Kos.
             </p>
         </div>
 
-        <div class="grid grid-cols-2 gap-3 pt-2">
+        <div class="grid grid-cols-2 gap-3 pt-1">
             <button 
                 type="button" 
                 onclick="closeBookingSafetyModal()" 
@@ -418,7 +741,7 @@
                 href="{{ $whatsappUrl }}" 
                 target="_blank" 
                 rel="noopener"
-                onclick="closeBookingSafetyModal()"
+                onclick="trackWaClickAndClose()"
                 class="py-3 px-4 rounded-xl bg-[#006c49] hover:bg-[#005236] text-white text-xs font-bold transition-all shadow-md shadow-[#006c49]/20 flex items-center justify-center gap-1.5 cursor-pointer text-center"
             >
                 <span>Lanjut ke WA</span>
@@ -426,6 +749,67 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                 </svg>
             </a>
+        </div>
+    </div>
+</div>
+
+<!-- Fullscreen Room Gallery Lightbox Modal (Clean White Theme) -->
+<div 
+    id="roomGalleryLightbox" 
+    onclick="if(event.target === this) closeRoomLightbox()"
+    class="fixed inset-0 bg-white/95 backdrop-blur-md z-[130] flex flex-col items-center justify-center p-3 sm:p-6 transition-opacity duration-200 opacity-0 pointer-events-none select-none"
+    role="dialog"
+    aria-modal="true"
+>
+    <!-- Close Button -->
+    <button 
+        type="button" 
+        onclick="closeRoomLightbox()" 
+        class="absolute top-4 right-4 sm:top-6 sm:right-6 z-30 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white hover:bg-emerald-50 text-gray-800 hover:text-[#006c49] border border-gray-200 shadow-md flex items-center justify-center transition-colors cursor-pointer"
+        aria-label="Tutup Layar Penuh"
+    >
+        <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+    </button>
+
+    <!-- Prev Arrow -->
+    <button 
+        type="button" 
+        onclick="prevGalleryImage()" 
+        class="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-30 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white hover:bg-emerald-50 text-gray-800 hover:text-[#006c49] border border-gray-200 shadow-md flex items-center justify-center transition-colors cursor-pointer"
+        aria-label="Foto Sebelumnya"
+    >
+        <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/>
+        </svg>
+    </button>
+
+    <!-- Next Arrow -->
+    <button 
+        type="button" 
+        onclick="nextGalleryImage()" 
+        class="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-30 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white hover:bg-emerald-50 text-gray-800 hover:text-[#006c49] border border-gray-200 shadow-md flex items-center justify-center transition-colors cursor-pointer"
+        aria-label="Foto Berikutnya"
+    >
+        <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/>
+        </svg>
+    </button>
+
+    <!-- Main Fullscreen Image -->
+    <div class="max-w-5xl max-h-[85vh] w-full flex flex-col items-center justify-center gap-3.5 bg-white p-3 sm:p-5 rounded-2xl sm:rounded-3xl border border-gray-200 shadow-2xl">
+        <div class="w-full flex items-center justify-center bg-[#f8f9fb] rounded-xl sm:rounded-2xl overflow-hidden p-1 sm:p-2">
+            <img 
+                id="lightbox-room-img" 
+                src="{{ $galleryJsItems[0]['url'] ?? $image }}" 
+                alt="{{ $name }}" 
+                class="max-h-[72vh] w-auto max-w-full rounded-lg sm:rounded-xl object-contain"
+                onerror="handleImgError(this)"
+            >
+        </div>
+        <div id="lightbox-room-caption" class="text-[#006c49] text-xs sm:text-sm font-extrabold bg-emerald-50 border border-emerald-200 px-4 py-1.5 rounded-full shadow-2xs">
+            {{ $galleryJsItems[0]['title'] ?? '1 / 1 • Foto Kamar' }}
         </div>
     </div>
 </div>
@@ -456,6 +840,16 @@
 
         if (badge) {
             badge.textContent = galleryItems[currentGalleryIdx].title;
+        }
+
+        const lbImg = document.getElementById('lightbox-room-img');
+        const lbCaption = document.getElementById('lightbox-room-caption');
+        if (lbImg && thumbImg) {
+            lbImg.removeAttribute('data-error-handled');
+            lbImg.src = thumbImg.src;
+        }
+        if (lbCaption) {
+            lbCaption.textContent = galleryItems[currentGalleryIdx].title;
         }
 
         // Update Dots
@@ -537,14 +931,110 @@
         });
     }
 
-    let activeBookingUrl = '';
+    // Share & Copy Link Functions
+    function copyRoomLinkOnly() {
+        const shareUrl = window.location.href;
+        navigator.clipboard.writeText(shareUrl).then(() => {
+            const topText = document.getElementById('topShareRoomText');
+            const cardText = document.getElementById('cardCopyLinkText');
+            if (topText) topText.textContent = '✓ Link Tersalin!';
+            if (cardText) cardText.textContent = '✓ Tersalin!';
+            setTimeout(() => {
+                if (topText) topText.textContent = 'Bagikan Kamar';
+                if (cardText) cardText.textContent = 'Salin Link';
+            }, 2200);
+        }).catch(() => {
+            prompt('Salin link kamar ini:', shareUrl);
+        });
+    }
+
+    function shareRoomPage() {
+        const shareData = {
+            title: @json($name . ' | Mama Anis Kos'),
+            text: @json("Cek kamar kos {$name} ({$location}) — {$formatRupiah($price)}/bulan di Mama Anis Kos:"),
+            url: window.location.href
+        };
+
+        if (navigator.share) {
+            navigator.share(shareData).catch(() => {
+                copyRoomLinkOnly();
+            });
+        } else {
+            copyRoomLinkOnly();
+        }
+    }
+
+    // Bubble Chat FAQ Functions
+    function filterFaqTopic(topic) {
+        document.querySelectorAll('.faq-topic-pill').forEach(btn => {
+            if (btn.getAttribute('data-faq-btn') === topic) {
+                btn.className = 'faq-topic-pill px-3 py-1 rounded-full text-[11px] font-bold bg-[#006c49] text-white shadow-2xs transition-all cursor-pointer shrink-0';
+            } else {
+                btn.className = 'faq-topic-pill px-3 py-1 rounded-full text-[11px] font-bold bg-white text-gray-600 hover:bg-emerald-100/60 border border-emerald-100 transition-all cursor-pointer shrink-0';
+            }
+        });
+
+        document.querySelectorAll('.faq-chat-pair').forEach(pair => {
+            if (topic === 'ALL' || pair.getAttribute('data-faq-topic') === topic) {
+                pair.classList.remove('hidden');
+            } else {
+                pair.classList.add('hidden');
+            }
+        });
+    }
+
+    function toggleFaqAnswer(idx) {
+        const ans = document.getElementById('faq-answer-' + idx);
+        if (ans) {
+            ans.classList.toggle('hidden');
+        }
+    }
+
+    // Interactive Booking & Survey WA Builder + Lead Tracking
+    const roomMeta = {
+        id: @json($id),
+        name: @json($name),
+        location: @json($location),
+        priceFormatted: @json($formatRupiah($price)),
+        maxOccupants: @json($maxOccupants),
+        trackUrl: @json(route('rooms.wa_click', ['room' => $id ?: 1])),
+        csrf: @json(csrf_token())
+    };
+
+    let selectedBookingIntent = 'Tanya Ketersediaan';
+
+    function setBookingOption(type, value, btnEl) {
+        if (type === 'intent') {
+            selectedBookingIntent = value;
+            document.querySelectorAll('.booking-intent-btn').forEach(btn => {
+                btn.className = 'booking-intent-btn py-2 px-2 rounded-xl text-[11px] font-bold border border-gray-200 bg-white text-gray-600 hover:border-emerald-200 transition-all cursor-pointer text-center';
+            });
+            if (btnEl) {
+                btnEl.className = 'booking-intent-btn py-2 px-2 rounded-xl text-[11px] font-bold border border-[#006c49] bg-emerald-50 text-[#006c49] transition-all cursor-pointer text-center';
+            }
+        }
+        updateCustomBookingWaLink();
+    }
+
+    function updateCustomBookingWaLink() {
+        const planTime = document.getElementById('bookingPlanTime')?.value || 'Segera / Minggu Ini';
+        const duration = document.getElementById('bookingDuration')?.value || @json($minStay);
+
+        const msg = `Halo Mama Anis Kos, saya tertarik dengan unit "${roomMeta.name}" di ${roomMeta.location} (${roomMeta.priceFormatted}/bulan, maks. ${roomMeta.maxOccupants} orang).\n\n` +
+            `• Keperluan: ${selectedBookingIntent}\n` +
+            `• Rencana Masuk/Survei: ${planTime}\n` +
+            `• Durasi Sewa: ${duration}\n\n` +
+            `Apakah unit ini masih tersedia? Terima kasih!`;
+
+        const finalWaUrl = 'https://wa.me/6287782049784?text=' + encodeURIComponent(msg);
+        const link = document.getElementById('targetBookingWaLink');
+        if (link) {
+            link.href = finalWaUrl;
+        }
+    }
 
     function openBookingSafetyPrompt(waUrl) {
-        activeBookingUrl = waUrl;
-        const link = document.getElementById('targetBookingWaLink');
-        if (link && waUrl) {
-            link.href = waUrl;
-        }
+        updateCustomBookingWaLink();
         const modal = document.getElementById('bookingSafetyModal');
         if (modal) {
             modal.classList.remove('opacity-0', 'pointer-events-none');
@@ -563,5 +1053,51 @@
             if (card) card.classList.add('scale-95');
         }
     }
+
+    function trackWaClickAndClose() {
+        try {
+            fetch(roomMeta.trackUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': roomMeta.csrf,
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ intent: selectedBookingIntent }),
+                keepalive: true
+            });
+        } catch (e) {}
+        closeBookingSafetyModal();
+    }
+
+    function openRoomLightbox() {
+        const lb = document.getElementById('roomGalleryLightbox');
+        const mainImg = document.getElementById('main-room-gallery');
+        const lbImg = document.getElementById('lightbox-room-img');
+        if (lb && mainImg && lbImg) {
+            lbImg.src = mainImg.src;
+            lb.classList.remove('opacity-0', 'pointer-events-none');
+            lb.classList.add('opacity-100', 'pointer-events-auto');
+        }
+    }
+
+    function closeRoomLightbox() {
+        const lb = document.getElementById('roomGalleryLightbox');
+        if (lb) {
+            lb.classList.remove('opacity-100', 'pointer-events-auto');
+            lb.classList.add('opacity-0', 'pointer-events-none');
+        }
+    }
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeRoomLightbox();
+            closeBookingSafetyModal();
+        } else if (e.key === 'ArrowLeft') {
+            prevGalleryImage();
+        } else if (e.key === 'ArrowRight') {
+            nextGalleryImage();
+        }
+    });
 </script>
 @endpush

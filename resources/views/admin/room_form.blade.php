@@ -24,40 +24,40 @@
         ];
     }
 @endphp
-<main class="w-full max-w-full p-3.5 sm:p-8 lg:p-10 flex flex-col gap-4 sm:gap-6 rise overflow-x-hidden">
+<main class="w-full max-w-7xl mx-auto p-3.5 sm:p-8 lg:p-10 flex flex-col gap-5 sm:gap-6 rise overflow-x-hidden">
     <!-- Top Bar Navigation -->
-    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 border-b border-slate-100 pb-4 sm:pb-5">
-        <div>
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-200/80 pb-5">
+        <div class="min-w-0">
             <a 
                 href="{{ route('admin.rooms.index') }}" 
-                class="inline-flex items-center gap-2 text-xs font-bold text-slate-700 hover:text-brand bg-white border border-slate-200 hover:border-emerald-300 px-3 py-1.5 rounded-xl shadow-2xs hover:shadow-xs transition-all mb-2.5 active:scale-95 cursor-pointer"
+                class="inline-flex items-center gap-2 text-xs font-bold text-slate-700 hover:text-brand bg-white border border-slate-200 hover:border-emerald-300 px-3.5 py-1.5 rounded-xl shadow-2xs hover:shadow-xs transition-all mb-2.5 active:scale-95 cursor-pointer"
             >
                 <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                 </svg>
-                <span>← Kembali ke Kelola Kamar</span>
+                <span>Kembali ke Kelola Kamar</span>
             </a>
-            <h1 class="text-xl sm:text-3xl font-black text-slate-900 font-display">
+            <h1 class="text-xl sm:text-3xl font-black text-slate-900 font-display tracking-tight">
                 {{ $editing ? 'Edit Unit: ' . $room->name : 'Tambah Unit Kamar Baru' }}
             </h1>
-            <p class="text-[11px] sm:text-xs text-slate-400 mt-0.5 sm:mt-1">
-                Kelola data kamar, foto kamar & kamar mandi, fasilitas, serta syarat kapasitas & sewa.
+            <p class="text-xs text-slate-500 mt-1">
+                Kelola informasi unit, galeri foto kamar & kamar mandi, fasilitas, serta harga dan spesifikasi fisik secara proporsional.
             </p>
         </div>
 
-        <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+        <div class="flex items-center gap-2.5 w-full sm:w-auto justify-end shrink-0">
             <a 
                 href="{{ route('admin.rooms.index') }}" 
-                class="rounded-xl px-5 py-2.5 font-bold text-xs text-slate-600 hover:bg-slate-100 transition-colors"
+                class="h-10 inline-flex items-center justify-center rounded-xl px-4 font-bold text-xs text-slate-600 bg-white border border-slate-200 hover:bg-slate-50 transition-colors whitespace-nowrap"
             >
                 Batal
             </a>
             <button 
                 type="submit"
                 form="room-form"
-                class="rounded-xl bg-brand hover:bg-brandHover px-6 py-2.5 font-bold text-xs text-white shadow-md shadow-brand/20 transition-all cursor-pointer flex items-center gap-2 active:scale-95"
+                class="h-10 rounded-xl bg-brand hover:bg-brandHover px-5 font-bold text-xs text-white shadow-md shadow-brand/20 transition-all cursor-pointer inline-flex items-center justify-center gap-2 active:scale-95 whitespace-nowrap"
             >
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
                 </svg>
                 <span>{{ $editing ? 'Simpan Perubahan' : 'Terbitkan Kamar' }}</span>
@@ -76,7 +76,7 @@
         </div>
     @endif
 
-    <!-- Form Layout: Fluid & Responsive Split Columns on Desktop -->
+    <!-- Form Layout: Proportional Split Columns on Desktop -->
     <form 
         id="room-form"
         method="POST" 
@@ -86,101 +86,116 @@
     >
         @csrf
 
-        <!-- Main Column (Left - 7 cols on Desktop) -->
-        <div class="lg:col-span-7 xl:col-span-8 flex flex-col gap-6">
+        <!-- Main Column (Left - 7 cols on lg, 8 cols on xl) -->
+        <div class="lg:col-span-7 xl:col-span-8 flex flex-col gap-6 min-w-0">
             <!-- Basic Information Card -->
-            <article class="bg-white rounded-2xl border border-slate-100 shadow-soft p-6 sm:p-8 flex flex-col gap-5">
-                <h2 class="text-base font-black text-slate-900 font-display border-b border-slate-100 pb-3 flex items-center gap-2">
-                    <svg class="w-4.5 h-4.5 text-brand" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                    </svg>
-                    <span>Informasi Utama Unit</span>
-                </h2>
+            <article class="bg-white rounded-2xl border border-slate-100 shadow-soft p-5 sm:p-7 flex flex-col gap-5">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3.5">
+                    <h2 class="text-base font-black text-slate-900 font-display flex items-center gap-2.5">
+                        <span class="w-8 h-8 rounded-xl bg-emerald-50 text-brand border border-emerald-100 flex items-center justify-center shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                            </svg>
+                        </span>
+                        <span>Informasi Utama Unit</span>
+                    </h2>
+                    <span class="text-[11px] font-bold text-slate-400 hidden sm:inline">Identitas & Fasilitas Kamar</span>
+                </div>
 
-                <div class="grid gap-5 sm:grid-cols-2">
+                <div class="grid gap-4 sm:gap-5 sm:grid-cols-2">
                     <!-- Room Name -->
                     <div class="sm:col-span-2">
-                        <label class="text-xs font-bold text-slate-700 block">Nama Unit Kamar <span class="text-red-500">*</span></label>
+                        <label class="text-xs font-bold text-slate-700 block mb-1.5">Nama Unit Kamar <span class="text-red-500">*</span></label>
                         <input 
                             name="name" 
                             value="{{ old('name', $room->name ?: 'Kamar Kost Mama Anis') }}" 
-                            placeholder="Contoh: Kamar Kost Mama Anis (Exclusive Room)" 
+                            placeholder="Contoh: Kamar Kost Mama Anis (Pintu 1)" 
                             required 
-                            class="mt-1.5 w-full rounded-xl border border-slate-200 px-4 py-3 text-xs outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 font-bold text-slate-900"
+                            class="w-full h-11 rounded-xl border border-slate-200 bg-slate-50/40 focus:bg-white px-4 text-xs sm:text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 font-bold text-slate-900 transition-all"
                         />
                     </div>
 
                     <!-- Type -->
                     <div>
-                        <label class="text-xs font-bold text-slate-700 block">Tipe Kamar <span class="text-red-500">*</span></label>
+                        <label class="text-xs font-bold text-slate-700 block mb-1.5">Tipe Kamar <span class="text-red-500">*</span></label>
                         <input 
                             name="type" 
+                            list="room-type-suggestions"
                             value="{{ old('type', $room->type ?: 'Kamar Standard Eksklusif') }}" 
                             placeholder="Contoh: Kamar Standard Eksklusif" 
                             required 
-                            class="mt-1.5 w-full rounded-xl border border-slate-200 px-4 py-3 text-xs outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 font-medium"
+                            class="w-full h-11 rounded-xl border border-slate-200 bg-slate-50/40 focus:bg-white px-4 text-xs sm:text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 font-semibold text-slate-900 transition-all"
                         />
+                        <datalist id="room-type-suggestions">
+                            <option value="Kamar Standard Eksklusif"></option>
+                            <option value="Kamar Deluxe Putri"></option>
+                            <option value="Kamar VIP Eksklusif"></option>
+                        </datalist>
                     </div>
 
                     <!-- Location -->
                     <div>
-                        <label class="text-xs font-bold text-slate-700 block">Lokasi Properti <span class="text-red-500">*</span></label>
+                        <label class="text-xs font-bold text-slate-700 block mb-1.5">Lokasi Properti <span class="text-red-500">*</span></label>
                         <input 
                             name="location" 
                             value="{{ old('location', $room->location ?: 'Alam Sutera, Tangerang') }}" 
+                            placeholder="Contoh: Alam Sutera, Tangerang"
                             required 
-                            class="mt-1.5 w-full rounded-xl border border-slate-200 px-4 py-3 text-xs outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 font-medium"
+                            class="w-full h-11 rounded-xl border border-slate-200 bg-slate-50/40 focus:bg-white px-4 text-xs sm:text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 font-semibold text-slate-900 transition-all"
                         />
                     </div>
 
                     <!-- Description -->
                     <div class="sm:col-span-2">
-                        <label class="text-xs font-bold text-slate-700 block">Deskripsi Lengkap Unit <span class="text-red-500">*</span></label>
+                        <label class="text-xs font-bold text-slate-700 block mb-1.5">Deskripsi Lengkap Unit <span class="text-red-500">*</span></label>
                         <textarea 
                             name="description" 
-                            rows="5" 
+                            rows="4" 
                             required 
                             placeholder="Tuliskan gambaran kenyamanan, kebersihan kamar mandi dalam, dan keunggulan kamar ini..."
-                            class="mt-1.5 w-full rounded-xl border border-slate-200 px-4 py-3 text-xs outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 font-medium leading-relaxed"
+                            class="w-full rounded-xl border border-slate-200 bg-slate-50/40 focus:bg-white p-4 text-xs sm:text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 font-medium text-slate-800 leading-relaxed transition-all"
                         >{{ old('description', $room->description ?: 'Unit kamar kost Mama Anis dirancang khusus untuk kenyamanan dan privasi 1 orang penghuni. Dilengkapi fasilitas kamar mandi dalam yang bersih dan higienis, AC, kasur berkualitas, lemari pakaian, meja kerja/belajar, dan koneksi internet WiFi stabil. Minimal durasi sewa 1 bulan.') }}</textarea>
                     </div>
 
                     <!-- Amenities -->
                     <div class="sm:col-span-2">
-                        <label class="text-xs font-bold text-slate-700 block">Fasilitas Unit (pisahkan dengan koma)</label>
+                        <label class="text-xs font-bold text-slate-700 block mb-1.5">Fasilitas Unit <span class="text-slate-400 font-medium">(pisahkan dengan koma)</span></label>
                         <input 
                             name="amenities_text" 
                             value="{{ old('amenities_text', is_array($room->amenities) ? implode(', ', $room->amenities) : 'Kamar Mandi Dalam, AC Sejuk, WiFi Cepat, Kasur Springbed & Bantal, Lemari Pakaian, Meja & Kursi, Listrik Token, Air Bersih') }}" 
                             placeholder="Kamar Mandi Dalam, AC Sejuk, WiFi Cepat, Kasur Springbed & Bantal, Lemari Pakaian, Meja & Kursi, Listrik Token, Air Bersih" 
-                            class="mt-1.5 w-full rounded-xl border border-slate-200 px-4 py-3 text-xs outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 font-medium"
+                            class="w-full h-11 rounded-xl border border-slate-200 bg-slate-50/40 focus:bg-white px-4 text-xs sm:text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 font-semibold text-slate-800 transition-all"
                         />
-                        <p class="text-[10px] text-slate-400 mt-1">Fasilitas akan ditampilkan sebagai badge di halaman detail kamar publik.</p>
+                        <p class="text-[11px] text-slate-400 mt-1.5">Fasilitas akan otomatis ditampilkan sebagai lencana (badge) rapi di halaman detail kamar publik.</p>
                     </div>
                 </div>
             </article>
 
             <!-- Media & Photos Card: Dynamic Unlimited Gallery Photos -->
-            <article class="bg-white rounded-2xl border border-slate-100 shadow-soft p-6 sm:p-8 flex flex-col gap-6">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
-                    <div>
-                        <div class="flex items-center gap-2.5">
-                            <h2 class="text-base font-black text-slate-900 font-display flex items-center gap-2">
-                                <svg class="w-4.5 h-4.5 text-brand" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                                </svg>
+            <article class="bg-white rounded-2xl border border-slate-100 shadow-soft p-5 sm:p-7 flex flex-col gap-5">
+                <!-- Header Toolbar: Side-by-side buttons that never stack awkwardly -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+                    <div class="min-w-0 flex-1">
+                        <div class="flex items-center gap-2.5 flex-wrap">
+                            <h2 class="text-base font-black text-slate-900 font-display flex items-center gap-2.5">
+                                <span class="w-8 h-8 rounded-xl bg-emerald-50 text-brand border border-emerald-100 flex items-center justify-center shrink-0">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                    </svg>
+                                </span>
                                 <span>Galeri Foto Kamar</span>
                             </h2>
-                            <span id="gallery-count-badge" class="bg-emerald-50 text-brand border border-emerald-200 px-2.5 py-0.5 rounded-full text-[11px] font-extrabold">
+                            <span id="gallery-count-badge" class="bg-emerald-50 text-brand border border-emerald-200 px-2.5 py-0.5 rounded-full text-[11px] font-extrabold whitespace-nowrap">
                                 {{ count($initialGallery) }} Foto
                             </span>
                         </div>
-                        <p class="text-[11px] text-slate-400 mt-1">
-                            Tambahkan foto kamar sebanyak yang Anda inginkan. Foto urutan pertama (#1) akan menjadi foto sampul utama.
+                        <p class="text-xs text-slate-400 mt-1.5 leading-relaxed">
+                            Foto urutan pertama (<strong class="text-slate-600">#1</strong>) menjadi sampul utama katalog. Anda bebas menambahkan banyak foto sekaligus.
                         </p>
                     </div>
 
-                    <div class="flex flex-wrap items-center gap-2">
-                        <!-- Multi-file quick upload -->
+                    <!-- Action Buttons: Strictly side-by-side in one proportional row -->
+                    <div class="grid grid-cols-2 sm:flex items-center gap-2.5 shrink-0">
                         <input 
                             type="file" 
                             id="multi_photo_picker" 
@@ -192,23 +207,23 @@
                         <button 
                             type="button" 
                             onclick="document.getElementById('multi_photo_picker').click()"
-                            class="inline-flex items-center gap-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-brand border border-emerald-200 px-3.5 py-2 text-xs font-bold transition-all cursor-pointer active:scale-95"
+                            class="h-10 inline-flex items-center justify-center gap-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-brand border border-emerald-200 px-3.5 text-xs font-bold transition-all cursor-pointer active:scale-95 whitespace-nowrap"
                         >
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
                             </svg>
-                            <span>Upload Banyak Sekaligus</span>
+                            <span>Upload Sekaligus</span>
                         </button>
 
                         <button 
                             type="button" 
                             onclick="addGallerySlot()"
-                            class="inline-flex items-center gap-1.5 rounded-xl bg-brand hover:bg-brandHover text-white px-3.5 py-2 text-xs font-bold shadow-xs transition-all cursor-pointer active:scale-95"
+                            class="h-10 inline-flex items-center justify-center gap-1.5 rounded-xl bg-brand hover:bg-brandHover text-white px-4 text-xs font-bold shadow-xs transition-all cursor-pointer active:scale-95 whitespace-nowrap"
                         >
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
                             </svg>
-                            <span>Tambah Foto</span>
+                            <span>Tambah Slot Foto</span>
                         </button>
                     </div>
                 </div>
@@ -216,17 +231,17 @@
                 <!-- Dynamic Gallery Slots Container -->
                 <div id="gallery-slots-container" class="flex flex-col gap-4">
                     @foreach($initialGallery as $idx => $item)
-                        <div class="gallery-slot-card p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col gap-4 transition-all" data-slot-id="{{ $idx }}">
-                            <div class="flex items-center justify-between gap-2">
+                        <div class="gallery-slot-card p-4 sm:p-5 rounded-2xl bg-slate-50/80 border border-slate-200/90 flex flex-col gap-4 transition-all" data-slot-id="{{ $idx }}">
+                            <div class="flex items-center justify-between gap-2 border-b border-slate-200/60 pb-3">
                                 <div class="flex items-center gap-2">
-                                    <span class="slot-order-badge inline-flex items-center px-2.5 py-1 rounded-lg text-[11px] font-extrabold {{ $idx === 0 ? 'bg-brand text-white' : 'bg-slate-200 text-slate-700' }}">
+                                    <span class="slot-order-badge inline-flex items-center px-3 py-1 rounded-lg text-[11px] font-extrabold {{ $idx === 0 ? 'bg-brand text-white shadow-2xs' : 'bg-slate-200 text-slate-700' }}">
                                         {{ $idx === 0 ? '#1 • Foto Utama (Sampul)' : '#' . ($idx + 1) . ' • Foto Tambahan' }}
                                     </span>
                                 </div>
                                 <button 
                                     type="button" 
                                     onclick="removeGallerySlot(this)"
-                                    class="inline-flex items-center gap-1 text-[11px] font-bold text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 border border-red-200/70 px-2.5 py-1 rounded-lg transition-colors cursor-pointer"
+                                    class="inline-flex items-center gap-1.5 text-[11px] font-bold text-red-600 hover:text-red-700 bg-white hover:bg-red-50 border border-red-200 px-3 py-1 rounded-lg transition-colors cursor-pointer"
                                     title="Hapus foto ini"
                                 >
                                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -236,8 +251,9 @@
                                 </button>
                             </div>
 
-                            <div class="grid gap-4 sm:grid-cols-12 items-center">
-                                <div class="sm:col-span-7 space-y-3">
+                            <div class="grid gap-4 sm:gap-5 sm:grid-cols-12 items-stretch">
+                                <!-- Left Inputs (7 cols) -->
+                                <div class="sm:col-span-7 flex flex-col justify-between gap-3">
                                     <input type="hidden" name="photo_keep[{{ $idx }}]" value="{{ $editing ? $idx : '' }}" class="slot-keep-input" />
                                     <div>
                                         <label class="text-[11px] font-bold text-slate-600 block mb-1">Judul / Keterangan Foto</label>
@@ -245,18 +261,18 @@
                                             type="text"
                                             name="photo_label[{{ $idx }}]" 
                                             value="{{ $item['label'] }}" 
-                                            placeholder="Contoh: Foto Kamar Tidur / Kamar Mandi / Meja Belajar" 
-                                            class="slot-label-input w-full rounded-xl border border-slate-200 px-3.5 py-2 text-xs outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 font-bold text-slate-800 bg-white"
+                                            placeholder="Contoh: Foto Kamar Tidur / Kamar Mandi Dalam" 
+                                            class="slot-label-input w-full h-10 rounded-xl border border-slate-200 px-3.5 text-xs outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 font-bold text-slate-800 bg-white"
                                         />
                                     </div>
                                     <div>
-                                        <label class="text-[11px] font-bold text-slate-600 block mb-1">Upload File Gambar</label>
+                                        <label class="text-[11px] font-bold text-slate-600 block mb-1">Upload File Gambar (JPG/PNG/WebP)</label>
                                         <input 
                                             type="file" 
                                             name="gallery_files[{{ $idx }}]"
                                             accept="image/png, image/jpeg, image/jpg, image/webp" 
                                             onchange="previewSlotFile(this)"
-                                            class="slot-file-input w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-brand/10 file:text-brand hover:file:bg-brand/20 border border-slate-200 rounded-xl p-1 bg-white cursor-pointer"
+                                            class="slot-file-input w-full h-10 text-xs text-slate-500 file:mr-3 file:h-full file:px-3.5 file:rounded-l-xl file:border-0 file:text-xs file:font-bold file:bg-emerald-50 file:text-brand hover:file:bg-emerald-100 border border-slate-200 rounded-xl bg-white cursor-pointer"
                                         />
                                         <p class="slot-status-text text-[10px] text-emerald-600 font-bold mt-1 {{ str_starts_with($item['url'] ?? '', 'data:image/') ? '' : 'hidden' }}">
                                             ✓ Foto tersimpan (pilih file baru jika ingin mengganti)
@@ -270,14 +286,15 @@
                                             value="{{ str_starts_with($item['url'] ?? '', 'data:image/') ? '' : ($item['url'] ?? '') }}" 
                                             placeholder="{{ str_starts_with($item['url'] ?? '', 'data:image/') ? 'Foto upload tersimpan (isi link jika ingin ganti)' : 'https://... atau /images/...' }}" 
                                             oninput="previewSlotUrl(this)"
-                                            class="slot-url-input w-full rounded-xl border border-slate-200 px-3.5 py-2 text-xs outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 font-mono bg-white"
+                                            class="slot-url-input w-full h-10 rounded-xl border border-slate-200 px-3.5 text-xs outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 font-mono bg-white text-slate-700"
                                         />
                                     </div>
                                 </div>
 
-                                <!-- Live Preview -->
-                                <div class="sm:col-span-5">
-                                    <div class="relative w-full h-40 rounded-xl overflow-hidden border border-slate-200 bg-slate-200 flex items-center justify-center shadow-2xs">
+                                <!-- Right Live Preview (5 cols, stretched proportionally to match left inputs) -->
+                                <div class="sm:col-span-5 flex flex-col">
+                                    <span class="text-[11px] font-bold text-slate-600 block mb-1">Pratinjau Gambar</span>
+                                    <div class="relative w-full h-44 sm:h-full min-h-[168px] flex-1 rounded-xl overflow-hidden border border-slate-200 bg-white flex items-center justify-center shadow-2xs">
                                         <img 
                                             src="{{ $item['url'] ?: '/images/Kamar no 5.jpg' }}" 
                                             alt="{{ $item['label'] }}"
@@ -295,34 +312,38 @@
                 <button 
                     type="button" 
                     onclick="addGallerySlot()"
-                    class="w-full py-3.5 px-4 rounded-2xl border-2 border-dashed border-emerald-300 hover:border-brand bg-emerald-50/40 hover:bg-emerald-50 text-brand font-extrabold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer active:scale-[0.99]"
+                    class="w-full h-12 px-4 rounded-2xl border-2 border-dashed border-emerald-300 hover:border-brand bg-emerald-50/40 hover:bg-emerald-50 text-brand font-extrabold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer active:scale-[0.99]"
                 >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
                     </svg>
-                    <span>+ Tambah Foto Kamar Lainnya (Sepuasnya)</span>
+                    <span>Tambah Slot Foto Kamar Lainnya</span>
                 </button>
             </article>
         </div>
 
-        <!-- Sidebar Column (Right - 5 cols on Desktop) -->
-        <div class="lg:col-span-5 xl:col-span-4 flex flex-col gap-6">
+        <!-- Sidebar Column (Right - 5 cols on lg, 4 cols on xl, Sticky on Desktop) -->
+        <div class="lg:col-span-5 xl:col-span-4 flex flex-col gap-6 lg:sticky lg:top-6 min-w-0">
             <!-- Pricing & Status Card -->
-            <article class="bg-white rounded-2xl border border-slate-100 shadow-soft p-6 sm:p-8 flex flex-col gap-5">
-                <h2 class="text-base font-black text-slate-900 font-display border-b border-slate-100 pb-3 flex items-center gap-2">
-                    <svg class="w-4.5 h-4.5 text-brand" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                    <span>Harga & Status Sewa</span>
-                </h2>
+            <article class="bg-white rounded-2xl border border-slate-100 shadow-soft p-5 sm:p-7 flex flex-col gap-5">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3.5">
+                    <h2 class="text-base font-black text-slate-900 font-display flex items-center gap-2.5">
+                        <span class="w-8 h-8 rounded-xl bg-emerald-50 text-brand border border-emerald-100 flex items-center justify-center shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </span>
+                        <span>Harga & Status Sewa</span>
+                    </h2>
+                </div>
 
-                <div class="space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <!-- Status -->
-                    <div>
-                        <label class="text-xs font-bold text-slate-700 block">Status Ketersediaan Unit <span class="text-red-500">*</span></label>
+                    <div class="sm:col-span-2">
+                        <label class="text-xs font-bold text-slate-700 block mb-1.5">Status Ketersediaan Unit <span class="text-red-500">*</span></label>
                         <select 
                             name="status" 
-                            class="mt-1.5 w-full rounded-xl border border-slate-200 px-4 py-3 text-xs outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 font-black bg-white text-slate-900"
+                            class="w-full h-11 rounded-xl border border-slate-200 bg-slate-50/40 focus:bg-white px-4 text-xs sm:text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 font-bold text-slate-900 cursor-pointer transition-all"
                         >
                             @foreach(['Tersedia', 'Terisi', 'Pemeliharaan'] as $st)
                                 <option value="{{ $st }}" @selected(old('status', $room->status ?: 'Tersedia') === $st)>{{ $st }}</option>
@@ -331,10 +352,10 @@
                     </div>
 
                     <!-- Price -->
-                    <div>
-                        <label class="text-xs font-bold text-slate-700 block">Harga Sewa Bulanan (Rp) <span class="text-red-500">*</span></label>
-                        <div class="relative mt-1.5">
-                            <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs font-black text-slate-400">Rp</span>
+                    <div class="sm:col-span-2">
+                        <label class="text-xs font-bold text-slate-700 block mb-1.5">Harga Sewa Bulanan <span class="text-red-500">*</span></label>
+                        <div class="relative flex items-center">
+                            <span class="absolute left-3.5 text-xs font-black text-brand bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md pointer-events-none">Rp</span>
                             <input 
                                 name="price" 
                                 type="number" 
@@ -343,27 +364,28 @@
                                 value="{{ old('price', $room->price ?: 1800000) }}" 
                                 placeholder="1800000" 
                                 required 
-                                class="w-full pl-10 pr-4 py-3 text-xs rounded-xl border border-slate-200 outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 font-black font-mono text-slate-900 text-sm"
+                                class="w-full h-11 pl-12 pr-16 rounded-xl border border-slate-200 bg-slate-50/40 focus:bg-white outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 font-black font-mono text-slate-900 text-sm transition-all"
                             />
+                            <span class="absolute right-3.5 text-[11px] font-bold text-slate-400 pointer-events-none">/ Bulan</span>
                         </div>
                     </div>
 
                     <!-- Min Stay -->
                     <div>
-                        <label class="text-xs font-bold text-slate-700 block">Minimal Periode Sewa <span class="text-red-500">*</span></label>
+                        <label class="text-xs font-bold text-slate-700 block mb-1.5">Minimal Sewa <span class="text-red-500">*</span></label>
                         <input 
                             name="min_stay" 
                             value="{{ old('min_stay', $room->min_stay ?: '1 Bulan') }}" 
                             placeholder="1 Bulan" 
                             required 
-                            class="mt-1.5 w-full rounded-xl border border-slate-200 px-4 py-3 text-xs outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 font-bold text-slate-900"
+                            class="w-full h-11 rounded-xl border border-slate-200 bg-slate-50/40 focus:bg-white px-3.5 text-xs sm:text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 font-bold text-slate-900 transition-all"
                         />
                     </div>
 
-                    <!-- Max Occupants -->
+                    <!-- Max Occupants (Proportionally aligned with Minimal Sewa!) -->
                     <div>
-                        <label class="text-xs font-bold text-slate-700 block">Kapasitas Maksimal <span class="text-red-500">*</span></label>
-                        <div class="mt-1.5 flex items-center gap-2 p-3 bg-slate-50 border border-slate-200 rounded-xl">
+                        <label class="text-xs font-bold text-slate-700 block mb-1.5">Kapasitas Maks. <span class="text-red-500">*</span></label>
+                        <div class="relative flex items-center">
                             <input 
                                 name="max_occupants" 
                                 type="number" 
@@ -371,93 +393,109 @@
                                 max="10" 
                                 value="{{ old('max_occupants', $room->max_occupants ?: 1) }}" 
                                 required 
-                                class="w-16 bg-white border border-slate-200 rounded-lg px-2 py-1 text-xs font-black font-mono text-slate-900 text-center"
+                                class="w-full h-11 pl-3.5 pr-16 rounded-xl border border-slate-200 bg-slate-50/40 focus:bg-white text-xs sm:text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 font-black font-mono text-slate-900 transition-all"
                             />
-                            <span class="text-xs font-bold text-slate-600">Orang (Standar 1 Orang)</span>
+                            <span class="absolute right-3 text-[11px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md pointer-events-none">Orang</span>
                         </div>
                     </div>
                 </div>
             </article>
 
             <!-- Room Physical Specs Card -->
-            <article class="bg-white rounded-2xl border border-slate-100 shadow-soft p-6 sm:p-8 flex flex-col gap-5">
-                <h2 class="text-base font-black text-slate-900 font-display border-b border-slate-100 pb-3 flex items-center gap-2">
-                    <svg class="w-4.5 h-4.5 text-brand" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                    </svg>
-                    <span>Spesifikasi Fisik Unit</span>
-                </h2>
+            <article class="bg-white rounded-2xl border border-slate-100 shadow-soft p-5 sm:p-7 flex flex-col gap-5">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3.5">
+                    <h2 class="text-base font-black text-slate-900 font-display flex items-center gap-2.5">
+                        <span class="w-8 h-8 rounded-xl bg-emerald-50 text-brand border border-emerald-100 flex items-center justify-center shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                        </span>
+                        <span>Spesifikasi Fisik Unit</span>
+                    </h2>
+                </div>
 
                 <div class="grid grid-cols-2 gap-4">
                     <!-- Size -->
                     <div>
-                        <label class="text-xs font-bold text-slate-700 block">Luas Kamar (m²) <span class="text-red-500">*</span></label>
-                        <input 
-                            name="size" 
-                            type="number" 
-                            min="1" 
-                            value="{{ old('size', $room->size ?: 16) }}" 
-                            required 
-                            class="mt-1.5 w-full rounded-xl border border-slate-200 px-4 py-3 text-xs outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 font-bold font-mono text-slate-900"
-                        />
+                        <label class="text-xs font-bold text-slate-700 block mb-1.5">Luas Kamar <span class="text-red-500">*</span></label>
+                        <div class="relative flex items-center">
+                            <input 
+                                name="size" 
+                                type="number" 
+                                min="1" 
+                                value="{{ old('size', $room->size ?: 16) }}" 
+                                required 
+                                class="w-full h-11 pl-3.5 pr-12 rounded-xl border border-slate-200 bg-slate-50/40 focus:bg-white text-xs sm:text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 font-bold font-mono text-slate-900 transition-all"
+                            />
+                            <span class="absolute right-3 text-[11px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md pointer-events-none">m²</span>
+                        </div>
                     </div>
 
                     <!-- Beds -->
                     <div>
-                        <label class="text-xs font-bold text-slate-700 block">Tempat Tidur <span class="text-red-500">*</span></label>
-                        <input 
-                            name="beds" 
-                            type="number" 
-                            min="1" 
-                            value="{{ old('beds', $room->beds ?: 1) }}" 
-                            required 
-                            class="mt-1.5 w-full rounded-xl border border-slate-200 px-4 py-3 text-xs outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 font-bold font-mono text-slate-900"
-                        />
+                        <label class="text-xs font-bold text-slate-700 block mb-1.5">Tempat Tidur <span class="text-red-500">*</span></label>
+                        <div class="relative flex items-center">
+                            <input 
+                                name="beds" 
+                                type="number" 
+                                min="1" 
+                                value="{{ old('beds', $room->beds ?: 1) }}" 
+                                required 
+                                class="w-full h-11 pl-3.5 pr-14 rounded-xl border border-slate-200 bg-slate-50/40 focus:bg-white text-xs sm:text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 font-bold font-mono text-slate-900 transition-all"
+                            />
+                            <span class="absolute right-3 text-[11px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md pointer-events-none">Kasur</span>
+                        </div>
                     </div>
 
                     <!-- Rating -->
                     <div>
-                        <label class="text-xs font-bold text-slate-700 block">Rating (0–5) <span class="text-red-500">*</span></label>
-                        <input 
-                            name="rating" 
-                            type="number" 
-                            step="0.1" 
-                            min="0" 
-                            max="5" 
-                            value="{{ old('rating', $room->rating ?: 4.9) }}" 
-                            required 
-                            class="mt-1.5 w-full rounded-xl border border-slate-200 px-4 py-3 text-xs outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 font-bold font-mono text-slate-900"
-                        />
+                        <label class="text-xs font-bold text-slate-700 block mb-1.5">Rating Unit <span class="text-red-500">*</span></label>
+                        <div class="relative flex items-center">
+                            <input 
+                                name="rating" 
+                                type="number" 
+                                step="0.1" 
+                                min="0" 
+                                max="5" 
+                                value="{{ old('rating', $room->rating ?: 4.9) }}" 
+                                required 
+                                class="w-full h-11 pl-3.5 pr-14 rounded-xl border border-slate-200 bg-slate-50/40 focus:bg-white text-xs sm:text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 font-bold font-mono text-slate-900 transition-all"
+                            />
+                            <span class="absolute right-3 text-[11px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded-md pointer-events-none">★ / 5</span>
+                        </div>
                     </div>
 
                     <!-- Views -->
                     <div>
-                        <label class="text-xs font-bold text-slate-700 block">Statistik Views</label>
-                        <input 
-                            name="views" 
-                            type="number" 
-                            min="0" 
-                            value="{{ old('views', $room->views ?: 0) }}" 
-                            class="mt-1.5 w-full rounded-xl border border-slate-200 px-4 py-3 text-xs outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 font-bold font-mono text-slate-900"
-                        />
+                        <label class="text-xs font-bold text-slate-700 block mb-1.5">Statistik Views</label>
+                        <div class="relative flex items-center">
+                            <input 
+                                name="views" 
+                                type="number" 
+                                min="0" 
+                                value="{{ old('views', $room->views ?: 0) }}" 
+                                class="w-full h-11 pl-3.5 pr-14 rounded-xl border border-slate-200 bg-slate-50/40 focus:bg-white text-xs sm:text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 font-bold font-mono text-slate-900 transition-all"
+                            />
+                            <span class="absolute right-3 text-[10px] font-bold text-slate-400 pointer-events-none">Views</span>
+                        </div>
                     </div>
                 </div>
             </article>
 
             <!-- Bottom Action Footer Card -->
-            <article class="bg-white rounded-2xl border border-slate-100 shadow-soft p-6 flex items-center justify-between">
+            <article class="bg-white rounded-2xl border border-slate-100 shadow-soft p-5 flex items-center justify-between gap-3">
                 <a 
                     href="{{ route('admin.rooms.index') }}" 
-                    class="font-bold text-xs text-slate-500 hover:text-slate-900 transition-colors"
+                    class="h-11 px-4 rounded-xl border border-slate-200 hover:bg-slate-50 inline-flex items-center justify-center font-bold text-xs text-slate-600 hover:text-slate-900 transition-colors whitespace-nowrap"
                 >
                     Batal & Kembali
                 </a>
 
                 <button 
                     type="submit"
-                    class="rounded-xl bg-brand hover:bg-brandHover px-6 py-3 font-bold text-xs text-white shadow-md shadow-brand/20 transition-all cursor-pointer flex items-center gap-2 active:scale-95"
+                    class="h-11 flex-1 rounded-xl bg-brand hover:bg-brandHover px-5 font-bold text-xs text-white shadow-md shadow-brand/20 transition-all cursor-pointer inline-flex items-center justify-center gap-2 active:scale-95 whitespace-nowrap"
                 >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
                     </svg>
                     <span>{{ $editing ? 'Simpan Perubahan' : 'Terbitkan Kamar' }}</span>
@@ -503,10 +541,10 @@
             const badge = card.querySelector('.slot-order-badge');
             if (badge) {
                 if (index === 0) {
-                    badge.className = 'slot-order-badge inline-flex items-center px-2.5 py-1 rounded-lg text-[11px] font-extrabold bg-brand text-white';
+                    badge.className = 'slot-order-badge inline-flex items-center px-3 py-1 rounded-lg text-[11px] font-extrabold bg-brand text-white shadow-2xs';
                     badge.textContent = '#1 • Foto Utama (Sampul)';
                 } else {
-                    badge.className = 'slot-order-badge inline-flex items-center px-2.5 py-1 rounded-lg text-[11px] font-extrabold bg-slate-200 text-slate-700';
+                    badge.className = 'slot-order-badge inline-flex items-center px-3 py-1 rounded-lg text-[11px] font-extrabold bg-slate-200 text-slate-700';
                     badge.textContent = '#' + (index + 1) + ' • Foto Tambahan';
                 }
             }
@@ -524,20 +562,20 @@
         const previewSrc = defaultUrl || window.MAMA_ANIS_PLACEHOLDER || '/images/Kamar no 5.jpg';
 
         const card = document.createElement('div');
-        card.className = 'gallery-slot-card p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col gap-4 transition-all rise';
+        card.className = 'gallery-slot-card p-4 sm:p-5 rounded-2xl bg-slate-50/80 border border-slate-200/90 flex flex-col gap-4 transition-all rise';
         card.setAttribute('data-slot-id', slotId);
 
         card.innerHTML = `
-            <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center justify-between gap-2 border-b border-slate-200/60 pb-3">
                 <div class="flex items-center gap-2">
-                    <span class="slot-order-badge inline-flex items-center px-2.5 py-1 rounded-lg text-[11px] font-extrabold bg-slate-200 text-slate-700">
+                    <span class="slot-order-badge inline-flex items-center px-3 py-1 rounded-lg text-[11px] font-extrabold bg-slate-200 text-slate-700">
                         #${currentCount + 1} • Foto Tambahan
                     </span>
                 </div>
                 <button 
                     type="button" 
                     onclick="removeGallerySlot(this)"
-                    class="inline-flex items-center gap-1 text-[11px] font-bold text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 border border-red-200/70 px-2.5 py-1 rounded-lg transition-colors cursor-pointer"
+                    class="inline-flex items-center gap-1.5 text-[11px] font-bold text-red-600 hover:text-red-700 bg-white hover:bg-red-50 border border-red-200 px-3 py-1 rounded-lg transition-colors cursor-pointer"
                     title="Hapus foto ini"
                 >
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -547,8 +585,8 @@
                 </button>
             </div>
 
-            <div class="grid gap-4 sm:grid-cols-12 items-center">
-                <div class="sm:col-span-7 space-y-3">
+            <div class="grid gap-4 sm:gap-5 sm:grid-cols-12 items-stretch">
+                <div class="sm:col-span-7 flex flex-col justify-between gap-3">
                     <input type="hidden" name="photo_keep[${slotId}]" value="" class="slot-keep-input" />
                     <div>
                         <label class="text-[11px] font-bold text-slate-600 block mb-1">Judul / Keterangan Foto</label>
@@ -556,18 +594,18 @@
                             type="text"
                             name="photo_label[${slotId}]" 
                             value="" 
-                            placeholder="Contoh: Foto Kamar Tidur / Kamar Mandi / Meja Belajar" 
-                            class="slot-label-input w-full rounded-xl border border-slate-200 px-3.5 py-2 text-xs outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 font-bold text-slate-800 bg-white"
+                            placeholder="Contoh: Foto Kamar Tidur / Kamar Mandi Dalam" 
+                            class="slot-label-input w-full h-10 rounded-xl border border-slate-200 px-3.5 text-xs outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 font-bold text-slate-800 bg-white"
                         />
                     </div>
                     <div>
-                        <label class="text-[11px] font-bold text-slate-600 block mb-1">Upload File Gambar</label>
+                        <label class="text-[11px] font-bold text-slate-600 block mb-1">Upload File Gambar (JPG/PNG/WebP)</label>
                         <input 
                             type="file" 
                             name="gallery_files[${slotId}]"
                             accept="image/png, image/jpeg, image/jpg, image/webp" 
                             onchange="previewSlotFile(this)"
-                            class="slot-file-input w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-brand/10 file:text-brand hover:file:bg-brand/20 border border-slate-200 rounded-xl p-1 bg-white cursor-pointer"
+                            class="slot-file-input w-full h-10 text-xs text-slate-500 file:mr-3 file:h-full file:px-3.5 file:rounded-l-xl file:border-0 file:text-xs file:font-bold file:bg-emerald-50 file:text-brand hover:file:bg-emerald-100 border border-slate-200 rounded-xl bg-white cursor-pointer"
                         />
                         <p class="slot-status-text text-[10px] text-emerald-600 font-bold mt-1 hidden">
                             ✓ Foto siap disimpan
@@ -581,14 +619,15 @@
                             value="" 
                             placeholder="https://... atau /images/..." 
                             oninput="previewSlotUrl(this)"
-                            class="slot-url-input w-full rounded-xl border border-slate-200 px-3.5 py-2 text-xs outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 font-mono bg-white"
+                            class="slot-url-input w-full h-10 rounded-xl border border-slate-200 px-3.5 text-xs outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 font-mono bg-white text-slate-700"
                         />
                     </div>
                 </div>
 
                 <!-- Live Preview -->
-                <div class="sm:col-span-5">
-                    <div class="relative w-full h-40 rounded-xl overflow-hidden border border-slate-200 bg-slate-200 flex items-center justify-center shadow-2xs">
+                <div class="sm:col-span-5 flex flex-col">
+                    <span class="text-[11px] font-bold text-slate-600 block mb-1">Pratinjau Gambar</span>
+                    <div class="relative w-full h-44 sm:h-full min-h-[168px] flex-1 rounded-xl overflow-hidden border border-slate-200 bg-white flex items-center justify-center shadow-2xs">
                         <img 
                             src="${previewSrc}" 
                             alt="Preview Foto"

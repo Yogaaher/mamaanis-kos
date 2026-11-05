@@ -29,6 +29,8 @@
         <img
             src="{{ $image }}"
             alt="{{ $name }}"
+            loading="lazy"
+            decoding="async"
             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
             onerror="handleImgError(this)"
         />
@@ -85,6 +87,8 @@
         <img
             src="{{ $image }}"
             alt="{{ $name }}"
+            loading="lazy"
+            decoding="async"
             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
             onerror="handleImgError(this)"
         />

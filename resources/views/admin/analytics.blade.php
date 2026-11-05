@@ -12,7 +12,7 @@
     };
 @endphp
 
-<main class="p-3.5 sm:p-8 lg:p-10 flex flex-col gap-4 sm:gap-8 rise w-full max-w-full overflow-x-hidden">
+<main class="w-full max-w-7xl mx-auto p-3.5 sm:p-8 lg:p-10 flex flex-col gap-5 sm:gap-7 rise overflow-x-hidden">
     <!-- Header Page -->
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
@@ -180,6 +180,7 @@
                         <th class="px-6 py-4">Harga / Bulan</th>
                         <th class="px-6 py-4">Status</th>
                         <th class="px-6 py-4">Jumlah Views</th>
+                        <th class="px-6 py-4">Klik WA (Leads)</th>
                         <th class="px-6 py-4 text-right">Rasio Popularitas</th>
                     </tr>
                 </thead>
@@ -187,6 +188,7 @@
                     @forelse($popularRooms as $idx => $room)
                         @php
                             $sharePercent = $totalViews > 0 ? round(($room->views / $totalViews) * 100, 1) : 0;
+                            $roomConv = $room->views > 0 ? round((($room->wa_clicks ?? 0) / $room->views) * 100, 1) : 0;
                         @endphp
                         <tr class="hover:bg-slate-50/50 transition-colors">
                             <td class="px-6 py-4 font-black text-slate-900 font-display">
@@ -203,19 +205,24 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="px-6 py-4">
-                                <span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded text-[10px] font-bold uppercase">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center whitespace-nowrap bg-slate-100 text-slate-700 border border-slate-200/70 px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wide">
                                     {{ $room->type }}
                                 </span>
                             </td>
-                            <td class="px-6 py-4 font-black text-slate-900 font-display">
+                            <td class="px-6 py-4 font-black text-slate-900 font-display whitespace-nowrap">
                                 Rp {{ number_format($room->price, 0, ',', '.') }}
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="px-6 py-4 whitespace-nowrap">
                                 <x-badge-status :status="$room->status" />
                             </td>
-                            <td class="px-6 py-4 font-black text-brand font-display">
+                            <td class="px-6 py-4 font-black text-brand font-display whitespace-nowrap">
                                 {{ number_format($room->views) }} <span class="text-[10px] text-slate-400 font-medium">views</span>
+                            </td>
+                            <td class="px-6 py-4 font-black text-emerald-700 font-display whitespace-nowrap">
+                                <span class="inline-flex items-center whitespace-nowrap gap-1 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-lg text-xs">
+                                    💬 {{ number_format($room->wa_clicks ?? 0) }} <span class="text-[10px] text-slate-500 font-semibold">({{ $roomConv }}%)</span>
+                                </span>
                             </td>
                             <td class="px-6 py-4 text-right">
                                 <div class="flex items-center justify-end gap-2">

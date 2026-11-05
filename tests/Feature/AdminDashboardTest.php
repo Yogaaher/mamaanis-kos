@@ -12,6 +12,17 @@ class AdminDashboardTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        config([
+            'services.admin.username' => 'admin_mamaanis',
+            'services.admin.email' => 'admin@mamaanis.local',
+            'services.admin.password' => 'mamaanis123',
+        ]);
+    }
+
     public function test_guest_cannot_access_admin_dashboard(): void
     {
         $response = $this->get(route('admin.dashboard'));
@@ -128,5 +139,100 @@ class AdminDashboardTest extends TestCase
 
         $response->assertRedirect(route('admin.dashboard'));
         $this->assertDatabaseHas('rooms', ['name' => 'Kamar Upload Test']);
+    }
+
+    public function test_login_honeypot_blocks_automated_bots(): void
+    {
+        $response = $this->from(route('admin.login'))->post(route('admin.login.store'), [
+            'email' => 'admin_mamaanis',
+            'password' => 'mamaanis123',
+            'website_url' => 'http://spam-bot.example.com',
+        ]);
+
+        $response->assertRedirect(route('admin.login'));
+        $this->assertNull(session('is_admin'));
+    }
+
+    public function test_login_rate_limiting_blocks_brute_force_attacks(): void
+    {
+        for ($i = 0; $i < 5; $i++) {
+            $this->from(route('admin.login'))->post(route('admin.login.store'), [
+                'email' => 'admin_mamaanis',
+                'password' => 'wrong_password_' . $i,
+            ]);
+        }
+
+        // 6th attempt is blocked either by throttle middleware (429) or controller lockout
+        $response = $this->from(route('admin.login'))->post(route('admin.login.store'), [
+            'email' => 'admin_mamaanis',
+            'password' => 'mamaanis123',
+        ]);
+
+        $this->assertTrue(in_array($response->status(), [302, 429], true));
+        $this->assertNull(session('is_admin'));
+    }
+
+    public function test_session_hijacking_with_mismatched_user_agent_is_blocked(): void
+    {
+        $response = $this->withSession([
+            'is_admin' => true,
+            'admin_ua_hash' => hash('sha256', 'Original-Browser-Agent'),
+            'admin_last_active' => now()->timestamp,
+        ])->withHeaders([
+            'User-Agent' => 'Attacker-Stolen-Cookie-Agent',
+        ])->get(route('admin.dashboard'));
+
+        $response->assertRedirect(route('admin.login'));
+    }
+
+    public function test_expired_idle_admin_session_is_automatically_logged_out(): void
+    {
+        $response = $this->withSession([
+            'is_admin' => true,
+            'admin_last_active' => now()->subMinutes(35)->timestamp,
+        ])->get(route('admin.dashboard'));
+
+        $response->assertRedirect(route('admin.login'));
+    }
+
+    public function test_security_headers_are_applied_to_responses(): void
+    {
+        $response = $this->get(route('admin.login'));
+
+        $response->assertStatus(200);
+        $response->assertHeader('X-Content-Type-Options', 'nosniff');
+        $response->assertHeader('X-Frame-Options', 'SAMEORIGIN');
+        $response->assertHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+        $response->assertHeader('X-Robots-Tag', 'noindex, nofollow');
+    }
+
+    public function test_admin_can_quick_toggle_room_status(): void
+    {
+        $room = Room::create([
+            'name' => 'Kamar Quick Status',
+            'type' => 'Standard',
+            'location' => 'Alam Sutera',
+            'price' => 2000000,
+            'status' => 'Tersedia',
+            'rating' => 4.9,
+            'views' => 5,
+            'size' => 16,
+            'beds' => 1,
+            'min_stay' => '1 Bulan',
+            'max_occupants' => 1,
+            'amenities' => ['AC', 'WiFi'],
+            'description' => 'Test quick status update.',
+        ]);
+
+        $response = $this->withSession(['is_admin' => true])
+            ->patch(route('admin.rooms.update_status', $room), [
+                'status' => 'Terisi',
+            ]);
+
+        $response->assertRedirect();
+        $this->assertDatabaseHas('rooms', [
+            'id' => $room->id,
+            'status' => 'Terisi',
+        ]);
     }
 }

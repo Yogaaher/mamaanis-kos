@@ -22,14 +22,42 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="@yield('title', 'Mama Anis Kos - Alam Sutera')">
     <meta property="og:description" content="@yield('meta_description', 'Mama Anis kost hunian nyaman strategis Alam Sutera')">
-    <meta property="og:image" content="{{ asset('icon-512.png') }}">
+    <meta property="og:image" content="@yield('og_image', asset('icon-512.png'))">
     <meta property="og:url" content="{{ url()->current() }}">
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="@yield('title', 'Mama Anis Kos - Alam Sutera')">
     <meta name="twitter:description" content="@yield('meta_description', 'Mama Anis kost hunian nyaman strategis Alam Sutera')">
-    <meta name="twitter:image" content="{{ asset('icon-512.png') }}">
+    <meta name="twitter:image" content="@yield('og_image', asset('icon-512.png'))">
+    <link rel="canonical" href="{{ url()->current() }}">
+
+    <!-- Schema.org Structured Data (LodgingBusiness / Kost) for Google Rich Results -->
+    @php
+        $schemaData = [
+            '@context' => 'https://schema.org',
+            '@type' => 'LodgingBusiness',
+            'name' => 'Mama Anis Kos',
+            'description' => 'Hunian kost eksklusif, aman, bersih, dan strategis di kawasan Alam Sutera, Pinang, Tangerang dekat BINUS University & Mall Alam Sutera.',
+            'url' => url('/'),
+            'telephone' => '+62-877-8204-9784',
+            'priceRange' => 'Rp 1.800.000 - Rp 5.000.000',
+            'image' => asset('icon-512.png'),
+            'address' => [
+                '@type' => 'PostalAddress',
+                'addressLocality' => 'Pinang, Tangerang',
+                'addressRegion' => 'Banten',
+                'addressCountry' => 'ID',
+            ],
+            'amenityFeature' => [
+                ['@type' => 'LocationFeatureSpecification', 'name' => 'WiFi Cepat 200 Mbps', 'value' => true],
+                ['@type' => 'LocationFeatureSpecification', 'name' => 'CCTV 24 Jam', 'value' => true],
+                ['@type' => 'LocationFeatureSpecification', 'name' => 'AC Setiap Kamar', 'value' => true],
+                ['@type' => 'LocationFeatureSpecification', 'name' => 'Kamar Mandi Dalam', 'value' => true],
+            ],
+        ];
+    @endphp
+    <script type="application/ld+json">{!! json_encode($schemaData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
     
     <!-- Favicon & Touch Icons for Browsers & Google Search -->
     <link rel="icon" type="image/png" sizes="48x48" href="{{ asset('favicon-48x48.png') }}">
@@ -242,6 +270,7 @@
         }
     </style>
     @stack('styles')
+    @stack('head')
 </head>
 <body class="min-h-screen bg-[#f8f9fb] flex flex-col selection:bg-[#006c49]/10 selection:text-[#006c49]">
 
@@ -261,6 +290,24 @@
 
     <!-- Global Footer Component -->
     <x-footer />
+
+    <!-- Floating Quick-Chat WhatsApp Button -->
+    <a 
+        href="https://wa.me/6287782049784?text=Halo%20Mama%20Anis%20Kos%2C%20saya%20ingin%20bertanya%20mengenai%20ketersediaan%20kamar%20kos.%20Terima%20kasih%21" 
+        target="_blank" 
+        rel="noopener"
+        aria-label="Chat WhatsApp Pengelola Mama Anis Kos"
+        class="fixed bottom-5 right-5 sm:bottom-7 sm:right-7 z-40 group flex items-center gap-2.5 bg-[#006c49] hover:bg-[#005236] text-white p-3.5 sm:px-5 sm:py-3.5 rounded-full shadow-2xl shadow-[#006c49]/40 border border-emerald-400/30 hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer"
+    >
+        <span class="absolute -top-1 -right-1 flex h-3.5 w-3.5">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-300 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-400 border-2 border-white"></span>
+        </span>
+        <svg class="w-5 h-5 sm:w-5 sm:h-5 fill-current shrink-0" viewBox="0 0 24 24">
+            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.965C16.528 1.977 14.07 1.951 12.01 1.95c-5.438 0-9.864 4.372-9.868 9.8-.001 1.714.463 3.39 1.341 4.877L2.45 21.11l4.197-1.956z"/>
+        </svg>
+        <span class="hidden sm:inline font-sans font-bold text-xs tracking-wide">Tanya via WA</span>
+    </a>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {

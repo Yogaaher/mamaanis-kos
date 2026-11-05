@@ -62,6 +62,8 @@
                 id="hero-bg-img"
                 src="/images/lorong.jpeg" 
                 alt="Lorong Mama Anis Kos" 
+                fetchpriority="high"
+                decoding="async"
                 class="w-full h-full object-cover opacity-85 transition-all duration-100 ease-out"
                 style="transform-origin: center center;"
             >
@@ -172,9 +174,23 @@
 
             <div class="grid gap-3.5 sm:gap-6 grid-cols-2 lg:grid-cols-4">
                 @foreach($facilities as $fac)
-                    <article class="lift overflow-hidden rounded-xl sm:rounded-2xl bg-white border border-gray-100 shadow-xs flex flex-col cursor-pointer">
-                        <div class="h-28 sm:h-44 overflow-hidden relative">
-                            <img src="{{ $fac['image'] }}" alt="{{ $fac['title'] }}" class="h-full w-full object-cover transition duration-500 hover:scale-105">
+                    <article 
+                        onclick="openFacilityLightbox(@js($fac['image']), @js($fac['title']), @js($fac['text']))"
+                        class="lift group overflow-hidden rounded-xl sm:rounded-2xl bg-white border border-gray-100 hover:border-emerald-200 shadow-xs flex flex-col cursor-pointer"
+                    >
+                        <div class="h-28 sm:h-44 overflow-hidden relative bg-slate-100">
+                            <img 
+                                src="{{ $fac['image'] }}" 
+                                alt="{{ $fac['title'] }}" 
+                                loading="lazy" 
+                                decoding="async" 
+                                class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                            >
+                            <span class="absolute top-2 right-2 bg-black/50 backdrop-blur-xs text-white p-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200" title="Perbesar Foto">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/>
+                                </svg>
+                            </span>
                         </div>
                         <div class="p-3 sm:p-5 flex-1 flex flex-col gap-1 sm:gap-2">
                             <div class="flex items-center gap-1.5 sm:gap-2.5 text-[#006c49]">
@@ -201,9 +217,12 @@
             
             <div class="grid gap-4 sm:gap-6 md:grid-cols-2">
                 <!-- Sari Prima Laundry -->
-                <article class="lift flex flex-col sm:flex-row overflow-hidden rounded-2xl sm:rounded-3xl bg-white border border-gray-100 shadow-xs group hover:border-emerald-200 transition-all">
+                <article 
+                    onclick="openFacilityLightbox('/images/laundry.jpeg', 'Sari Prima Laundry', 'Layanan laundry kiloan harian yang praktis. Cucian Anda bisa dijemput dan diantar kembali langsung ke area kos.')"
+                    class="lift flex flex-col sm:flex-row overflow-hidden rounded-2xl sm:rounded-3xl bg-white border border-gray-100 shadow-xs group hover:border-emerald-200 transition-all cursor-pointer"
+                >
                     <div class="relative w-full sm:w-5/12 h-44 sm:h-auto min-h-[160px] shrink-0 bg-slate-100 overflow-hidden">
-                        <img src="/images/laundry.jpeg" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Sari Prima Laundry" loading="lazy">
+                        <img src="/images/laundry.jpeg" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Sari Prima Laundry" loading="lazy" decoding="async">
                     </div>
                     <div class="p-4 sm:p-6 flex-1 flex flex-col justify-center gap-2 sm:gap-2.5">
                         <div class="flex items-center gap-2.5 sm:gap-3">
@@ -221,9 +240,12 @@
                 </article>
 
                 <!-- Warung Mama Anis -->
-                <article class="lift flex flex-col sm:flex-row overflow-hidden rounded-2xl sm:rounded-3xl bg-white border border-gray-100 shadow-xs group hover:border-emerald-200 transition-all">
+                <article 
+                    onclick="openFacilityLightbox('/images/warung.jpg', 'Warung Mama Anis', 'Menyediakan aneka minuman dan makanan favorit instan yang menyegarkan, langsung di lingkungan kos Anda.')"
+                    class="lift flex flex-col sm:flex-row overflow-hidden rounded-2xl sm:rounded-3xl bg-white border border-gray-100 shadow-xs group hover:border-emerald-200 transition-all cursor-pointer"
+                >
                     <div class="relative w-full sm:w-5/12 h-44 sm:h-auto min-h-[160px] shrink-0 bg-slate-100 overflow-hidden">
-                        <img src="/images/warung.jpg" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Warung Mama Anis" loading="lazy">
+                        <img src="/images/warung.jpg" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Warung Mama Anis" loading="lazy" decoding="async">
                     </div>
                     <div class="p-4 sm:p-6 flex-1 flex flex-col justify-center gap-2 sm:gap-2.5">
                         <div class="flex items-center gap-2.5 sm:gap-3">
@@ -252,8 +274,15 @@
                         Lokasi Strategis & Dekat Fasilitas
                     </h2>
                     <p class="mt-2 sm:mt-4 text-xs sm:text-base md:text-lg text-gray-600 leading-relaxed font-sans">
-                        Terletak di pusat mobilitas Tangerang, memudahkan akses menuju kampus maupun pusat perbelanjaan.
+                        Terletak di pusat mobilitas Tangerang (<strong>Patokan: Belakang Warteg Barokah Alam Sutera</strong>), memudahkan akses menuju kampus maupun pusat perbelanjaan.
                     </p>
+                    <div class="mt-3 inline-flex flex-wrap items-center gap-2 bg-emerald-50/90 border border-emerald-200 px-3.5 py-2 rounded-xl text-xs">
+                        <span class="font-bold text-[#006c49]">📍 Patokan Lokasi Resmi:</span>
+                        <span class="text-gray-700 font-semibold">Belakang Warteg Barokah Alam Sutera</span>
+                        <a href="https://share.google/j7P9yPSEyOxYYRu47" target="_blank" rel="noopener" class="font-extrabold text-[#006c49] underline hover:text-[#005236]">
+                            Klik Google Maps ↗
+                        </a>
+                    </div>
                     <div class="mt-4 sm:mt-8 grid grid-cols-2 sm:grid-cols-2 gap-2.5 sm:gap-4">
                         @php
                         $togaSvg = '<svg class="w-4 h-4 sm:w-5 sm:h-5 text-[#006c49]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0112 20.055a11.952 11.952 0 01-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 10v6"/></svg>';
@@ -337,7 +366,7 @@
 
                             <!-- Floating Action: Open in Google Maps -->
                             <a 
-                                href="https://share.google/xtb2nkiQbL87nVgco" 
+                                href="https://share.google/j7P9yPSEyOxYYRu47" 
                                 target="_blank" 
                                 rel="noopener" 
                                 class="absolute bottom-2.5 left-2.5 sm:bottom-3 sm:left-3 bg-white/95 backdrop-blur-md hover:bg-white text-[#006c49] font-bold text-xs sm:text-sm px-3.5 py-2 sm:px-5 sm:py-2.5 rounded-lg sm:rounded-xl flex items-center gap-1.5 sm:gap-2 shadow-lg border border-gray-100 transition-all hover:scale-105 active:scale-95 z-20 group font-sans"
@@ -641,6 +670,65 @@
                     }
                 });
             });
+
+            // Close facility lightbox on Escape key
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') {
+                    closeFacilityLightbox();
+                }
+            });
         });
+
+        function openFacilityLightbox(imgSrc, title, desc) {
+            const modal = document.getElementById('facilityLightboxModal');
+            const img = document.getElementById('facilityLightboxImg');
+            const titleEl = document.getElementById('facilityLightboxTitle');
+            const descEl = document.getElementById('facilityLightboxDesc');
+            if (!modal || !img) return;
+
+            img.src = imgSrc;
+            img.alt = title || 'Foto Fasilitas';
+            if (titleEl) titleEl.textContent = title || '';
+            if (descEl) descEl.textContent = desc || '';
+
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.classList.add('opacity-100', 'pointer-events-auto');
+        }
+
+        function closeFacilityLightbox() {
+            const modal = document.getElementById('facilityLightboxModal');
+            if (!modal) return;
+            modal.classList.remove('opacity-100', 'pointer-events-auto');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+        }
     </script>
+
+    <!-- Fullscreen Facility Image Lightbox Modal (Clean White Theme) -->
+    <div 
+        id="facilityLightboxModal" 
+        onclick="if(event.target === this) closeFacilityLightbox()"
+        class="fixed inset-0 bg-white/90 backdrop-blur-md z-[130] flex items-center justify-center p-4 transition-opacity duration-200 opacity-0 pointer-events-none"
+        role="dialog"
+        aria-modal="true"
+    >
+        <div class="relative max-w-4xl w-full bg-white rounded-2xl sm:rounded-3xl overflow-hidden border border-gray-200 shadow-2xl">
+            <button 
+                type="button" 
+                onclick="closeFacilityLightbox()" 
+                class="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/90 hover:bg-emerald-50 text-gray-800 hover:text-[#006c49] border border-gray-200 shadow-md flex items-center justify-center transition-colors cursor-pointer"
+                aria-label="Tutup Pratinjau"
+            >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+            <div class="max-h-[75vh] flex items-center justify-center bg-[#f8f9fb] overflow-hidden p-2 sm:p-4 border-b border-gray-100">
+                <img id="facilityLightboxImg" src="" alt="" class="max-h-[72vh] w-auto max-w-full rounded-xl object-contain shadow-xs">
+            </div>
+            <div class="p-4 sm:p-6 bg-white text-gray-900">
+                <h3 id="facilityLightboxTitle" class="text-base sm:text-lg font-extrabold font-display text-[#006c49]"></h3>
+                <p id="facilityLightboxDesc" class="text-xs sm:text-sm text-gray-600 mt-1 font-sans"></p>
+            </div>
+        </div>
+    </div>
 @endsection

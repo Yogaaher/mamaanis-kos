@@ -16,21 +16,26 @@ class AdminRoomController extends Controller
 {
     public function index()
     {
-        $rooms = Room::query()->latest()->get();
+        Room::normalizeSequentialIds();
+
+        $rooms = Room::query()->orderBy('id')->get();
         $total = $rooms->count();
         $occupied = $rooms->where('status', 'Terisi')->count();
         $available = $rooms->where('status', 'Tersedia')->count();
         $maintenance = $rooms->where('status', 'Pemeliharaan')->count();
         $totalViews = $rooms->sum('views');
+        $totalWaClicks = $rooms->sum('wa_clicks');
         $popularRooms = $rooms->sortByDesc('views');
 
-        return view('admin.dashboard', compact('rooms', 'total', 'occupied', 'available', 'maintenance', 'totalViews', 'popularRooms'));
+        return view('admin.dashboard', compact('rooms', 'total', 'occupied', 'available', 'maintenance', 'totalViews', 'totalWaClicks', 'popularRooms'));
     }
 
     public function rooms()
     {
+        Room::normalizeSequentialIds();
+
         return view('admin.rooms_index', [
-            'rooms' => Room::query()->latest()->get(),
+            'rooms' => Room::query()->orderBy('id')->get(),
         ]);
     }
 
@@ -41,7 +46,11 @@ class AdminRoomController extends Controller
 
     public function store(Request $request)
     {
-        Room::create($this->validated($request));
+        $data = $this->validated($request);
+        $data['id'] = Room::nextSequentialId();
+
+        Room::create($data);
+        Room::syncAutoIncrementSequence();
 
         return redirect()->route('admin.dashboard')->with('success', 'Kamar baru berhasil ditambahkan.');
     }
@@ -58,22 +67,37 @@ class AdminRoomController extends Controller
         return redirect()->route('admin.dashboard')->with('success', 'Data kamar berhasil diperbarui. Halaman publik ikut diperbarui.');
     }
 
+    public function updateStatus(Request $request, Room $room)
+    {
+        $validated = $request->validate([
+            'status' => ['required', Rule::in(['Tersedia', 'Terisi', 'Pemeliharaan'])],
+        ]);
+
+        $room->update(['status' => $validated['status']]);
+
+        return back()->with('success', "Status kamar \"{$room->name}\" berhasil diubah menjadi {$validated['status']}.");
+    }
+
     public function destroy(Room $room)
     {
         $room->delete();
+        Room::normalizeSequentialIds();
 
         return redirect()->route('admin.dashboard')->with('success', 'Kamar berhasil dihapus dari katalog publik.');
     }
 
     public function analytics()
     {
-        $rooms = Room::query()->latest()->get();
+        Room::normalizeSequentialIds();
+
+        $rooms = Room::query()->orderBy('id')->get();
         $total = $rooms->count();
         $occupied = $rooms->where('status', 'Terisi')->count();
         $available = $rooms->where('status', 'Tersedia')->count();
         $maintenance = $rooms->where('status', 'Pemeliharaan')->count();
         
         $totalViews = $rooms->sum('views');
+        $totalWaClicks = $rooms->sum('wa_clicks');
         $potentialIncome = $rooms->sum('price');
         $monthlyIncome = $rooms->where('status', 'Terisi')->sum('price');
         $occupancyRate = $total ? round(($occupied / $total) * 100) : 0;
@@ -89,12 +113,13 @@ class AdminRoomController extends Controller
                 'available' => $items->where('status', 'Tersedia')->count(),
                 'avg_price' => round($items->avg('price')),
                 'total_views' => $items->sum('views'),
+                'total_wa_clicks' => $items->sum('wa_clicks'),
             ];
         })->values();
 
         return view('admin.analytics', compact(
             'rooms', 'total', 'occupied', 'available', 'maintenance',
-            'totalViews', 'potentialIncome', 'monthlyIncome', 'occupancyRate',
+            'totalViews', 'totalWaClicks', 'potentialIncome', 'monthlyIncome', 'occupancyRate',
             'popularRooms', 'typeStats'
         ));
     }

@@ -3,7 +3,7 @@
 @section('title', 'Pengaturan Admin | Mama Anis Group')
 
 @section('content')
-<main class="p-3.5 sm:p-8 lg:p-10 flex flex-col gap-4 sm:gap-8 rise w-full max-w-full overflow-x-hidden">
+<main class="w-full max-w-7xl mx-auto p-3.5 sm:p-8 lg:p-10 flex flex-col gap-5 sm:gap-7 rise overflow-x-hidden">
     <!-- Header Page -->
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>

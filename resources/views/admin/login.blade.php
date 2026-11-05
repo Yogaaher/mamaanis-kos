@@ -72,8 +72,14 @@
             </div>
         @endif
 
-        <form method="POST" action="{{ route('admin.login.store') }}" class="mt-6 space-y-4">
+        <form id="admin-login-form" method="POST" action="{{ route('admin.login.store') }}" class="mt-6 space-y-4">
             @csrf
+            <!-- Anti-Bot Honeypot Field (Do not fill) -->
+            <div class="hidden" aria-hidden="true" style="display:none !important;">
+                <label for="website_url">Website</label>
+                <input id="website_url" name="website_url" type="text" value="" tabindex="-1" autocomplete="off">
+            </div>
+
             <div>
                 <label class="text-xs font-bold text-slate-700 block">Username atau Email</label>
                 <div class="relative mt-1.5">
@@ -87,6 +93,8 @@
                         placeholder="Masukkan username atau email Anda" 
                         required 
                         autofocus 
+                        maxlength="120"
+                        autocomplete="username"
                         class="w-full pl-10 pr-4 py-3 text-xs rounded-xl border border-slate-200 outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 font-medium"
                     >
                 </div>
@@ -106,6 +114,8 @@
                         type="password" 
                         placeholder="Masukkan kata sandi" 
                         required 
+                        maxlength="255"
+                        autocomplete="current-password"
                         class="w-full pl-10 pr-4 py-3 text-xs rounded-xl border border-slate-200 outline-none focus:border-brand focus:ring-2 focus:ring-brand/10 font-medium"
                     >
                 </div>
@@ -115,12 +125,23 @@
             </div>
 
             <button 
+                id="login-submit-btn"
                 type="submit"
-                class="w-full rounded-xl bg-brand hover:bg-brandHover py-3 font-bold text-xs text-white shadow-md shadow-brand/20 transition-all cursor-pointer mt-2"
+                class="w-full rounded-xl bg-brand hover:bg-brandHover py-3 font-bold text-xs text-white shadow-md shadow-brand/20 transition-all cursor-pointer mt-2 disabled:opacity-60 disabled:cursor-not-allowed"
             >
                 Masuk ke Dashboard
             </button>
         </form>
+
+        <script>
+            document.getElementById('admin-login-form')?.addEventListener('submit', function () {
+                const btn = document.getElementById('login-submit-btn');
+                if (btn) {
+                    btn.disabled = true;
+                    btn.textContent = 'Memverifikasi...';
+                }
+            });
+        </script>
 
         <div class="mt-6 pt-5 border-t border-slate-100 flex items-center justify-between text-xs">
             <a href="{{ route('home') }}" class="font-bold text-slate-400 hover:text-brand transition-colors flex items-center gap-1.5">

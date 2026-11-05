@@ -35,8 +35,11 @@
                 <span>Mama Anis Kos</span>
             </div>
             <p class="font-sans text-xs text-gray-500 max-w-sm">
-                Hunian kost eksklusif, aman, dan nyaman di kawasan Alam Sutera, Tangerang.
+                Hunian kost khusus putri yang aman dan nyaman di Alam Sutera, Tangerang (<strong>Patokan: Belakang Warteg Barokah Alam Sutera</strong>).
             </p>
+            <a href="https://share.google/j7P9yPSEyOxYYRu47" target="_blank" rel="noopener" class="text-[11px] font-bold text-[#006c49] hover:underline inline-flex items-center gap-1 mt-0.5">
+                <span>📍 Buka Google Maps Resmi ↗</span>
+            </a>
             <p class="font-sans text-[10px] sm:text-[11px] text-gray-400 mt-0.5">
                 &copy; 2026 Mama Anis Kos. All rights reserved.
             </p>

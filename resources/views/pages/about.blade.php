@@ -228,13 +228,13 @@
             <!-- Left Side: two small images with zoom hover -->
             <div class="md:col-span-5 grid grid-cols-2 sm:grid-cols-1 gap-3 sm:gap-4">
                 <div class="group aspect-[16/10] rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm border border-gray-100 relative">
-                    <img src="/images/lobby.jpeg" alt="Lobby Tamu Mama Anis Kos" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    <img src="/images/lobby.jpeg" alt="Lobby Tamu Mama Anis Kos" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                     <div class="absolute bottom-2 left-2 sm:bottom-3 sm:left-3 bg-white/90 backdrop-blur-xs px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-lg sm:rounded-xl text-[10px] sm:text-xs font-bold text-gray-800 font-display shadow-xs">
                         Lobby Tamu
                     </div>
                 </div>
                 <div class="group aspect-[16/10] rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm border border-gray-100 relative">
-                    <img src="/images/AC.jpeg" alt="Kamar dengan AC" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    <img src="/images/AC.jpeg" alt="Kamar dengan AC" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                     <div class="absolute bottom-2 left-2 sm:bottom-3 sm:left-3 bg-white/90 backdrop-blur-xs px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-xl text-[10px] sm:text-xs font-bold text-gray-800 font-display shadow-xs">
                         AC Tiap Kamar
                     </div>
@@ -251,7 +251,7 @@
                     </p>
                 </div>
                 <div class="group aspect-[16/10] rounded-2xl sm:rounded-3xl overflow-hidden shadow-md border border-gray-100 relative">
-                    <img src="/images/Kamar no 5.jpg" alt="Kamar Mama Anis Kos" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    <img src="/images/Kamar no 5.jpg" alt="Kamar Mama Anis Kos" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                     <div class="absolute bottom-2.5 left-2.5 sm:bottom-4 sm:left-4 bg-white/90 backdrop-blur-xs px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-lg sm:rounded-xl text-[10px] sm:text-xs font-bold text-gray-800 font-display shadow-xs">
                         Unit Kamar Tidur
                     </div>
