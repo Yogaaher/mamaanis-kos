@@ -126,9 +126,9 @@
     </section>
 
     <!-- Charts Row -->
-    <section class="grid gap-6 lg:grid-cols-12">
+    <section class="grid grid-cols-1 gap-6 lg:grid-cols-12 min-w-0">
         <!-- Main Area Chart -->
-        <article class="admin-card lg:col-span-7 bg-white p-6 sm:p-7 rounded-2xl border border-slate-100 shadow-soft flex flex-col gap-4">
+        <article class="admin-card lg:col-span-7 bg-white p-4 sm:p-7 rounded-2xl border border-slate-100 shadow-soft flex flex-col gap-4 min-w-0 overflow-hidden">
             <div class="flex items-center justify-between">
                 <div>
                     <h3 class="font-black text-slate-900 text-base font-display">Pertumbuhan Minat Calon Penyewa</h3>
@@ -141,7 +141,7 @@
         </article>
 
         <!-- Doughnut / Bar Type Distribution Chart -->
-        <article class="admin-card lg:col-span-5 bg-white p-6 sm:p-7 rounded-2xl border border-slate-100 shadow-soft flex flex-col justify-between gap-4">
+        <article class="admin-card lg:col-span-5 bg-white p-4 sm:p-7 rounded-2xl border border-slate-100 shadow-soft flex flex-col justify-between gap-4 min-w-0 overflow-hidden">
             <div>
                 <h3 class="font-black text-slate-900 text-base font-display">Distribusi Minat per Tipe Kamar</h3>
                 <p class="text-xs text-slate-400 mt-0.5">Proporsi total views berdasarkan kategori tipe kamar.</p>

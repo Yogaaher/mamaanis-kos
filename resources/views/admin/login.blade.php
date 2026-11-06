@@ -43,8 +43,8 @@
         }
     </script>
 </head>
-<body class="min-h-screen bg-mist flex items-center justify-center p-5 font-sans text-ink antialiased">
-    <main class="w-full max-w-md rounded-3xl bg-white p-8 sm:p-10 shadow-xl shadow-emerald-950/5 border border-slate-100">
+<body class="min-h-screen bg-mist flex items-center justify-center p-4 sm:p-5 font-sans text-ink antialiased overflow-x-hidden">
+    <main class="w-full max-w-md rounded-2xl sm:rounded-3xl bg-white p-6 sm:p-10 shadow-xl shadow-emerald-950/5 border border-slate-100">
         <!-- Logo & Header -->
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl bg-brand text-white flex items-center justify-center shadow-md shadow-brand/20">

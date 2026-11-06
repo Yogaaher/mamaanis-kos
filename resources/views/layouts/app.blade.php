@@ -90,6 +90,13 @@
         tailwind.config = {
             theme: {
                 extend: {
+                    screens: {
+                        xs: '380px',
+                    },
+                    spacing: {
+                        '4.5': '1.125rem',
+                        '5.5': '1.375rem',
+                    },
                     fontFamily: {
                         sans: ['Plus Jakarta Sans', 'Montserrat', 'sans-serif'],
                         display: ['Montserrat', 'Plus Jakarta Sans', 'sans-serif'],
@@ -97,6 +104,17 @@
                     },
                     colors: {
                         brand: '#006c49',
+                    },
+                    boxShadow: {
+                        '2xs': '0 1px 2px 0 rgba(0, 0, 0, 0.04)',
+                        'xs': '0 1px 3px 0 rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.06)',
+                        'soft': '0 10px 30px -5px rgba(0, 108, 73, 0.08), 0 4px 12px -2px rgba(0, 0, 0, 0.03)',
+                    },
+                    backdropBlur: {
+                        xs: '2px',
+                    },
+                    borderRadius: {
+                        xs: '0.125rem',
                     }
                 }
             }
@@ -284,7 +302,7 @@
     <x-navbar :currentTab="$currentTab ?? 'home'" />
 
     <!-- Main dynamic slot content -->
-    <main class="flex-1">
+    <main class="flex-1 w-full max-w-full min-w-0 overflow-x-hidden">
         @yield('content')
     </main>
 
@@ -297,7 +315,7 @@
         target="_blank" 
         rel="noopener"
         aria-label="Chat WhatsApp Pengelola Mama Anis Kos"
-        class="fixed bottom-5 right-5 sm:bottom-7 sm:right-7 z-40 group flex items-center gap-2.5 bg-[#006c49] hover:bg-[#005236] text-white p-3.5 sm:px-5 sm:py-3.5 rounded-full shadow-2xl shadow-[#006c49]/40 border border-emerald-400/30 hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer"
+        class="fixed bottom-5 right-5 sm:bottom-7 sm:right-7 z-40 group {{ request()->routeIs('rooms.show') ? 'hidden lg:flex' : 'flex' }} items-center gap-2.5 bg-[#006c49] hover:bg-[#005236] text-white p-3.5 sm:px-5 sm:py-3.5 rounded-full shadow-2xl shadow-[#006c49]/40 border border-emerald-400/30 hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer"
     >
         <span class="absolute -top-1 -right-1 flex h-3.5 w-3.5">
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-300 opacity-75"></span>

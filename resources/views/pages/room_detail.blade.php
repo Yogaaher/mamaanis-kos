@@ -97,7 +97,7 @@
             'time_a' => '09:45',
             'question' => 'Alamat lengkap Mama Anis Kos di mana Kak? Patokannya apa biar tidak rancu dengan kos lain?',
             'answer' => 'Lokasi kami di kawasan Alam Sutera, Pinang, Tangerang — patokan paling jelas dan akuratnya persis di Belakang Warteg Barokah Alam Sutera (supaya tidak rancu atau tertukar dengan kos lain di sekitar lokasi). Kakak bisa langsung klik Google Maps resmi kami: ' . $gmapsUrl,
-            'answer_html' => 'Lokasi kami di kawasan Alam Sutera, Pinang, Tangerang — patokan paling jelas dan akuratnya persis di <strong>Belakang Warteg Barokah Alam Sutera</strong> (supaya tidak rancu atau tertukar dengan kos lain di sekitar lokasi).<br><br>📍 Titik Lokasi Resmi: <a href="' . $gmapsUrl . '" target="_blank" rel="noopener" class="inline-flex items-center gap-1 font-extrabold text-[#006c49] underline hover:text-[#005236] bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200 mt-1">Klik Buka Google Maps Mama Anis Kos ↗</a>',
+            'answer_html' => 'Lokasi kami di kawasan Alam Sutera, Pinang, Tangerang — patokan paling jelas dan akuratnya persis di <strong>Belakang Warteg Barokah Alam Sutera</strong> (supaya tidak rancu atau tertukar dengan kos lain di sekitar lokasi).<br><br>📍 Titik Lokasi Resmi: <a href="' . $gmapsUrl . '" target="_blank" rel="noopener" class="inline-flex flex-wrap items-center gap-1 font-extrabold text-[#006c49] underline hover:text-[#005236] bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200 mt-1 break-words">Klik Buka Google Maps Mama Anis Kos ↗</a>',
         ],
         [
             'topic' => 'kapasitas',
@@ -148,28 +148,28 @@
 @endpush
 
 @section('content')
-<div class="pt-4 sm:pt-8 pb-16 sm:pb-20 font-sans bg-[#f8f9fb] min-h-screen">
-    <!-- Aligned to max-w-7xl px-4 sm:px-8 for perfect symmetry -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-8">
+<div class="pt-4 sm:pt-8 pb-24 lg:pb-20 font-sans bg-[#f8f9fb] min-h-screen w-full max-w-full overflow-x-hidden">
+    <!-- Aligned to max-w-7xl px-3.5 sm:px-6 lg:px-8 for perfect symmetry on all devices -->
+    <div class="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 w-full min-w-0">
         <!-- Top Back Navigation Bar + Quick Share Action -->
-        <div class="mb-4 sm:mb-6 flex items-center justify-between gap-2.5">
+        <div class="mb-4 sm:mb-6 flex flex-wrap items-center justify-between gap-2 min-w-0">
             <a 
                 href="/catalog" 
-                class="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-gray-700 hover:text-[#006c49] bg-white border border-gray-200 hover:border-emerald-300 px-3.5 py-2 rounded-xl shadow-2xs hover:shadow-xs transition-all cursor-pointer group active:scale-95 shrink-0"
+                class="inline-flex items-center gap-1.5 sm:gap-2 text-[11px] sm:text-sm font-bold text-gray-700 hover:text-[#006c49] bg-white border border-gray-200 hover:border-emerald-300 px-3 py-2 sm:px-3.5 sm:py-2 rounded-xl shadow-2xs hover:shadow-xs transition-all cursor-pointer group active:scale-95 shrink-0"
             >
-                <svg class="w-4 h-4 text-gray-500 group-hover:text-[#006c49] transition-transform group-hover:-translate-x-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-500 group-hover:text-[#006c49] transition-transform group-hover:-translate-x-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/>
                 </svg>
                 <span>Kembali ke Katalog</span>
             </a>
             
-            <div class="flex items-center gap-2.5 sm:gap-4">
-                <div class="hidden md:flex items-center gap-2 text-xs text-gray-400 font-medium">
-                    <a href="/" class="hover:text-[#006c49] transition-colors">Beranda</a>
-                    <span>/</span>
-                    <a href="/catalog" class="hover:text-[#006c49] transition-colors">Kamar</a>
-                    <span>/</span>
-                    <span class="text-gray-600 font-bold truncate max-w-[200px]">{{ $name }}</span>
+            <div class="flex items-center gap-2 sm:gap-4 min-w-0">
+                <div class="hidden md:flex items-center gap-2 text-xs text-gray-400 font-medium min-w-0">
+                    <a href="/" class="hover:text-[#006c49] transition-colors shrink-0">Beranda</a>
+                    <span class="shrink-0">/</span>
+                    <a href="/catalog" class="hover:text-[#006c49] transition-colors shrink-0">Kamar</a>
+                    <span class="shrink-0">/</span>
+                    <span class="text-gray-600 font-bold truncate max-w-[180px] lg:max-w-[240px]">{{ $name }}</span>
                 </div>
 
                 <!-- Tombol Bagikan Kamar (Native Share / Copy Link) -->
@@ -177,10 +177,10 @@
                     type="button"
                     id="topShareRoomBtn"
                     onclick="shareRoomPage()"
-                    class="inline-flex items-center gap-1.5 text-xs font-bold text-[#006c49] bg-emerald-50/90 hover:bg-emerald-100 border border-emerald-200 px-3.5 py-2 rounded-xl shadow-2xs transition-all cursor-pointer active:scale-95 shrink-0"
+                    class="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-bold text-[#006c49] bg-emerald-50/90 hover:bg-emerald-100 border border-emerald-200 px-3 py-2 sm:px-3.5 sm:py-2 rounded-xl shadow-2xs transition-all cursor-pointer active:scale-95 shrink-0"
                     title="Bagikan Link Kamar Ini"
                 >
-                    <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                    <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
                     </svg>
                     <span id="topShareRoomText">Bagikan Kamar</span>
@@ -188,12 +188,12 @@
             </div>
         </div>
 
-        <div class="grid gap-6 lg:gap-8 lg:grid-cols-12 items-start">
-            <!-- Left Side: Main details -->
-            <div class="lg:col-span-8 flex flex-col gap-6 sm:gap-8">
+        <div class="grid grid-cols-1 gap-5 sm:gap-6 lg:gap-8 lg:grid-cols-12 items-start w-full min-w-0">
+            <!-- Left Side: Main details (min-w-0 prevents CSS Grid blowout on mobile/tablet!) -->
+            <div class="lg:col-span-8 flex flex-col gap-5 sm:gap-7 min-w-0 w-full">
                 <!-- Large Image & Gallery (Foto Kamar & Foto Kamar Mandi) with Arrows, Swipe, and Previews -->
-                <div class="bg-white p-3 sm:p-4 rounded-2xl sm:rounded-3xl border border-gray-100 shadow-xs flex flex-col gap-3 sm:gap-4">
-                    <div id="gallery-carousel-container" class="relative aspect-[16/10] w-full overflow-hidden rounded-xl sm:rounded-2xl bg-slate-100 select-none cursor-zoom-in group">
+                <div class="bg-white p-2.5 sm:p-4 rounded-2xl sm:rounded-3xl border border-gray-100 shadow-xs flex flex-col gap-2.5 sm:gap-4 min-w-0 w-full overflow-hidden">
+                    <div id="gallery-carousel-container" class="relative aspect-[4/3] sm:aspect-[16/10] w-full overflow-hidden rounded-xl sm:rounded-2xl bg-slate-100 select-none cursor-zoom-in group">
                         <img
                             id="main-room-gallery"
                             src="{{ $galleryJsItems[0]['url'] ?? $image }}"
@@ -210,7 +210,7 @@
                             class="absolute top-2.5 right-2.5 sm:top-3.5 sm:right-3.5 bg-black/55 hover:bg-black/80 text-white backdrop-blur-md text-[10px] sm:text-xs font-bold px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-full flex items-center gap-1.5 shadow-md transition-all cursor-pointer z-20"
                             title="Perbesar Foto Layar Penuh"
                         >
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                            <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/>
                             </svg>
                             <span>Perbesar</span>
@@ -220,7 +220,7 @@
                         <button 
                             type="button" 
                             onclick="prevGalleryImage()" 
-                            class="absolute left-2.5 sm:left-4 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-black/50 hover:bg-black/80 text-white backdrop-blur-md flex items-center justify-center cursor-pointer transition-all shadow-md active:scale-90 z-20"
+                            class="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-black/50 hover:bg-black/80 text-white backdrop-blur-md flex items-center justify-center cursor-pointer transition-all shadow-md active:scale-90 z-20"
                             aria-label="Foto Sebelumnya"
                         >
                             <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
@@ -232,7 +232,7 @@
                         <button 
                             type="button" 
                             onclick="nextGalleryImage()" 
-                            class="absolute right-2.5 sm:right-4 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-black/50 hover:bg-black/80 text-white backdrop-blur-md flex items-center justify-center cursor-pointer transition-all shadow-md active:scale-90 z-20"
+                            class="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-black/50 hover:bg-black/80 text-white backdrop-blur-md flex items-center justify-center cursor-pointer transition-all shadow-md active:scale-90 z-20"
                             aria-label="Foto Berikutnya"
                         >
                             <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
@@ -240,13 +240,13 @@
                             </svg>
                         </button>
 
-                        <!-- Caption Badge -->
-                        <div id="gallery-badge" class="absolute bottom-2.5 left-2.5 sm:bottom-3.5 sm:left-3.5 bg-black/65 backdrop-blur-md text-white text-[10px] sm:text-xs font-bold px-3 py-1 rounded-full shadow-md z-20">
+                        <!-- Caption Badge (Truncated on mobile so it never collides with dots) -->
+                        <div id="gallery-badge" class="absolute bottom-2.5 left-2.5 sm:bottom-3.5 sm:left-3.5 bg-black/65 backdrop-blur-md text-white text-[10px] sm:text-xs font-bold px-2.5 py-1 sm:px-3 sm:py-1 rounded-full shadow-md z-20 max-w-[60%] sm:max-w-[70%] truncate">
                             {{ $galleryJsItems[0]['title'] ?? '1 / 1 • Foto Kamar' }}
                         </div>
 
                         <!-- Dots Indicator -->
-                        <div class="absolute bottom-2.5 right-2.5 sm:bottom-3.5 sm:right-3.5 flex items-center gap-1.5 z-20 bg-black/40 backdrop-blur-xs px-2.5 py-1 rounded-full max-w-[50%] overflow-x-auto">
+                        <div class="absolute bottom-2.5 right-2.5 sm:bottom-3.5 sm:right-3.5 flex items-center gap-1.5 z-20 bg-black/40 backdrop-blur-xs px-2.5 py-1 rounded-full max-w-[35%] overflow-x-auto">
                             @foreach($galleryJsItems as $gIdx => $gItem)
                                 <button type="button" onclick="setGalleryIndex({{ $gIdx }})" id="gallery-dot-{{ $gIdx }}" class="{{ $gIdx === 0 ? 'w-4 h-2 rounded-full bg-white' : 'w-2 h-2 rounded-full bg-white/40' }} transition-all cursor-pointer shrink-0" aria-label="Slide {{ $gIdx + 1 }}"></button>
                             @endforeach
@@ -254,20 +254,20 @@
                     </div>
                     
                     <!-- Clickable Thumbnails row under placeholder -->
-                    <div class="grid {{ count($galleryJsItems) > 2 ? 'grid-cols-2 sm:grid-cols-3' : 'grid-cols-2' }} gap-2 sm:gap-3">
+                    <div class="grid grid-cols-1 xs:grid-cols-2 {{ count($galleryJsItems) > 2 ? 'sm:grid-cols-3' : 'sm:grid-cols-2' }} gap-2 sm:gap-3 w-full min-w-0">
                         @foreach($galleryJsItems as $gIdx => $gItem)
                             <button 
                                 type="button"
                                 id="thumb-btn-{{ $gIdx }}"
                                 onclick="setGalleryIndex({{ $gIdx }})" 
-                                class="gallery-thumb flex items-center gap-2 sm:gap-3 p-1.5 sm:p-2 rounded-xl sm:rounded-2xl {{ $gIdx === 0 ? 'border-2 border-[#006c49] bg-emerald-50/50' : 'border border-gray-200 hover:border-gray-300 bg-white' }} focus:outline-none transition-all cursor-pointer text-left"
+                                class="gallery-thumb flex items-center gap-2 sm:gap-3 p-1.5 sm:p-2 rounded-xl sm:rounded-2xl {{ $gIdx === 0 ? 'border-2 border-[#006c49] bg-emerald-50/50' : 'border border-gray-200 hover:border-gray-300 bg-white' }} focus:outline-none transition-all cursor-pointer text-left min-w-0 w-full overflow-hidden"
                             >
                                 <div class="w-12 h-10 sm:w-16 sm:h-12 rounded-lg sm:rounded-xl overflow-hidden shrink-0 bg-slate-200">
                                     <img src="{{ $gItem['url'] }}" class="w-full h-full object-cover" alt="{{ $gItem['label'] }}" onerror="handleImgError(this)">
                                 </div>
-                                <div class="truncate">
+                                <div class="min-w-0 flex-1">
                                     <span class="text-[11px] sm:text-xs font-bold text-gray-900 block truncate">{{ $gIdx + 1 }}. {{ $gItem['label'] }}</span>
-                                    <span class="text-[9px] sm:text-[10px] text-gray-500">{{ $gIdx === 0 ? 'Tampilan Utama' : 'Galeri Kamar' }}</span>
+                                    <span class="text-[9px] sm:text-[10px] text-gray-500 block truncate">{{ $gIdx === 0 ? 'Tampilan Utama' : 'Galeri Kamar' }}</span>
                                 </div>
                             </button>
                         @endforeach
@@ -275,37 +275,65 @@
                 </div>
 
                 <!-- Main Specifications -->
-                <div class="bg-white p-4 sm:p-8 rounded-2xl sm:rounded-3xl border border-gray-100 shadow-xs flex flex-col gap-4 sm:gap-6">
-                    <div class="flex justify-between items-start gap-4">
-                        <div>
+                <div class="bg-white p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl border border-gray-100 shadow-xs flex flex-col gap-4 sm:gap-6 min-w-0 w-full overflow-hidden">
+                    <div class="flex flex-col gap-3 min-w-0">
+                        <div class="min-w-0">
                             <div class="flex items-center gap-2 flex-wrap">
-                                <h1 class="text-xl sm:text-2xl md:text-3xl font-extrabold text-gray-900 leading-tight font-display">
+                                <h1 class="text-lg sm:text-2xl md:text-3xl font-extrabold text-gray-900 leading-tight font-display break-words">
                                     {{ $name }}
                                 </h1>
                                 <x-badge-status :status="$status" />
-                                <span class="bg-pink-50 text-pink-700 border border-pink-200 px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-extrabold">
+                                <span class="bg-pink-50 text-pink-700 border border-pink-200 px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-extrabold shrink-0">
                                     👩 Kos Khusus Putri
                                 </span>
                             </div>
-                            <div class="text-xs text-gray-500 mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 font-medium">
-                                <span class="inline-flex items-center gap-1">
-                                    <svg class="w-3.5 h-3.5 text-[#006c49]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <div class="text-xs text-gray-500 mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 font-medium min-w-0">
+                                <span class="inline-flex items-start sm:items-center gap-1 min-w-0">
+                                    <svg class="w-3.5 h-3.5 text-[#006c49] shrink-0 mt-0.5 sm:mt-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                                     </svg>
-                                    <span>{{ $location }} (<strong>Belakang Warteg Barokah Alam Sutera</strong>)</span>
+                                    <span class="break-words">{{ $location }} (<strong>Belakang Warteg Barokah Alam Sutera</strong>)</span>
                                 </span>
-                                <a href="{{ $gmapsUrl }}" target="_blank" rel="noopener" class="inline-flex items-center gap-1 text-[#006c49] hover:text-[#005236] font-extrabold underline">
+                                <a href="{{ $gmapsUrl }}" target="_blank" rel="noopener" class="inline-flex items-center gap-1 text-[#006c49] hover:text-[#005236] font-extrabold underline shrink-0">
                                     <span>📍 Buka Google Maps ↗</span>
                                 </a>
                             </div>
                         </div>
+
+                        <!-- Mobile & Tablet Inline Quick Price Banner (Visible on < lg so user immediately sees price without scrolling down) -->
+                        <div class="lg:hidden mt-1 p-3.5 sm:p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200/80 flex flex-col xs:flex-row xs:items-center justify-between gap-3">
+                            <div>
+                                <span class="text-[10px] text-emerald-800 font-bold uppercase tracking-wider block">Tarif Sewa Kamar</span>
+                                <div class="flex items-baseline gap-1 mt-0.5">
+                                    <span class="text-xl sm:text-2xl font-black text-[#006c49] font-display">{{ $formatRupiah($price) }}</span>
+                                    <span class="text-xs text-gray-500 font-semibold">/ bulan</span>
+                                </div>
+                                <span class="text-[11px] text-gray-600 font-medium block mt-0.5">Min. sewa {{ $minStay }} • Maks. {{ $maxOccupants }} orang</span>
+                            </div>
+                            @if($status === 'Tersedia')
+                                <button
+                                    type="button"
+                                    onclick="openBookingSafetyPrompt('{{ $whatsappUrl }}')"
+                                    class="w-full xs:w-auto bg-[#006c49] hover:bg-[#005236] text-white px-4 py-2.5 rounded-xl font-bold shadow-sm transition-all active:scale-95 flex items-center justify-center gap-1.5 text-xs cursor-pointer shrink-0"
+                                >
+                                    <svg class="w-3.5 h-3.5 fill-current shrink-0" viewBox="0 0 24 24">
+                                        <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.965C16.528 1.977 14.07 1.951 12.01 1.95c-5.438 0-9.864 4.372-9.868 9.8-.001 1.714.463 3.39 1.341 4.877L2.45 21.11l4.197-1.956z"/>
+                                    </svg>
+                                    <span>Booking via WA</span>
+                                </button>
+                            @else
+                                <span class="text-xs font-bold text-gray-500 bg-white px-3 py-1.5 rounded-xl border border-gray-200 text-center">
+                                    Status: {{ $status }}
+                                </span>
+                            @endif
+                        </div>
                     </div>
 
-                    <!-- Specs specs icons/tags -->
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4 py-3 sm:py-4 px-3 sm:px-5 bg-gray-50 rounded-xl sm:rounded-2xl border border-gray-100 text-center">
+                    <!-- Specs icons/tags -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 p-2.5 sm:py-4 sm:px-5 bg-gray-50 rounded-xl sm:rounded-2xl border border-gray-100 text-center">
                         <!-- Luas -->
-                        <div class="flex flex-col items-center gap-1">
+                        <div class="flex flex-col items-center justify-center gap-1 p-2 sm:p-0 bg-white sm:bg-transparent rounded-lg sm:rounded-none border border-gray-100 sm:border-0 min-w-0">
                             <span class="w-5 h-5 sm:w-6 sm:h-6 text-[#006c49] flex items-center justify-center">
                                 <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5"/>
@@ -316,7 +344,7 @@
                         </div>
 
                         <!-- Tempat Tidur -->
-                        <div class="flex flex-col items-center gap-1">
+                        <div class="flex flex-col items-center justify-center gap-1 p-2 sm:p-0 bg-white sm:bg-transparent rounded-lg sm:rounded-none border border-gray-100 sm:border-0 min-w-0">
                             <span class="w-5 h-5 sm:w-6 sm:h-6 text-[#006c49] flex items-center justify-center">
                                 <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 10V6a2 2 0 012-2h14a2 2 0 012 2v4M3 10v6a2 2 0 002 2h16a2 2 0 002-2v-6M3 10h18M7 14h1m8 0h1"/>
@@ -327,7 +355,7 @@
                         </div>
 
                         <!-- Kamar Mandi -->
-                        <div class="flex flex-col items-center gap-1">
+                        <div class="flex flex-col items-center justify-center gap-1 p-2 sm:p-0 bg-white sm:bg-transparent rounded-lg sm:rounded-none border border-gray-100 sm:border-0 min-w-0">
                             <span class="w-5 h-5 sm:w-6 sm:h-6 text-[#006c49] flex items-center justify-center">
                                 <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 10h16m-16 0v8a2 2 0 002 2h12a2 2 0 002-2v-8m-16 0V6a2 2 0 012-2h2m10 2v4M8 6V4"/>
@@ -338,7 +366,7 @@
                         </div>
 
                         <!-- Kapasitas Max 1 Orang -->
-                        <div class="flex flex-col items-center gap-1">
+                        <div class="flex flex-col items-center justify-center gap-1 p-2 sm:p-0 bg-white sm:bg-transparent rounded-lg sm:rounded-none border border-gray-100 sm:border-0 min-w-0">
                             <span class="w-5 h-5 sm:w-6 sm:h-6 text-[#006c49] flex items-center justify-center">
                                 <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
@@ -350,23 +378,23 @@
                     </div>
 
                     <!-- Description -->
-                    <div class="flex flex-col gap-2 pt-4 sm:pt-6 border-t border-gray-100">
+                    <div class="flex flex-col gap-2 pt-4 sm:pt-6 border-t border-gray-100 min-w-0">
                         <h4 class="font-extrabold text-gray-900 text-sm sm:text-base font-display">Tentang Kamar Ini</h4>
-                        <div class="text-xs sm:text-sm text-gray-600 leading-relaxed sm:leading-loose font-sans whitespace-pre-line bg-gray-50/70 p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-gray-100/80">
+                        <div class="text-xs sm:text-sm text-gray-600 leading-relaxed sm:leading-loose font-sans whitespace-pre-line break-words bg-gray-50/70 p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-gray-100/80">
                             {{ $description }}
                         </div>
                     </div>
 
                     <!-- Facilities with accurate vector icons -->
-                    <div class="flex flex-col gap-2.5 sm:gap-3 pt-4 sm:pt-6 border-t border-gray-100">
+                    <div class="flex flex-col gap-2.5 sm:gap-3 pt-4 sm:pt-6 border-t border-gray-100 min-w-0">
                         <h4 class="font-extrabold text-gray-900 text-sm sm:text-base font-display">Fasilitas Unit</h4>
-                        <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3 text-xs sm:text-sm text-gray-700 font-medium">
+                        <div class="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-3 text-xs sm:text-sm text-gray-700 font-medium">
                             @forelse($amenities as $amenity)
-                                <div class="flex items-center gap-2 sm:gap-2.5 p-2.5 sm:p-3 rounded-xl sm:rounded-2xl bg-emerald-50/50 border border-emerald-100 hover:bg-emerald-50 transition-colors">
-                                    <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-lg sm:rounded-xl bg-white flex items-center justify-center shadow-2xs shrink-0 border border-emerald-100/60">
+                                <div class="flex items-center gap-2 sm:gap-2.5 p-2.5 sm:p-3 rounded-xl sm:rounded-2xl bg-emerald-50/50 border border-emerald-100 hover:bg-emerald-50 transition-colors min-w-0">
+                                    <div class="w-7 h-7 rounded-lg sm:rounded-xl bg-white flex items-center justify-center shadow-2xs shrink-0 border border-emerald-100/60">
                                         <x-amenity-icon :amenity="$amenity" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#006c49] shrink-0" />
                                     </div>
-                                    <span class="font-semibold text-gray-800 text-[11px] sm:text-xs truncate">{{ $amenity }}</span>
+                                    <span class="font-semibold text-gray-800 text-xs leading-snug break-words min-w-0 flex-1">{{ $amenity }}</span>
                                 </div>
                             @empty
                                 <div class="flex items-center gap-2">
@@ -379,98 +407,98 @@
                 </div>
 
                 <!-- Interactive Bubble Chat FAQ Section (Tanya Jawab Seputar Kos) -->
-                <div id="room-faq-chat" class="bg-white rounded-2xl sm:rounded-3xl border border-gray-100 shadow-xs overflow-hidden flex flex-col">
+                <div id="room-faq-chat" class="bg-white rounded-2xl sm:rounded-3xl border border-gray-100 shadow-xs overflow-hidden flex flex-col min-w-0 w-full">
                     <!-- Chat Room Header Bar -->
-                    <div class="bg-gradient-to-r from-[#004d31] via-[#006c49] to-[#005a3c] px-4 py-3.5 sm:px-6 sm:py-4 text-white flex items-center justify-between gap-3">
-                        <div class="flex items-center gap-3">
+                    <div class="bg-gradient-to-r from-[#004d31] via-[#006c49] to-[#005a3c] px-3.5 py-3.5 sm:px-6 sm:py-4 text-white flex items-center justify-between gap-2.5 min-w-0">
+                        <div class="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
                             <div class="relative shrink-0">
-                                <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/20 border-2 border-emerald-300/60 flex items-center justify-center font-black text-sm sm:text-base shadow-inner">
+                                <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white/20 border-2 border-emerald-300/60 flex items-center justify-center font-black text-xs sm:text-base shadow-inner">
                                     MA
                                 </div>
-                                <span class="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-emerald-400 border-2 border-[#004d31]"></span>
+                                <span class="absolute bottom-0 right-0 w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-emerald-400 border-2 border-[#004d31]"></span>
                             </div>
-                            <div>
-                                <div class="flex items-center gap-1.5">
-                                    <h3 class="font-extrabold text-sm sm:text-base font-display leading-tight">Tanya Jawab Kos (FAQ)</h3>
-                                    <span class="bg-white/20 text-emerald-100 text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-full">Resmi</span>
+                            <div class="min-w-0 flex-1">
+                                <div class="flex items-center gap-1.5 flex-wrap">
+                                    <h3 class="font-extrabold text-xs sm:text-base font-display leading-tight">Tanya Jawab Kos (FAQ)</h3>
+                                    <span class="bg-white/20 text-emerald-100 text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0">Resmi</span>
                                 </div>
-                                <p class="text-[11px] sm:text-xs text-emerald-100/90 mt-0.5 flex items-center gap-1.5">
-                                    <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-300 animate-pulse"></span>
-                                    <span>Pengelola Mama Anis Kos • Klik topik di bawah</span>
+                                <p class="text-[10px] sm:text-xs text-emerald-100/90 mt-0.5 flex items-center gap-1.5 truncate">
+                                    <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-300 animate-pulse shrink-0"></span>
+                                    <span class="truncate">Pengelola Mama Anis Kos • Klik topik di bawah</span>
                                 </p>
                             </div>
                         </div>
 
-                        <span class="hidden sm:inline-flex items-center gap-1 text-[11px] font-bold bg-black/20 px-3 py-1 rounded-full text-emerald-100">
+                        <span class="hidden sm:inline-flex items-center gap-1 text-[11px] font-bold bg-black/20 px-3 py-1 rounded-full text-emerald-100 shrink-0">
                             💬 {{ count($faqChats) }} Pertanyaan Populer
                         </span>
                     </div>
 
-                    <!-- Quick Topic Filter Pills -->
-                    <div class="px-4 py-2.5 sm:px-6 sm:py-3 bg-emerald-50/60 border-b border-emerald-100/80 flex items-center gap-1.5 sm:gap-2 overflow-x-auto">
-                        <button type="button" onclick="filterFaqTopic('ALL')" data-faq-btn="ALL" class="faq-topic-pill px-3 py-1 rounded-full text-[11px] font-bold bg-[#006c49] text-white shadow-2xs transition-all cursor-pointer shrink-0">
+                    <!-- Quick Topic Filter Pills (Flex-wrap so all topics are visible & never cause horizontal overflow) -->
+                    <div class="px-3.5 py-2.5 sm:px-6 sm:py-3 bg-emerald-50/60 border-b border-emerald-100/80 flex flex-wrap items-center gap-1.5 sm:gap-2 w-full min-w-0">
+                        <button type="button" onclick="filterFaqTopic('ALL')" data-faq-btn="ALL" class="faq-topic-pill px-2.5 sm:px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-bold bg-[#006c49] text-white shadow-2xs transition-all cursor-pointer">
                             Semua ({{ count($faqChats) }})
                         </button>
-                        <button type="button" onclick="filterFaqTopic('akses')" data-faq-btn="akses" class="faq-topic-pill px-3 py-1 rounded-full text-[11px] font-bold bg-white text-gray-600 hover:bg-emerald-100/60 border border-emerald-100 transition-all cursor-pointer shrink-0">
+                        <button type="button" onclick="filterFaqTopic('akses')" data-faq-btn="akses" class="faq-topic-pill px-2.5 sm:px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-bold bg-white text-gray-600 hover:bg-emerald-100/60 border border-emerald-100 transition-all cursor-pointer">
                             👩 Khusus Putri & Tamu
                         </button>
-                        <button type="button" onclick="filterFaqTopic('listrik')" data-faq-btn="listrik" class="faq-topic-pill px-3 py-1 rounded-full text-[11px] font-bold bg-white text-gray-600 hover:bg-emerald-100/60 border border-emerald-100 transition-all cursor-pointer shrink-0">
+                        <button type="button" onclick="filterFaqTopic('listrik')" data-faq-btn="listrik" class="faq-topic-pill px-2.5 sm:px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-bold bg-white text-gray-600 hover:bg-emerald-100/60 border border-emerald-100 transition-all cursor-pointer">
                             ⚡ Listrik, Air & Sampah
                         </button>
-                        <button type="button" onclick="filterFaqTopic('lokasi')" data-faq-btn="lokasi" class="faq-topic-pill px-3 py-1 rounded-full text-[11px] font-bold bg-white text-gray-600 hover:bg-emerald-100/60 border border-emerald-100 transition-all cursor-pointer shrink-0">
+                        <button type="button" onclick="filterFaqTopic('lokasi')" data-faq-btn="lokasi" class="faq-topic-pill px-2.5 sm:px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-bold bg-white text-gray-600 hover:bg-emerald-100/60 border border-emerald-100 transition-all cursor-pointer">
                             📍 Alamat & Maps
                         </button>
-                        <button type="button" onclick="filterFaqTopic('kapasitas')" data-faq-btn="kapasitas" class="faq-topic-pill px-3 py-1 rounded-full text-[11px] font-bold bg-white text-gray-600 hover:bg-emerald-100/60 border border-emerald-100 transition-all cursor-pointer shrink-0">
+                        <button type="button" onclick="filterFaqTopic('kapasitas')" data-faq-btn="kapasitas" class="faq-topic-pill px-2.5 sm:px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-bold bg-white text-gray-600 hover:bg-emerald-100/60 border border-emerald-100 transition-all cursor-pointer">
                             👤 Kapasitas & Durasi
                         </button>
-                        <button type="button" onclick="filterFaqTopic('fasilitas')" data-faq-btn="fasilitas" class="faq-topic-pill px-3 py-1 rounded-full text-[11px] font-bold bg-white text-gray-600 hover:bg-emerald-100/60 border border-emerald-100 transition-all cursor-pointer shrink-0">
+                        <button type="button" onclick="filterFaqTopic('fasilitas')" data-faq-btn="fasilitas" class="faq-topic-pill px-2.5 sm:px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-bold bg-white text-gray-600 hover:bg-emerald-100/60 border border-emerald-100 transition-all cursor-pointer">
                             🧺 Laundry & Kulkas
                         </button>
-                        <button type="button" onclick="filterFaqTopic('booking')" data-faq-btn="booking" class="faq-topic-pill px-3 py-1 rounded-full text-[11px] font-bold bg-white text-gray-600 hover:bg-emerald-100/60 border border-emerald-100 transition-all cursor-pointer shrink-0">
+                        <button type="button" onclick="filterFaqTopic('booking')" data-faq-btn="booking" class="faq-topic-pill px-2.5 sm:px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-bold bg-white text-gray-600 hover:bg-emerald-100/60 border border-emerald-100 transition-all cursor-pointer">
                             🛡️ Survei & Booking
                         </button>
                     </div>
 
                     <!-- Chat Conversation Stream -->
-                    <div class="p-4 sm:p-6 bg-[#f3f6f4] flex flex-col gap-5" style="background-image: radial-gradient(rgba(0, 108, 73, 0.06) 1px, transparent 1px); background-size: 18px 18px;">
+                    <div class="p-3 sm:p-6 bg-[#f3f6f4] flex flex-col gap-4 sm:gap-5 min-w-0 w-full overflow-hidden" style="background-image: radial-gradient(rgba(0, 108, 73, 0.06) 1px, transparent 1px); background-size: 18px 18px;">
                         @foreach($faqChats as $fIdx => $chat)
-                            <div class="faq-chat-pair flex flex-col gap-2.5 transition-all duration-200" data-faq-topic="{{ $chat['topic'] }}">
+                            <div class="faq-chat-pair flex flex-col gap-2.5 transition-all duration-200 min-w-0" data-faq-topic="{{ $chat['topic'] }}">
                                 <!-- Right Bubble: Calon Penghuni Question -->
-                                <div class="flex items-end justify-end gap-2 pl-6 sm:pl-16">
+                                <div class="flex items-end justify-end gap-1.5 sm:gap-2 pl-2 sm:pl-14 min-w-0">
                                     <button 
                                         type="button"
                                         onclick="toggleFaqAnswer({{ $fIdx }})"
-                                        class="text-left group bg-[#d9fdd3] hover:bg-[#ccf7c4] text-gray-900 px-4 py-2.5 sm:px-4.5 sm:py-3 rounded-2xl rounded-br-xs shadow-2xs border border-emerald-200/80 transition-all cursor-pointer max-w-xl"
+                                        class="text-left group bg-[#d9fdd3] hover:bg-[#ccf7c4] text-gray-900 px-3.5 py-2.5 sm:px-4 sm:py-3 rounded-2xl rounded-br-xs shadow-2xs border border-emerald-200/80 transition-all cursor-pointer max-w-full sm:max-w-xl min-w-0 break-words"
                                     >
-                                        <div class="flex items-center justify-between gap-3 mb-0.5">
+                                        <div class="flex items-center justify-between gap-2 mb-0.5">
                                             <span class="text-[10px] font-extrabold text-emerald-800 uppercase tracking-wide">Calon Penghuni</span>
-                                            <span class="text-[9px] text-gray-500 font-mono">{{ $chat['time_q'] }} ✓✓</span>
+                                            <span class="text-[9px] text-gray-500 font-mono shrink-0">{{ $chat['time_q'] }} ✓✓</span>
                                         </div>
-                                        <p class="text-xs sm:text-sm font-bold text-gray-900 leading-snug">
+                                        <p class="text-xs sm:text-sm font-bold text-gray-900 leading-snug break-words">
                                             {{ $chat['question'] }}
                                         </p>
                                     </button>
-                                    <div class="w-7 h-7 rounded-full bg-emerald-700 text-white text-[10px] font-extrabold flex items-center justify-center shrink-0 shadow-2xs">
+                                    <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-emerald-700 text-white text-[10px] font-extrabold flex items-center justify-center shrink-0 shadow-2xs">
                                         🙋
                                     </div>
                                 </div>
 
                                 <!-- Left Bubble: Pengelola Mama Anis Answer -->
-                                <div id="faq-answer-{{ $fIdx }}" class="flex items-end justify-start gap-2 pr-4 sm:pr-14">
-                                    <div class="w-7 h-7 rounded-full bg-[#006c49] text-white text-[10px] font-black flex items-center justify-center shrink-0 shadow-2xs">
+                                <div id="faq-answer-{{ $fIdx }}" class="flex items-end justify-start gap-1.5 sm:gap-2 pr-2 sm:pr-14 min-w-0">
+                                    <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-[#006c49] text-white text-[9px] sm:text-[10px] font-black flex items-center justify-center shrink-0 shadow-2xs">
                                         MA
                                     </div>
-                                    <div class="bg-white text-gray-700 px-4 py-3 sm:px-5 sm:py-3.5 rounded-2xl rounded-bl-xs shadow-2xs border border-gray-200/80 max-w-xl">
-                                        <div class="flex items-center justify-between gap-3 mb-1">
+                                    <div class="bg-white text-gray-700 px-3.5 py-3 sm:px-5 sm:py-3.5 rounded-2xl rounded-bl-xs shadow-2xs border border-gray-200/80 max-w-full sm:max-w-xl min-w-0 break-words overflow-hidden">
+                                        <div class="flex items-center justify-between gap-2 mb-1">
                                             <span class="text-[10px] font-extrabold text-[#006c49] flex items-center gap-1">
                                                 <span>Mama Anis Kos</span>
-                                                <svg class="w-3 h-3 text-[#006c49]" fill="currentColor" viewBox="0 0 20 20">
+                                                <svg class="w-3 h-3 text-[#006c49] shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                                                 </svg>
                                             </span>
-                                            <span class="text-[9px] text-gray-400 font-mono">{{ $chat['time_a'] }}</span>
+                                            <span class="text-[9px] text-gray-400 font-mono shrink-0">{{ $chat['time_a'] }}</span>
                                         </div>
-                                        <div class="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                                        <div class="text-xs sm:text-sm text-gray-600 leading-relaxed break-words">
                                             @if(!empty($chat['answer_html']))
                                                 {!! $chat['answer_html'] !!}
                                             @else
@@ -484,18 +512,18 @@
                     </div>
 
                     <!-- Chat Bottom Input-Like Prompt Bar -->
-                    <div class="px-4 py-3 sm:px-6 sm:py-3.5 bg-white border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-2.5">
-                        <div class="flex items-center gap-2 text-xs text-gray-500 font-medium">
-                            <span class="w-2 h-2 rounded-full bg-[#006c49]"></span>
+                    <div class="px-3.5 py-3 sm:px-6 sm:py-3.5 bg-white border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-2.5 min-w-0">
+                        <div class="flex items-center gap-2 text-xs text-gray-500 font-medium text-center sm:text-left">
+                            <span class="w-2 h-2 rounded-full bg-[#006c49] shrink-0 hidden sm:inline-block"></span>
                             <span>Punya pertanyaan lain atau ingin jadwalkan survei langsung?</span>
                         </div>
                         <button
                             type="button"
                             onclick="openBookingSafetyPrompt('{{ $whatsappUrl }}')"
-                            class="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 bg-[#006c49] hover:bg-[#005236] text-white text-xs font-bold px-4 py-2 rounded-full shadow-xs transition-all cursor-pointer active:scale-95 shrink-0"
+                            class="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 bg-[#006c49] hover:bg-[#005236] text-white text-xs font-bold px-4 py-2.5 sm:py-2 rounded-full shadow-xs transition-all cursor-pointer active:scale-95 shrink-0"
                         >
                             <span>Tanya Langsung di WA</span>
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                             </svg>
                         </button>
@@ -503,12 +531,12 @@
                 </div>
             </div>
 
-            <!-- Right Side: Booking Card (Static on mobile, Sticky on Desktop) -->
-            <div class="lg:col-span-4 static lg:sticky lg:top-28 space-y-4">
-                <div class="bg-white p-4.5 sm:p-7 rounded-2xl sm:rounded-3xl border border-gray-100 shadow-soft flex flex-col gap-4 sm:gap-5">
+            <!-- Right Side: Booking Card (Static on mobile/tablet, Sticky on Desktop) -->
+            <div class="lg:col-span-4 static lg:sticky lg:top-24 space-y-4 min-w-0 w-full">
+                <div class="bg-white p-4 sm:p-6 lg:p-7 rounded-2xl sm:rounded-3xl border border-gray-100 shadow-soft flex flex-col gap-4 sm:gap-5 min-w-0 w-full overflow-hidden">
                     <div>
                         <span class="text-[9px] sm:text-[10px] text-gray-400 font-bold uppercase tracking-widest block">Tarif Sewa Kamar</span>
-                        <div class="flex items-baseline gap-1 mt-1">
+                        <div class="flex items-baseline gap-1 mt-1 flex-wrap">
                             <span class="text-2xl sm:text-3xl font-black text-[#006c49] font-display">
                                 {{ $formatRupiah($price) }}
                             </span>
@@ -523,22 +551,22 @@
                     </div>
 
                     <div class="flex flex-col gap-2 sm:gap-2.5 py-3 border-y border-gray-100 text-xs font-semibold text-gray-600">
-                        <div class="flex justify-between items-center">
+                        <div class="flex justify-between items-center gap-2">
                             <span>Minimal Durasi Sewa</span>
-                            <span class="text-gray-900 font-bold bg-emerald-50 px-2 py-0.5 rounded-md text-emerald-800 text-[11px] sm:text-xs">{{ $minStay }}</span>
+                            <span class="text-gray-900 font-bold bg-emerald-50 px-2 py-0.5 rounded-md text-emerald-800 text-[11px] sm:text-xs shrink-0">{{ $minStay }}</span>
                         </div>
-                        <div class="flex justify-between items-center">
+                        <div class="flex justify-between items-center gap-2">
                             <span>Kapasitas Penghuni</span>
-                            <span class="text-gray-900 font-bold text-[11px] sm:text-xs">Maks. {{ $maxOccupants }} Orang</span>
+                            <span class="text-gray-900 font-bold text-[11px] sm:text-xs shrink-0">Maks. {{ $maxOccupants }} Orang</span>
                         </div>
-                        <div class="flex justify-between items-center">
+                        <div class="flex justify-between items-center gap-2">
                             <span>Kamar Mandi</span>
-                            <span class="text-gray-900 font-bold text-[11px] sm:text-xs">Pribadi (Dalam)</span>
+                            <span class="text-gray-900 font-bold text-[11px] sm:text-xs shrink-0">Pribadi (Dalam)</span>
                         </div>
                     </div>
 
                     <!-- Anti-Fraud & Payment Security Card in Booking Column -->
-                    <div class="p-3 sm:p-3.5 rounded-xl sm:rounded-2xl bg-amber-50/80 border border-amber-200/80 flex flex-col gap-2 text-xs">
+                    <div class="p-3 sm:p-3.5 rounded-xl sm:rounded-2xl bg-amber-50/80 border border-amber-200/80 flex flex-col gap-2 text-xs min-w-0">
                         <div class="flex items-center gap-1.5">
                             <span class="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-amber-500 text-white flex items-center justify-center shrink-0">
                                 <svg class="w-2.5 h-2.5 sm:w-3 sm:h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
@@ -547,10 +575,10 @@
                             </span>
                             <span class="font-extrabold text-amber-900 text-[10px] sm:text-[11px] uppercase tracking-wide">Rekening Resmi Sah</span>
                         </div>
-                        <div class="bg-white p-2 sm:p-2.5 rounded-lg sm:rounded-xl border border-amber-200/60 flex items-center justify-between gap-2">
-                            <div>
+                        <div class="bg-white p-2 sm:p-2.5 rounded-lg sm:rounded-xl border border-amber-200/60 flex items-center justify-between gap-2 min-w-0">
+                            <div class="min-w-0">
                                 <span class="text-[9px] sm:text-[10px] text-gray-400 font-bold block">BANK MANDIRI</span>
-                                <span class="font-mono font-black text-gray-900 text-[11px] sm:text-xs">a.n. MARLIYAH</span>
+                                <span class="font-mono font-black text-gray-900 text-[11px] sm:text-xs block truncate">a.n. MARLIYAH</span>
                             </div>
                             <button 
                                 id="copyMandiriBtn"
@@ -573,7 +601,7 @@
                                 onclick="openBookingSafetyPrompt('{{ $whatsappUrl }}')"
                                 class="w-full bg-[#006c49] hover:bg-[#005236] text-white py-3 sm:py-3.5 rounded-full font-bold shadow-md hover:shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2 text-xs sm:text-sm cursor-pointer"
                             >
-                                <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <svg class="w-4 h-4 fill-current shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                     <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.965C16.528 1.977 14.07 1.951 12.01 1.95c-5.438 0-9.864 4.372-9.868 9.8-.001 1.714.463 3.39 1.341 4.877L2.45 21.11l4.197-1.956z"></path>
                                 </svg>
                                 <span>Tanya & Booking via WA</span>
@@ -592,7 +620,7 @@
                     <!-- Share Room Box (Bagikan ke Orang Tua / Teman) -->
                     <div class="pt-3 border-t border-gray-100 flex flex-col gap-2">
                         <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider text-center">Bagikan Kamar Ini ke Teman / Keluarga</span>
-                        <div class="grid grid-cols-2 gap-2">
+                        <div class="grid grid-cols-1 xs:grid-cols-2 gap-2">
                             <a
                                 href="{{ $shareFriendWaUrl }}"
                                 target="_blank"
@@ -623,12 +651,12 @@
 
         @if($relatedRooms->count() > 0)
         <!-- Related Rooms -->
-        <section class="mt-8 sm:mt-16 border-t border-gray-100 pt-8 sm:pt-14">
-            <h3 class="text-xl sm:text-2xl font-extrabold text-gray-900 font-display mb-6 sm:mb-8">
+        <section class="mt-8 sm:mt-16 border-t border-gray-100 pt-8 sm:pt-14 min-w-0">
+            <h3 class="text-xl sm:text-2xl font-extrabold text-gray-900 font-display mb-5 sm:mb-8">
                 Unit Lainnya
             </h3>
             
-            <div class="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div class="grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3 min-w-0">
                 @foreach($relatedRooms as $relRoom)
                     <x-card-kamar :room="$relRoom" layout="vertical" />
                 @endforeach
@@ -638,28 +666,60 @@
     </div>
 </div>
 
+<!-- Sticky Mobile & Tablet Bottom Booking Bar (Visible on < lg devices) -->
+<div class="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-gray-200 px-3.5 py-2.5 sm:px-6 sm:py-3 shadow-[0_-8px_25px_rgba(0,0,0,0.08)]">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
+        <div class="min-w-0">
+            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block truncate">{{ $name }}</span>
+            <div class="flex items-baseline gap-1">
+                <span class="text-base sm:text-lg font-black text-[#006c49] font-display truncate">{{ $formatRupiah($price) }}</span>
+                <span class="text-[10px] sm:text-xs text-gray-400 font-semibold shrink-0">/bln</span>
+            </div>
+        </div>
+        @if($status === 'Tersedia')
+            <button
+                type="button"
+                onclick="openBookingSafetyPrompt('{{ $whatsappUrl }}')"
+                class="bg-[#006c49] hover:bg-[#005236] text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-full font-bold text-xs sm:text-sm shadow-md shadow-[#006c49]/25 active:scale-95 transition-all flex items-center gap-2 shrink-0 cursor-pointer"
+            >
+                <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
+                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.965C16.528 1.977 14.07 1.951 12.01 1.95c-5.438 0-9.864 4.372-9.868 9.8-.001 1.714.463 3.39 1.341 4.877L2.45 21.11l4.197-1.956z"/>
+                </svg>
+                <span>Tanya & Booking WA</span>
+            </button>
+        @else
+            <button
+                disabled
+                class="bg-gray-100 text-gray-400 px-4 py-2.5 rounded-full font-bold text-xs cursor-not-allowed shrink-0"
+            >
+                {{ $status }}
+            </button>
+        @endif
+    </div>
+</div>
+
 <!-- Pre-WhatsApp Booking Safety & Quick Survey/Booking Form Modal -->
 <div 
     id="bookingSafetyModal" 
     onclick="if(event.target === this) closeBookingSafetyModal()"
-    class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-[100] flex items-center justify-center p-3.5 sm:p-4 transition-opacity duration-300 opacity-0 pointer-events-none overflow-y-auto"
+    class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-[100] flex items-center justify-center p-3 sm:p-4 transition-opacity duration-300 opacity-0 pointer-events-none overflow-y-auto"
     role="dialog"
     aria-modal="true"
 >
-    <div class="bg-white rounded-3xl border border-amber-100 shadow-2xl max-w-lg w-full p-5 sm:p-7 flex flex-col gap-4 transform transition-all duration-300 scale-95 my-auto">
-        <div class="flex items-center justify-between gap-3 border-b border-gray-100 pb-3">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-[#006c49] text-white flex items-center justify-center shrink-0 shadow-sm">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+    <div class="bg-white rounded-2xl sm:rounded-3xl border border-amber-100 shadow-2xl max-w-lg w-full p-4 sm:p-7 flex flex-col gap-3.5 sm:gap-4 transform transition-all duration-300 scale-95 my-auto max-h-[92svh] overflow-y-auto">
+        <div class="flex items-center justify-between gap-2.5 border-b border-gray-100 pb-3">
+            <div class="flex items-center gap-2.5 sm:gap-3 min-w-0">
+                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#006c49] text-white flex items-center justify-center shrink-0 shadow-sm">
+                    <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
                     </svg>
                 </div>
-                <div>
-                    <h3 class="font-extrabold text-gray-900 text-sm sm:text-base font-display">Jadwalkan Survei & Booking WA</h3>
-                    <p class="text-[11px] text-gray-400">Pilih keperluan Anda & verifikasi rekening resmi</p>
+                <div class="min-w-0">
+                    <h3 class="font-extrabold text-gray-900 text-xs sm:text-base font-display truncate">Jadwalkan Survei & Booking WA</h3>
+                    <p class="text-[10px] sm:text-[11px] text-gray-400 truncate">Pilih keperluan Anda & verifikasi rekening resmi</p>
                 </div>
             </div>
-            <button type="button" onclick="closeBookingSafetyModal()" class="text-gray-400 hover:text-gray-700 p-1 rounded-lg cursor-pointer">
+            <button type="button" onclick="closeBookingSafetyModal()" class="text-gray-400 hover:text-gray-700 p-1 rounded-lg cursor-pointer shrink-0">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
                 </svg>
@@ -667,11 +727,11 @@
         </div>
 
         <!-- Quick Interactive Booking / Survey Form -->
-        <div class="space-y-3 text-xs font-sans bg-gray-50/80 p-3.5 sm:p-4 rounded-2xl border border-gray-100">
+        <div class="space-y-3 text-xs font-sans bg-gray-50/80 p-3 sm:p-4 rounded-2xl border border-gray-100">
             <!-- 1. Keperluan -->
             <div>
                 <label class="text-[11px] font-extrabold text-gray-700 block mb-1.5">1. Pilih Keperluan Anda:</label>
-                <div class="grid grid-cols-3 gap-1.5">
+                <div class="grid grid-cols-1 xs:grid-cols-3 gap-1.5">
                     <button type="button" onclick="setBookingOption('intent', 'Tanya Ketersediaan', this)" class="booking-intent-btn py-2 px-2 rounded-xl text-[11px] font-bold border border-[#006c49] bg-emerald-50 text-[#006c49] transition-all cursor-pointer text-center">
                         💬 Tanya Info
                     </button>
@@ -709,18 +769,18 @@
 
         <!-- Mandatory Anti-Fraud Verification Info -->
         <div class="space-y-2 text-xs text-gray-600 font-sans">
-            <div class="p-2.5 bg-emerald-50/70 rounded-xl border border-emerald-100 flex items-center gap-2.5">
+            <div class="p-2.5 bg-emerald-50/70 rounded-xl border border-emerald-100 flex items-center gap-2 min-w-0">
                 <svg class="w-4 h-4 text-[#006c49] shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
                 </svg>
-                <span>Nomor WA Pengelola Resmi: <strong class="text-gray-900 font-mono">0877-8204-9784</strong></span>
+                <span class="text-[11px] sm:text-xs break-words min-w-0">Nomor WA Pengelola Resmi: <strong class="text-gray-900 font-mono">0877-8204-9784</strong></span>
             </div>
 
-            <div class="p-2.5 bg-amber-50/70 rounded-xl border border-amber-200 flex items-center gap-2.5">
+            <div class="p-2.5 bg-amber-50/70 rounded-xl border border-amber-200 flex items-center gap-2 min-w-0">
                 <svg class="w-4 h-4 text-amber-700 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
                 </svg>
-                <span>Rekening Resmi Pembayaran Sah: <strong class="text-gray-900 font-mono">Bank Mandiri a.n. MARLIYAH</strong></span>
+                <span class="text-[11px] sm:text-xs break-words min-w-0">Rekening Resmi Pembayaran Sah: <strong class="text-gray-900 font-mono">Bank Mandiri a.n. MARLIYAH</strong></span>
             </div>
 
             <p class="text-[10px] sm:text-[11px] text-red-600 leading-tight">
@@ -728,11 +788,11 @@
             </p>
         </div>
 
-        <div class="grid grid-cols-2 gap-3 pt-1">
+        <div class="grid grid-cols-2 gap-2.5 sm:gap-3 pt-1">
             <button 
                 type="button" 
                 onclick="closeBookingSafetyModal()" 
-                class="py-3 px-4 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50 text-xs font-bold transition-colors cursor-pointer"
+                class="py-2.5 sm:py-3 px-3 sm:px-4 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50 text-xs font-bold transition-colors cursor-pointer"
             >
                 Batal
             </button>
@@ -742,10 +802,10 @@
                 target="_blank" 
                 rel="noopener"
                 onclick="trackWaClickAndClose()"
-                class="py-3 px-4 rounded-xl bg-[#006c49] hover:bg-[#005236] text-white text-xs font-bold transition-all shadow-md shadow-[#006c49]/20 flex items-center justify-center gap-1.5 cursor-pointer text-center"
+                class="py-2.5 sm:py-3 px-3 sm:px-4 rounded-xl bg-[#006c49] hover:bg-[#005236] text-white text-xs font-bold transition-all shadow-md shadow-[#006c49]/20 flex items-center justify-center gap-1.5 cursor-pointer text-center"
             >
                 <span>Lanjut ke WA</span>
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                 </svg>
             </a>
@@ -757,7 +817,7 @@
 <div 
     id="roomGalleryLightbox" 
     onclick="if(event.target === this) closeRoomLightbox()"
-    class="fixed inset-0 bg-white/95 backdrop-blur-md z-[130] flex flex-col items-center justify-center p-3 sm:p-6 transition-opacity duration-200 opacity-0 pointer-events-none select-none"
+    class="fixed inset-0 bg-white/95 backdrop-blur-md z-[130] flex flex-col items-center justify-center p-2.5 sm:p-6 transition-opacity duration-200 opacity-0 pointer-events-none select-none"
     role="dialog"
     aria-modal="true"
 >
@@ -765,7 +825,7 @@
     <button 
         type="button" 
         onclick="closeRoomLightbox()" 
-        class="absolute top-4 right-4 sm:top-6 sm:right-6 z-30 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white hover:bg-emerald-50 text-gray-800 hover:text-[#006c49] border border-gray-200 shadow-md flex items-center justify-center transition-colors cursor-pointer"
+        class="absolute top-3 right-3 sm:top-6 sm:right-6 z-30 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white hover:bg-emerald-50 text-gray-800 hover:text-[#006c49] border border-gray-200 shadow-md flex items-center justify-center transition-colors cursor-pointer"
         aria-label="Tutup Layar Penuh"
     >
         <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
@@ -777,10 +837,10 @@
     <button 
         type="button" 
         onclick="prevGalleryImage()" 
-        class="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-30 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white hover:bg-emerald-50 text-gray-800 hover:text-[#006c49] border border-gray-200 shadow-md flex items-center justify-center transition-colors cursor-pointer"
+        class="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-white/90 hover:bg-emerald-50 text-gray-800 hover:text-[#006c49] border border-gray-200 shadow-md flex items-center justify-center transition-colors cursor-pointer"
         aria-label="Foto Sebelumnya"
     >
-        <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+        <svg class="w-4 h-4 sm:w-6 sm:h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/>
         </svg>
     </button>
@@ -789,26 +849,26 @@
     <button 
         type="button" 
         onclick="nextGalleryImage()" 
-        class="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-30 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white hover:bg-emerald-50 text-gray-800 hover:text-[#006c49] border border-gray-200 shadow-md flex items-center justify-center transition-colors cursor-pointer"
+        class="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-white/90 hover:bg-emerald-50 text-gray-800 hover:text-[#006c49] border border-gray-200 shadow-md flex items-center justify-center transition-colors cursor-pointer"
         aria-label="Foto Berikutnya"
     >
-        <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+        <svg class="w-4 h-4 sm:w-6 sm:h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/>
         </svg>
     </button>
 
     <!-- Main Fullscreen Image -->
-    <div class="max-w-5xl max-h-[85vh] w-full flex flex-col items-center justify-center gap-3.5 bg-white p-3 sm:p-5 rounded-2xl sm:rounded-3xl border border-gray-200 shadow-2xl">
+    <div class="max-w-5xl max-h-[85svh] w-full flex flex-col items-center justify-center gap-2.5 sm:gap-3.5 bg-white p-2.5 sm:p-5 rounded-2xl sm:rounded-3xl border border-gray-200 shadow-2xl">
         <div class="w-full flex items-center justify-center bg-[#f8f9fb] rounded-xl sm:rounded-2xl overflow-hidden p-1 sm:p-2">
             <img 
                 id="lightbox-room-img" 
                 src="{{ $galleryJsItems[0]['url'] ?? $image }}" 
                 alt="{{ $name }}" 
-                class="max-h-[72vh] w-auto max-w-full rounded-lg sm:rounded-xl object-contain"
+                class="max-h-[68svh] sm:max-h-[72vh] w-auto max-w-full rounded-lg sm:rounded-xl object-contain"
                 onerror="handleImgError(this)"
             >
         </div>
-        <div id="lightbox-room-caption" class="text-[#006c49] text-xs sm:text-sm font-extrabold bg-emerald-50 border border-emerald-200 px-4 py-1.5 rounded-full shadow-2xs">
+        <div id="lightbox-room-caption" class="text-[#006c49] text-[11px] sm:text-sm font-extrabold bg-emerald-50 border border-emerald-200 px-3.5 py-1.5 rounded-full shadow-2xs text-center max-w-full truncate">
             {{ $galleryJsItems[0]['title'] ?? '1 / 1 • Foto Kamar' }}
         </div>
     </div>
@@ -968,9 +1028,9 @@
     function filterFaqTopic(topic) {
         document.querySelectorAll('.faq-topic-pill').forEach(btn => {
             if (btn.getAttribute('data-faq-btn') === topic) {
-                btn.className = 'faq-topic-pill px-3 py-1 rounded-full text-[11px] font-bold bg-[#006c49] text-white shadow-2xs transition-all cursor-pointer shrink-0';
+                btn.className = 'faq-topic-pill px-2.5 sm:px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-bold bg-[#006c49] text-white shadow-2xs transition-all cursor-pointer';
             } else {
-                btn.className = 'faq-topic-pill px-3 py-1 rounded-full text-[11px] font-bold bg-white text-gray-600 hover:bg-emerald-100/60 border border-emerald-100 transition-all cursor-pointer shrink-0';
+                btn.className = 'faq-topic-pill px-2.5 sm:px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-bold bg-white text-gray-600 hover:bg-emerald-100/60 border border-emerald-100 transition-all cursor-pointer';
             }
         });
 

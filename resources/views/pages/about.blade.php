@@ -7,8 +7,8 @@
 <div class="pt-4 sm:pt-8 pb-16 sm:pb-20 font-sans bg-[#f8f9fb] min-h-screen">
     <div class="max-w-7xl mx-auto px-4 sm:px-8">
         <!-- Hero Section -->
-        <section class="grid gap-8 md:gap-10 md:grid-cols-12 items-center mb-14 sm:mb-20">
-            <div class="md:col-span-7 flex flex-col items-start gap-3.5 sm:gap-5">
+        <section class="grid grid-cols-1 gap-8 md:gap-10 md:grid-cols-12 items-center mb-14 sm:mb-20 min-w-0">
+            <div class="md:col-span-7 flex flex-col items-start gap-3.5 sm:gap-5 min-w-0">
                 <span class="bg-[#006c49]/10 text-[#006c49] text-[10px] sm:text-xs font-bold px-3 py-1 sm:px-4 sm:py-1.5 rounded-full uppercase tracking-wider font-sans border border-[#006c49]/20">
                     Est. 2025 · Tangerang
                 </span>
@@ -38,7 +38,7 @@
                     </a>
                 </div>
             </div>
-            <div class="md:col-span-5 relative">
+            <div class="md:col-span-5 relative min-w-0">
                 <div class="group aspect-[4/3] rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg border border-gray-100 relative">
                     <img src="/images/lorong.jpeg" alt="Lorong Mama Anis Kos" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
@@ -51,9 +51,9 @@
         </section>
 
         <!-- Stats & Sejarah Section -->
-        <section class="grid gap-6 sm:gap-10 md:grid-cols-12 items-center mb-12 sm:mb-20">
+        <section class="grid grid-cols-1 gap-6 sm:gap-10 md:grid-cols-12 items-center mb-12 sm:mb-20 min-w-0">
             <!-- Left Side: Stats cards with cute background SVG icons -->
-            <div class="md:col-span-5 grid grid-cols-2 gap-3 sm:gap-4">                <!-- Stat 1: Kenyamanan -->
+            <div class="md:col-span-5 grid grid-cols-2 gap-3 sm:gap-4 min-w-0">                <!-- Stat 1: Kenyamanan -->
                 <div class="lift bg-white p-4 sm:p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col justify-between min-h-[120px] sm:min-h-[150px] relative overflow-hidden group hover:border-emerald-200 hover:shadow-xl transition-all duration-300">
                     <div class="w-9 h-9 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-emerald-50 text-[#006c49] flex items-center justify-center font-bold text-base sm:text-xl shadow-xs relative z-10 group-hover:scale-105 transition-transform">
                         <svg class="w-4 h-4 sm:w-6 sm:h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -83,7 +83,7 @@
             </div>
 
             <!-- Right Side: Sejarah kami text -->
-            <div class="md:col-span-7 flex flex-col gap-2.5 sm:gap-4">
+            <div class="md:col-span-7 flex flex-col gap-2.5 sm:gap-4 min-w-0">
                 <span class="text-[10px] sm:text-xs font-bold text-[#006c49] uppercase tracking-widest font-sans">Sejarah Kami</span>
                 <h2 class="text-xl sm:text-3xl font-bold text-gray-900 font-display tracking-tight">Bagaimana Langkah Awal Kami Dimulai</h2>
                 <p class="text-gray-600 text-xs sm:text-base leading-relaxed font-sans">
@@ -167,8 +167,8 @@
                 </p>
             </div>
 
-            <!-- 4 Grid values (2 columns on mobile, 4 on desktop) -->
-            <div class="grid gap-3 sm:gap-6 grid-cols-2 lg:grid-cols-4">
+            <!-- 4 Grid values (1 col on very small, 2 columns on mobile/tablet, 4 on desktop) -->
+            <div class="grid gap-3 sm:gap-6 grid-cols-1 xs:grid-cols-2 lg:grid-cols-4">
                 <!-- Kebersihan -->
                 <div class="lift bg-white p-4 sm:p-7 rounded-2xl sm:rounded-3xl border border-gray-100 shadow-sm flex flex-col justify-between gap-2.5 sm:gap-4 relative overflow-hidden group hover:border-emerald-200 hover:shadow-xl transition-all duration-300">
                     <div class="w-9 h-9 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-emerald-50 text-[#006c49] flex items-center justify-center shadow-xs relative z-10">
@@ -224,9 +224,9 @@
         </section>
 
         <!-- Galeri & Ruang Kos Section -->
-        <section class="grid gap-6 sm:gap-12 md:grid-cols-12 items-center mb-12 sm:mb-20">
+        <section class="grid grid-cols-1 gap-6 sm:gap-12 md:grid-cols-12 items-center mb-12 sm:mb-20 min-w-0">
             <!-- Left Side: two small images with zoom hover -->
-            <div class="md:col-span-5 grid grid-cols-2 sm:grid-cols-1 gap-3 sm:gap-4">
+            <div class="md:col-span-5 grid grid-cols-2 md:grid-cols-1 gap-3 sm:gap-4 min-w-0">
                 <div class="group aspect-[16/10] rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm border border-gray-100 relative">
                     <img src="/images/lobby.jpeg" alt="Lobby Tamu Mama Anis Kos" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                     <div class="absolute bottom-2 left-2 sm:bottom-3 sm:left-3 bg-white/90 backdrop-blur-xs px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-lg sm:rounded-xl text-[10px] sm:text-xs font-bold text-gray-800 font-display shadow-xs">
@@ -242,7 +242,7 @@
             </div>
 
             <!-- Right Side: large team photo and text -->
-            <div class="md:col-span-7 flex flex-col gap-3 sm:gap-6">
+            <div class="md:col-span-7 flex flex-col gap-3 sm:gap-6 min-w-0">
                 <div>
                     <span class="text-[10px] sm:text-xs font-bold text-[#006c49] uppercase tracking-widest font-sans">Kerapian & Fungsi</span>
                     <h2 class="text-xl sm:text-3xl font-bold text-gray-900 font-display tracking-tight mt-0.5 sm:mt-1">Ruang yang Rapi & Fungsional</h2>

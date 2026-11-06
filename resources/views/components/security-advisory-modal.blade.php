@@ -3,15 +3,15 @@
 @endphp
 
 <!-- Top Announcement Bar (Sleek single-line bar on mobile, hidden on Home Hero) -->
-<div id="top-security-bar" class="bg-gradient-to-r from-amber-600 via-amber-700 to-amber-800 text-white text-[11px] font-semibold py-1.5 px-3 sm:px-4 shadow-xs relative z-50 transition-all duration-300 {{ $isHome ? 'hidden' : '' }}">
-    <div class="max-w-7xl mx-auto flex items-center justify-between gap-2">
-        <div class="flex items-center gap-1.5 truncate">
+<div id="top-security-bar" class="bg-gradient-to-r from-amber-600 via-amber-700 to-amber-800 text-white text-[11px] font-semibold py-1.5 px-3 sm:px-4 shadow-xs relative z-50 transition-all duration-300 w-full overflow-hidden {{ $isHome ? 'hidden' : '' }}">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-2 min-w-0">
+        <div class="flex items-center gap-1.5 min-w-0 flex-1">
             <span class="inline-flex items-center justify-center w-4 h-4 rounded-full bg-white/20 text-white shrink-0">
                 <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
                 </svg>
             </span>
-            <p class="leading-tight truncate text-[10px] sm:text-xs">
+            <p class="leading-tight truncate text-[10px] sm:text-xs min-w-0 flex-1">
                 <span class="font-extrabold uppercase bg-white text-amber-900 px-1 py-0.2 rounded text-[9px] mr-1">RESMI</span>
                 Bayar sah hanya ke <strong>Bank Mandiri a.n. MARLIYAH</strong> (WA: <strong>0877-8204-9784</strong>)
             </p>
@@ -23,7 +23,7 @@
             class="text-[10px] sm:text-[11px] font-bold bg-white/20 hover:bg-white text-white hover:text-amber-900 border border-white/30 px-2.5 py-0.5 rounded-full transition-all shrink-0 cursor-pointer active:scale-95 flex items-center gap-1"
         >
             <span>Verifikasi</span>
-            <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <svg class="w-3 h-3 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
             </svg>
         </button>

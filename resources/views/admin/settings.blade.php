@@ -27,9 +27,9 @@
         </div>
     @endif
 
-    <div class="grid gap-6 lg:grid-cols-12">
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-12 min-w-0">
         <!-- Left: Admin Profile Card -->
-        <article class="admin-card lg:col-span-6 bg-white p-6 sm:p-8 rounded-2xl border border-slate-100 shadow-soft flex flex-col gap-6">
+        <article class="admin-card lg:col-span-6 bg-white p-5 sm:p-8 rounded-2xl border border-slate-100 shadow-soft flex flex-col gap-6 min-w-0">
             <div class="flex items-center justify-between border-b border-slate-100 pb-5">
                 <div class="flex items-center gap-4">
                     <!-- Vector User Avatar Icon (No dummy image) -->
@@ -72,7 +72,7 @@
         </article>
 
         <!-- Right: Kos Information & System Utilities -->
-        <div class="lg:col-span-6 flex flex-col gap-6">
+        <div class="lg:col-span-6 flex flex-col gap-6 min-w-0">
             <!-- Kos Profile Card -->
             <article class="admin-card bg-white p-6 sm:p-8 rounded-2xl border border-slate-100 shadow-soft flex flex-col gap-4">
                 <h3 class="font-black text-slate-900 text-base font-display">Informasi Properti Kos</h3>

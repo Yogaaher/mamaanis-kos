@@ -121,20 +121,20 @@
                 <input type="hidden" name="status" value="{{ $selectedStatus }}">
 
                 <!-- Quick Filter Selects -->
-                <div class="flex flex-wrap items-center gap-4 pt-3 border-t border-gray-55">
+                <div class="flex flex-wrap items-center gap-2.5 sm:gap-4 pt-3 border-t border-gray-100">
                     <div class="flex items-center gap-1.5 text-xs font-bold text-gray-400 uppercase tracking-wider">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
                         </svg>
                         <span>Filter Status:</span>
                     </div>
 
                     <!-- Status Filter Buttons (Semua, Tersedia, Terisi - Kept exclusively as requested) -->
-                    <div class="flex gap-2">
+                    <div class="flex flex-wrap gap-1.5 sm:gap-2">
                         @foreach(['Semua', 'Tersedia', 'Terisi'] as $status)
                             <a
                                 href="/catalog?{{ http_build_query(array_merge(request()->query(), ['status' => $status, 'page' => 1])) }}"
-                                class="px-4 py-1.5 rounded-full text-xs font-semibold cursor-pointer transition-all {{ $selectedStatus === $status ? 'bg-slate-900 text-white shadow-xs' : 'bg-gray-100 text-gray-600 hover:bg-gray-200' }}"
+                                class="px-3.5 sm:px-4 py-1.5 rounded-full text-xs font-semibold cursor-pointer transition-all {{ $selectedStatus === $status ? 'bg-slate-900 text-white shadow-xs' : 'bg-gray-100 text-gray-600 hover:bg-gray-200' }}"
                             >
                                 {{ $status }}
                             </a>
@@ -163,7 +163,7 @@
 
         <!-- Pagination Section -->
         @if($totalPages > 1)
-            <div class="mt-12 flex justify-center items-center gap-2">
+            <div class="mt-10 sm:mt-12 flex flex-wrap justify-center items-center gap-2">
                 <!-- Previous Button -->
                 @if($currentPage > 1)
                     <a

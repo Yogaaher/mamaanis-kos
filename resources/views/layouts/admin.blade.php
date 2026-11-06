@@ -37,6 +37,13 @@
         tailwind.config = {
             theme: {
                 extend: {
+                    screens: {
+                        xs: '380px',
+                    },
+                    spacing: {
+                        '4.5': '1.125rem',
+                        '5.5': '1.375rem',
+                    },
                     fontFamily: {
                         sans: ['Plus Jakarta Sans', 'sans-serif'],
                         display: ['Montserrat', 'Plus Jakarta Sans', 'sans-serif'],
@@ -49,7 +56,15 @@
                         mist: '#f8fafc'
                     },
                     boxShadow: {
+                        '2xs': '0 1px 2px 0 rgba(0, 0, 0, 0.04)',
+                        'xs': '0 1px 3px 0 rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.06)',
                         soft: '0 10px 30px -5px rgba(0, 108, 73, 0.08), 0 4px 12px -2px rgba(0, 0, 0, 0.03)'
+                    },
+                    backdropBlur: {
+                        xs: '2px',
+                    },
+                    borderRadius: {
+                        xs: '0.125rem',
                     }
                 }
             }
@@ -257,7 +272,7 @@
         </aside>
 
         <!-- Main content area (Strictly prevents outer horizontal scroll) -->
-        <div class="min-w-0 w-full max-w-full overflow-y-auto max-h-screen flex flex-col overflow-x-hidden">
+        <div class="min-w-0 w-full max-w-full lg:overflow-y-auto lg:max-h-screen flex flex-col overflow-x-hidden">
             @yield('content')
         </div>
     </div>

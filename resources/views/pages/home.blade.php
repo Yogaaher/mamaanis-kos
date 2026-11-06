@@ -172,13 +172,13 @@
             ];
             @endphp
 
-            <div class="grid gap-3.5 sm:gap-6 grid-cols-2 lg:grid-cols-4">
+            <div class="grid gap-3 sm:gap-6 grid-cols-1 xs:grid-cols-2 lg:grid-cols-4">
                 @foreach($facilities as $fac)
                     <article 
                         onclick="openFacilityLightbox(@js($fac['image']), @js($fac['title']), @js($fac['text']))"
-                        class="lift group overflow-hidden rounded-xl sm:rounded-2xl bg-white border border-gray-100 hover:border-emerald-200 shadow-xs flex flex-col cursor-pointer"
+                        class="lift group overflow-hidden rounded-xl sm:rounded-2xl bg-white border border-gray-100 hover:border-emerald-200 shadow-xs flex flex-col cursor-pointer min-w-0"
                     >
-                        <div class="h-28 sm:h-44 overflow-hidden relative bg-slate-100">
+                        <div class="h-32 xs:h-28 sm:h-44 overflow-hidden relative bg-slate-100">
                             <img 
                                 src="{{ $fac['image'] }}" 
                                 alt="{{ $fac['title'] }}" 
@@ -192,12 +192,12 @@
                                 </svg>
                             </span>
                         </div>
-                        <div class="p-3 sm:p-5 flex-1 flex flex-col gap-1 sm:gap-2">
-                            <div class="flex items-center gap-1.5 sm:gap-2.5 text-[#006c49]">
+                        <div class="p-3 sm:p-5 flex-1 flex flex-col gap-1 sm:gap-2 min-w-0">
+                            <div class="flex items-center gap-1.5 sm:gap-2.5 text-[#006c49] min-w-0">
                                 {!! $fac['svg'] !!}
-                                <h3 class="font-bold text-gray-900 text-xs sm:text-base leading-tight font-display">{{ $fac['title'] }}</h3>
+                                <h3 class="font-bold text-gray-900 text-xs sm:text-base leading-tight font-display break-words min-w-0">{{ $fac['title'] }}</h3>
                             </div>
-                            <p class="text-[11px] sm:text-sm leading-relaxed text-gray-600 font-sans line-clamp-2 sm:line-clamp-none">{{ $fac['text'] }}</p>
+                            <p class="text-[11px] sm:text-sm leading-relaxed text-gray-600 font-sans line-clamp-2 sm:line-clamp-none break-words">{{ $fac['text'] }}</p>
                         </div>
                     </article>
                 @endforeach
@@ -268,22 +268,22 @@
     <!-- Lokasi Strategis Section -->
     <section class="bg-white py-10 sm:py-16 md:py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-8">
-            <div class="grid gap-8 lg:gap-12 lg:grid-cols-2 lg:items-center">
-                <div>
+            <div class="grid grid-cols-1 gap-8 lg:gap-12 lg:grid-cols-2 lg:items-center min-w-0">
+                <div class="min-w-0">
                     <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 font-display">
                         Lokasi Strategis & Dekat Fasilitas
                     </h2>
                     <p class="mt-2 sm:mt-4 text-xs sm:text-base md:text-lg text-gray-600 leading-relaxed font-sans">
                         Terletak di pusat mobilitas Tangerang (<strong>Patokan: Belakang Warteg Barokah Alam Sutera</strong>), memudahkan akses menuju kampus maupun pusat perbelanjaan.
                     </p>
-                    <div class="mt-3 inline-flex flex-wrap items-center gap-2 bg-emerald-50/90 border border-emerald-200 px-3.5 py-2 rounded-xl text-xs">
+                    <div class="mt-3 inline-flex flex-wrap items-center gap-2 bg-emerald-50/90 border border-emerald-200 px-3.5 py-2 rounded-xl text-xs max-w-full">
                         <span class="font-bold text-[#006c49]">📍 Patokan Lokasi Resmi:</span>
                         <span class="text-gray-700 font-semibold">Belakang Warteg Barokah Alam Sutera</span>
                         <a href="https://share.google/j7P9yPSEyOxYYRu47" target="_blank" rel="noopener" class="font-extrabold text-[#006c49] underline hover:text-[#005236]">
                             Klik Google Maps ↗
                         </a>
                     </div>
-                    <div class="mt-4 sm:mt-8 grid grid-cols-2 sm:grid-cols-2 gap-2.5 sm:gap-4">
+                    <div class="mt-4 sm:mt-8 grid grid-cols-1 xs:grid-cols-2 gap-2.5 sm:gap-4 min-w-0">
                         @php
                         $togaSvg = '<svg class="w-4 h-4 sm:w-5 sm:h-5 text-[#006c49]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0112 20.055a11.952 11.952 0 01-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 10v6"/></svg>';
                         $shoppingBagSvg = '<svg class="w-4 h-4 sm:w-5 sm:h-5 text-[#006c49]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/><path stroke-linecap="round" stroke-linejoin="round" d="M10 14h4"/></svg>';
@@ -325,13 +325,13 @@
                         @endphp
 
                         @foreach($nearbyLocations as $loc)
-                            <div class="lift flex items-center gap-2 sm:gap-3.5 bg-[#f8f9fb] p-2.5 sm:p-4.5 rounded-xl sm:rounded-2xl border border-gray-100 shadow-xs cursor-pointer hover:bg-white hover:border-emerald-200 transition-all duration-300">
+                            <div class="lift flex items-center gap-2 sm:gap-3.5 bg-[#f8f9fb] p-2.5 sm:p-4 rounded-xl sm:rounded-2xl border border-gray-100 shadow-xs cursor-pointer hover:bg-white hover:border-emerald-200 transition-all duration-300 min-w-0">
                                 <span class="w-8 h-8 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl bg-white text-[#006c49] border border-gray-100 flex items-center justify-center shrink-0 shadow-xs">
                                     {!! $loc['svg'] !!}
                                 </span>
-                                <div class="truncate">
+                                <div class="min-w-0 flex-1">
                                     <b class="block text-xs sm:text-base text-gray-900 font-sans font-bold truncate">{{ $loc['name'] }}</b>
-                                    <span class="text-[10px] sm:text-sm text-gray-500 font-medium font-sans truncate">{{ $loc['distance'] }}</span>
+                                    <span class="block text-[10px] sm:text-sm text-gray-500 font-medium font-sans truncate">{{ $loc['distance'] }}</span>
                                 </div>
                             </div>
                         @endforeach
@@ -339,7 +339,7 @@
                 </div>
                 
                 <!-- Real Interactive Google Maps Preview Frame -->
-                <div class="relative w-full max-w-[520px] mx-auto z-10">
+                <div class="relative w-full max-w-[560px] lg:max-w-none mx-auto z-10 min-w-0">
                     <div class="relative bg-white rounded-2xl sm:rounded-3xl p-2 sm:p-3 shadow-xl border border-gray-100 overflow-hidden">
                         <!-- Top bar info -->
                         <div class="flex items-center justify-between px-2 sm:px-3 py-1.5 sm:py-2 border-b border-gray-100 mb-1.5 sm:mb-2">

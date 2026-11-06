@@ -150,9 +150,9 @@
     </section>
 
     <!-- Mid Section: Dynamic Chart and Popular Rooms -->
-    <section class="grid gap-4 sm:gap-6 lg:grid-cols-12">
+    <section class="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-12 min-w-0">
         <!-- Chart Column (Tren View & Kunjungan Kamar) -->
-        <article class="admin-card lg:col-span-8 bg-white p-3.5 sm:p-7 rounded-2xl border border-slate-100 shadow-soft flex flex-col gap-4 sm:gap-5 overflow-hidden">
+        <article class="admin-card lg:col-span-8 bg-white p-3.5 sm:p-7 rounded-2xl border border-slate-100 shadow-soft flex flex-col gap-4 sm:gap-5 overflow-hidden min-w-0">
             <!-- Mobile Horizontal Swipe Hint -->
             <div class="sm:hidden flex items-center justify-between text-[10px] text-slate-400 font-bold px-0.5 -mb-2">
                 <span class="flex items-center gap-1">
@@ -260,7 +260,7 @@
         </article>
 
         <!-- Popular rooms list column (Statistik per Kamar) -->
-        <article class="admin-card lg:col-span-4 bg-white p-3.5 sm:p-6 rounded-2xl border border-slate-100 shadow-soft flex flex-col justify-between gap-3 sm:gap-4 overflow-hidden">
+        <article class="admin-card lg:col-span-4 bg-white p-3.5 sm:p-6 rounded-2xl border border-slate-100 shadow-soft flex flex-col justify-between gap-3 sm:gap-4 overflow-hidden min-w-0">
             <!-- Mobile Horizontal Swipe Hint -->
             <div class="sm:hidden flex items-center justify-between text-[10px] text-slate-400 font-bold px-0.5 -mb-2">
                 <span class="flex items-center gap-1">
@@ -372,7 +372,7 @@
                 </select>
 
                 <!-- Live Search input -->
-                <div class="relative flex-1 sm:w-60">
+                <div class="relative flex-1 sm:w-60 min-w-[160px]">
                     <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                     </svg>
@@ -385,6 +385,7 @@
                     />
                 </div>
             </div>
+        </div>
         <div class="sm:hidden px-4 py-2 bg-amber-50/70 border-b border-amber-100/70 text-[11px] text-amber-800 font-semibold flex items-center justify-between">
             <span class="flex items-center gap-1.5">
                 <svg class="w-3.5 h-3.5 text-amber-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">

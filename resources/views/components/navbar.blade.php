@@ -6,12 +6,12 @@
 
 <nav id="global-navbar" class="{{ $isHome ? 'fixed top-0' : 'sticky top-0' }} w-full z-50 border-b transition-all duration-300 ease-in-out {{ $isHome ? 'bg-transparent border-transparent text-white' : 'bg-white/95 backdrop-blur-md border-gray-100 shadow-xs text-slate-800' }}">
     <!-- Full width container with responsive side paddings -->
-    <div class="w-full flex justify-between items-center px-4 sm:px-6 md:px-12 py-3 md:py-4">
+    <div class="w-full flex justify-between items-center px-3.5 sm:px-6 lg:px-12 py-3 md:py-4">
         <!-- Brand Logo with green vector house icon -->
         <a
             href="/"
             id="brand-logo-link"
-            class="flex items-center gap-2 font-sans text-lg sm:text-xl md:text-2xl font-bold transition-colors duration-300 shrink-0 {{ $isHome ? 'text-white' : 'text-[#006c49]' }}"
+            class="flex items-center gap-2 font-sans text-base sm:text-xl lg:text-2xl font-bold transition-colors duration-300 shrink-0 {{ $isHome ? 'text-white' : 'text-[#006c49]' }}"
         >
             <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-emerald-50 border border-emerald-200/80 text-[#006c49] flex items-center justify-center shrink-0 shadow-xs group hover:scale-105 transition-transform duration-300">
                 <svg id="brand-svg" class="w-5 h-5 fill-current text-[#006c49] shrink-0" viewBox="0 0 24 24">
@@ -22,39 +22,39 @@
         </a>
 
         <!-- Desktop Navigation in the Center -->
-        <div class="hidden md:flex gap-8 items-center absolute left-1/2 transform -translate-x-1/2">
+        <div class="hidden md:flex md:gap-5 lg:gap-8 items-center absolute left-1/2 transform -translate-x-1/2">
             <a
                 href="/"
                 data-tab="home"
-                class="nav-link-item font-sans text-sm font-semibold transition-all duration-300 py-1 {{ $currentTab === 'home' ? ($isHome ? 'text-white border-b-2 border-white' : 'text-[#006c49] border-b-2 border-[#006c49]') : ($isHome ? 'text-white/80 hover:text-white' : 'text-gray-500 hover:text-[#006c49]') }}"
+                class="nav-link-item font-sans text-xs lg:text-sm font-semibold transition-all duration-300 py-1 whitespace-nowrap {{ $currentTab === 'home' ? ($isHome ? 'text-white border-b-2 border-white' : 'text-[#006c49] border-b-2 border-[#006c49]') : ($isHome ? 'text-white/80 hover:text-white' : 'text-gray-500 hover:text-[#006c49]') }}"
             >
                 Beranda
             </a>
             <a
                 href="/catalog"
                 data-tab="catalog"
-                class="nav-link-item font-sans text-sm font-semibold transition-all duration-300 py-1 {{ $currentTab === 'catalog' ? 'text-[#006c49] border-b-2 border-[#006c49]' : ($isHome ? 'text-white/80 hover:text-white' : 'text-gray-500 hover:text-[#006c49]') }}"
+                class="nav-link-item font-sans text-xs lg:text-sm font-semibold transition-all duration-300 py-1 whitespace-nowrap {{ $currentTab === 'catalog' ? 'text-[#006c49] border-b-2 border-[#006c49]' : ($isHome ? 'text-white/80 hover:text-white' : 'text-gray-500 hover:text-[#006c49]') }}"
             >
                 Kamar
             </a>
             <a
                 href="/about"
                 data-tab="about"
-                class="nav-link-item font-sans text-sm font-semibold transition-all duration-300 py-1 {{ $currentTab === 'about' ? 'text-[#006c49] border-b-2 border-[#006c49]' : ($isHome ? 'text-white/80 hover:text-white' : 'text-gray-500 hover:text-[#006c49]') }}"
+                class="nav-link-item font-sans text-xs lg:text-sm font-semibold transition-all duration-300 py-1 whitespace-nowrap {{ $currentTab === 'about' ? 'text-[#006c49] border-b-2 border-[#006c49]' : ($isHome ? 'text-white/80 hover:text-white' : 'text-gray-500 hover:text-[#006c49]') }}"
             >
                 Tentang Kami
             </a>
         </div>
 
         <!-- Right Controls -->
-        <div class="flex items-center gap-2 sm:gap-4">
+        <div class="flex items-center gap-2 sm:gap-4 shrink-0">
             <!-- Hubungi Kami Button (Desktop only on top bar) -->
             <a
                 href="https://wa.me/6287782049784"
                 target="_blank"
                 rel="noopener"
                 id="navbar-cta-btn"
-                class="hidden md:inline-flex font-sans text-xs font-bold px-6 py-2.5 rounded-full border-2 transition-all duration-300 active:scale-95 cursor-pointer text-center {{ $isHome ? 'border-white text-white hover:bg-white hover:text-[#006c49]' : 'border-[#006c49] text-[#006c49] hover:bg-[#006c49] hover:text-white' }}"
+                class="hidden md:inline-flex font-sans text-xs font-bold px-4 lg:px-6 py-2 lg:py-2.5 rounded-full border-2 transition-all duration-300 active:scale-95 cursor-pointer text-center whitespace-nowrap {{ $isHome ? 'border-white text-white hover:bg-white hover:text-[#006c49]' : 'border-[#006c49] text-[#006c49] hover:bg-[#006c49] hover:text-white' }}"
             >
                 Hubungi Kami
             </a>
