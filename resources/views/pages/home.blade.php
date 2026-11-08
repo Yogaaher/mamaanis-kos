@@ -64,7 +64,7 @@
                 alt="Lorong Mama Anis Kos" 
                 fetchpriority="high"
                 decoding="async"
-                class="w-full h-full object-cover opacity-85 transition-all duration-100 ease-out"
+                class="w-full h-full object-cover opacity-85"
                 style="transform-origin: center center;"
             >
             <!-- Gradient Overlay for smoke-effect and contrast -->
@@ -72,7 +72,7 @@
         </div>
 
         <!-- Centered Interactive Content (Fades & rises on scroll) -->
-        <div id="hero-content" class="relative z-10 max-w-4xl px-4 sm:px-6 text-center text-white flex flex-col items-center gap-3.5 sm:gap-6 select-none will-change-transform transition-all duration-100 ease-out my-auto">
+        <div id="hero-content" class="relative z-10 max-w-4xl px-4 sm:px-6 text-center text-white flex flex-col items-center gap-3.5 sm:gap-6 select-none will-change-transform my-auto">
             <span class="bg-[#006c49] text-white text-[10px] sm:text-xs font-bold px-3 py-1 sm:px-4 sm:py-1.5 rounded-full uppercase tracking-widest shadow-lg">
                 Hunian Kos Nyaman & Bersih
             </span>
@@ -585,17 +585,19 @@
                     if (scrollY <= heroHeight * 1.2) {
                         const progress = Math.min(Math.max(scrollY / heroHeight, 0), 1);
 
-                        // Dynamic progressive blur (0px -> 14px) and subtle scale zoom (1 -> 1.08)
-                        const blurAmount = progress * 14;
-                        const scaleAmount = 1 + progress * 0.08;
-                        heroBgImg.style.filter = `blur(${blurAmount}px)`;
-                        heroBgImg.style.transform = `scale(${scaleAmount})`;
+                        // GPU-composited scale3d & lightweight desktop-only stepped blur
+                        const scaleAmount = (1 + progress * 0.06).toFixed(3);
+                        heroBgImg.style.transform = `scale3d(${scaleAmount}, ${scaleAmount}, 1)`;
+                        if (window.innerWidth >= 768) {
+                            const blurAmount = Math.round(progress * 8);
+                            heroBgImg.style.filter = blurAmount > 0 ? `blur(${blurAmount}px)` : 'none';
+                        }
 
                         // Hero content text & CTA fade out (1 -> 0) with gentle upward parallax
-                        const contentOpacity = Math.max(1 - progress * 1.6, 0);
-                        const contentTranslateY = scrollY * 0.35;
+                        const contentOpacity = Math.max(1 - progress * 1.6, 0).toFixed(2);
+                        const contentTranslateY = Math.round(scrollY * 0.3);
                         heroContent.style.opacity = contentOpacity;
-                        heroContent.style.transform = `translateY(-${contentTranslateY}px)`;
+                        heroContent.style.transform = `translate3d(0, -${contentTranslateY}px, 0)`;
 
                         // Scroll Down indicator fades quickly
                         if (scrollIndicator) {

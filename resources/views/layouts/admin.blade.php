@@ -126,10 +126,54 @@
                 padding: 0 !important;
             }
         }
+
+        @keyframes adminBufferShimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        #admin-buffer-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3.5px;
+            width: 0%;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0;
+            background: linear-gradient(90deg, #006c49 0%, #10b981 50%, #34d399 75%, #006c49 100%);
+            background-size: 200% 100%;
+            animation: adminBufferShimmer 1.2s linear infinite;
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.75);
+            transition: width 0.25s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s ease;
+        }
+        #admin-buffer-pill {
+            position: fixed;
+            top: 1.25rem;
+            left: 50%;
+            transform: translate(-50%, -10px) scale(0.95);
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.16s ease, transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        #admin-buffer-pill.active {
+            opacity: 1;
+            transform: translate(-50%, 0) scale(1);
+        }
     </style>
     @stack('styles')
 </head>
 <body class="min-h-screen bg-mist font-sans text-ink antialiased selection:bg-brand/10 selection:text-brand overflow-x-hidden">
+    <div id="admin-buffer-bar" aria-hidden="true"></div>
+    <div id="admin-buffer-pill" role="status" aria-live="polite">
+        <div class="flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/95 backdrop-blur-md border border-emerald-200 shadow-xl shadow-brand/15">
+            <div class="relative w-4 h-4 flex items-center justify-center shrink-0">
+                <span class="absolute inset-0 rounded-full border-2 border-emerald-100"></span>
+                <span class="absolute inset-0 rounded-full border-2 border-brand border-t-transparent animate-spin"></span>
+            </div>
+            <span id="admin-buffer-text" class="text-xs font-extrabold text-slate-800 tracking-wide font-sans whitespace-nowrap">Memuat halaman...</span>
+        </div>
+    </div>
     <div class="min-h-screen lg:grid lg:grid-cols-[280px_1fr] w-full max-w-full overflow-x-hidden">
         <!-- Mobile Top Navigation Header -->
         <header class="lg:hidden flex items-center justify-between bg-white border-b border-slate-200 px-5 py-4 sticky top-0 z-40 shadow-xs">
@@ -276,6 +320,69 @@
             @yield('content')
         </div>
     </div>
+
+    <script>
+        (function() {
+            const bar = document.getElementById('admin-buffer-bar');
+            const pill = document.getElementById('admin-buffer-pill');
+            const label = document.getElementById('admin-buffer-text');
+            let trickleTimer = null;
+            let safetyTimer = null;
+            let currentWidth = 0;
+
+            function startAdminBuffer(msg) {
+                if (!bar || !pill) return;
+                clearInterval(trickleTimer);
+                clearTimeout(safetyTimer);
+                if (label) label.textContent = msg || 'Memuat halaman...';
+                currentWidth = 35;
+                bar.style.opacity = '1';
+                bar.style.width = currentWidth + '%';
+                pill.classList.add('active');
+                trickleTimer = setInterval(function() {
+                    if (currentWidth < 88) {
+                        currentWidth += (90 - currentWidth) * 0.16;
+                        bar.style.width = currentWidth.toFixed(1) + '%';
+                    }
+                }, 140);
+                safetyTimer = setTimeout(stopAdminBuffer, 8000);
+            }
+
+            function stopAdminBuffer() {
+                clearInterval(trickleTimer);
+                clearTimeout(safetyTimer);
+                if (pill) pill.classList.remove('active');
+                if (bar) {
+                    bar.style.width = '100%';
+                    setTimeout(function() {
+                        bar.style.opacity = '0';
+                        setTimeout(function() { bar.style.width = '0%'; }, 200);
+                    }, 120);
+                }
+            }
+
+            document.addEventListener('click', function(e) {
+                if (e.defaultPrevented || e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+                const anchor = e.target.closest('a');
+                if (!anchor || !anchor.href || (anchor.target && anchor.target !== '_self') || anchor.hasAttribute('download')) return;
+                const rawHref = anchor.getAttribute('href') || '';
+                if (!rawHref || rawHref.startsWith('#') || rawHref.startsWith('javascript:')) return;
+                try {
+                    const url = new URL(anchor.href, window.location.origin);
+                    if (url.origin !== window.location.origin) return;
+                    if (url.pathname === window.location.pathname && url.search === window.location.search) return;
+                    startAdminBuffer('Memuat halaman...');
+                } catch (err) {}
+            });
+
+            document.addEventListener('submit', function(e) {
+                if (e.defaultPrevented) return;
+                startAdminBuffer('Memproses data...');
+            });
+
+            window.addEventListener('pageshow', stopAdminBuffer);
+        })();
+    </script>
 
     @stack('scripts')
 </body>

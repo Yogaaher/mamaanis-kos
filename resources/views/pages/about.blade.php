@@ -40,7 +40,7 @@
             </div>
             <div class="md:col-span-5 relative min-w-0">
                 <div class="group aspect-[4/3] rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg border border-gray-100 relative">
-                    <img src="/images/lorong.jpeg" alt="Lorong Mama Anis Kos" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    <img src="/images/lorong.jpeg" alt="Lorong Mama Anis Kos" fetchpriority="high" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
                     <div class="absolute bottom-4 left-4 right-4 text-white">
                         <p class="text-xs font-semibold uppercase tracking-wider text-emerald-200">Suasana Kos</p>

@@ -345,14 +345,15 @@ class AdminRoomController extends Controller
                     $white = imagecolorallocate($dst, 255, 255, 255);
                     imagefill($dst, 0, 0, $white);
                     imagecopyresampled($dst, $src, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
-                    imagedestroy($src);
+                    unset($src);
                     $src = $dst;
                 }
 
+                imageinterlace($src, true);
                 ob_start();
                 imagejpeg($src, null, 72);
                 $compressed = ob_get_clean();
-                imagedestroy($src);
+                unset($src);
 
                 if ($compressed !== false && strlen($compressed) > 0) {
                     return 'data:image/jpeg;base64,' . base64_encode($compressed);

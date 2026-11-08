@@ -274,15 +274,81 @@
             top: 100px;
         }
 
-        /* Instant page transition (no artificial 300ms click delay) */
-        .page-transition-overlay {
-            display: none;
+        /* Smooth page enter & instant non-blocking buffer animation */
+        @keyframes pageContentEnter {
+            from { opacity: 0.45; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
         }
+        @keyframes bufferShimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        @keyframes bufferDotBounce {
+            0%, 80%, 100% { transform: scale(0.65); opacity: 0.45; }
+            40% { transform: scale(1.1); opacity: 1; }
+        }
+        main {
+            animation: pageContentEnter 0.18s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            transition: opacity 0.15s ease;
+        }
+        body.is-navigating main {
+            opacity: 0.65;
+            pointer-events: none;
+        }
+        #page-buffer-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3.5px;
+            width: 0%;
+            z-index: 10000;
+            pointer-events: none;
+            opacity: 0;
+            background: linear-gradient(90deg, #006c49 0%, #10b981 50%, #34d399 75%, #006c49 100%);
+            background-size: 200% 100%;
+            animation: bufferShimmer 1.2s linear infinite;
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.75), 0 0 4px rgba(0, 108, 73, 0.9);
+            transition: width 0.28s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s ease;
+        }
+        #page-buffer-pill {
+            position: fixed;
+            top: 5rem;
+            left: 50%;
+            transform: translate(-50%, -10px) scale(0.95);
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.16s ease, transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        #page-buffer-pill.active {
+            opacity: 1;
+            transform: translate(-50%, 0) scale(1);
+        }
+        .buffer-dot-1 { animation: bufferDotBounce 1.1s infinite ease-in-out -0.24s; }
+        .buffer-dot-2 { animation: bufferDotBounce 1.1s infinite ease-in-out -0.12s; }
+        .buffer-dot-3 { animation: bufferDotBounce 1.1s infinite ease-in-out 0s; }
     </style>
     @stack('styles')
     @stack('head')
 </head>
 <body class="min-h-screen bg-[#f8f9fb] flex flex-col selection:bg-[#006c49]/10 selection:text-[#006c49]">
+
+    <!-- Top Progress Bar & Floating Buffer Capsule for Instant Screen Transition UX -->
+    <div id="page-buffer-bar" aria-hidden="true"></div>
+    <div id="page-buffer-pill" role="status" aria-live="polite">
+        <div class="flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/95 backdrop-blur-md border border-emerald-200/90 shadow-xl shadow-[#006c49]/15">
+            <div class="relative w-4 h-4 flex items-center justify-center shrink-0">
+                <span class="absolute inset-0 rounded-full border-2 border-emerald-100"></span>
+                <span class="absolute inset-0 rounded-full border-2 border-[#006c49] border-t-transparent animate-spin"></span>
+            </div>
+            <span id="page-buffer-text" class="text-[11px] sm:text-xs font-extrabold text-gray-800 tracking-wide font-sans whitespace-nowrap">Memuat halaman</span>
+            <span class="inline-flex items-center gap-0.5 pt-0.5">
+                <span class="w-1 h-1 rounded-full bg-[#006c49] buffer-dot-1"></span>
+                <span class="w-1 h-1 rounded-full bg-[#006c49] buffer-dot-2"></span>
+                <span class="w-1 h-1 rounded-full bg-[#006c49] buffer-dot-3"></span>
+            </span>
+        </div>
+    </div>
 
     <!-- Global Security & Anti-Fraud Advisory (Top Banner + First-Visit Pop-Up Modal) -->
     <x-security-advisory-modal />
@@ -315,6 +381,147 @@
         </svg>
         <span class="hidden sm:inline font-sans font-bold text-xs tracking-wide">Tanya via WA</span>
     </a>
+
+    <script>
+        (function() {
+            const bar = document.getElementById('page-buffer-bar');
+            const pill = document.getElementById('page-buffer-pill');
+            const label = document.getElementById('page-buffer-text');
+            let bufferTimer = null;
+            let trickleTimer = null;
+            let safetyTimer = null;
+            let currentWidth = 0;
+            const prefetchedUrls = new Set();
+
+            function startPageBuffer(customText) {
+                if (!bar || !pill) return;
+                clearTimeout(bufferTimer);
+                clearInterval(trickleTimer);
+                clearTimeout(safetyTimer);
+
+                if (label) {
+                    label.textContent = customText || 'Memuat halaman';
+                }
+
+                document.body.classList.add('is-navigating');
+                currentWidth = 32;
+                bar.style.opacity = '1';
+                bar.style.width = currentWidth + '%';
+                pill.classList.add('active');
+
+                trickleTimer = setInterval(function() {
+                    if (currentWidth < 88) {
+                        currentWidth += (90 - currentWidth) * 0.16;
+                        bar.style.width = currentWidth.toFixed(1) + '%';
+                    }
+                }, 140);
+
+                // Safety auto-reset in case navigation is cancelled or slow
+                safetyTimer = setTimeout(stopPageBuffer, 8000);
+            }
+
+            function stopPageBuffer() {
+                clearTimeout(bufferTimer);
+                clearInterval(trickleTimer);
+                clearTimeout(safetyTimer);
+                document.body.classList.remove('is-navigating');
+                if (pill) pill.classList.remove('active');
+                if (bar) {
+                    bar.style.width = '100%';
+                    setTimeout(function() {
+                        bar.style.opacity = '0';
+                        setTimeout(function() {
+                            bar.style.width = '0%';
+                        }, 200);
+                    }, 120);
+                }
+            }
+
+            window.startPageBuffer = startPageBuffer;
+            window.stopPageBuffer = stopPageBuffer;
+
+            function isInternalNavigableLink(anchor) {
+                if (!anchor || !anchor.href) return false;
+                if (anchor.target && anchor.target !== '_self') return false;
+                if (anchor.hasAttribute('download') || anchor.getAttribute('onclick')) return false;
+                const rawHref = anchor.getAttribute('href') || '';
+                if (!rawHref || rawHref.startsWith('#') || rawHref.startsWith('javascript:') || rawHref.startsWith('mailto:') || rawHref.startsWith('tel:')) return false;
+
+                try {
+                    const url = new URL(anchor.href, window.location.origin);
+                    if (url.origin !== window.location.origin) return false;
+                    if (url.pathname === window.location.pathname && url.search === window.location.search && url.hash) return false;
+                    return true;
+                } catch (e) {
+                    return false;
+                }
+            }
+
+            // Smart Link Prefetching on Hover / Touchstart for near-instant transitions
+            function prefetchUrl(href) {
+                if (!href || prefetchedUrls.has(href)) return;
+                try {
+                    const url = new URL(href, window.location.origin);
+                    if (url.origin !== window.location.origin) return;
+                    if (url.pathname.startsWith('/admin') || url.pathname.startsWith('/login')) return;
+                    prefetchedUrls.add(url.href);
+                    const link = document.createElement('link');
+                    link.rel = 'prefetch';
+                    link.href = url.href;
+                    link.as = 'document';
+                    document.head.appendChild(link);
+                } catch (e) {}
+            }
+
+            document.addEventListener('mouseover', function(e) {
+                const anchor = e.target.closest('a');
+                if (isInternalNavigableLink(anchor)) {
+                    prefetchUrl(anchor.href);
+                }
+            }, { passive: true });
+
+            document.addEventListener('touchstart', function(e) {
+                const anchor = e.target.closest('a');
+                if (isInternalNavigableLink(anchor)) {
+                    prefetchUrl(anchor.href);
+                }
+            }, { passive: true });
+
+            // Trigger buffer animation at 0ms on click without blocking browser navigation
+            document.addEventListener('click', function(e) {
+                if (e.defaultPrevented || e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+                const anchor = e.target.closest('a');
+                if (!isInternalNavigableLink(anchor)) return;
+
+                const url = new URL(anchor.href, window.location.origin);
+                if (url.pathname === window.location.pathname && url.search === window.location.search) return;
+
+                let bufferMsg = 'Memuat halaman';
+                if (url.pathname.startsWith('/room/')) {
+                    bufferMsg = 'Membuka detail kamar';
+                } else if (url.pathname.startsWith('/catalog')) {
+                    bufferMsg = 'Memuat katalog kamar';
+                } else if (url.pathname.startsWith('/about')) {
+                    bufferMsg = 'Memuat profil kos';
+                }
+                startPageBuffer(bufferMsg);
+            });
+
+            // Trigger buffer animation on form submit (e.g. search & sort filters)
+            document.addEventListener('submit', function(e) {
+                if (e.defaultPrevented) return;
+                const form = e.target;
+                if (form && (!form.target || form.target === '_self')) {
+                    startPageBuffer('Memproses data');
+                }
+            });
+
+            // Reset buffer cleanly on bfcache restore (Back/Forward navigation)
+            window.addEventListener('pageshow', function() {
+                stopPageBuffer();
+            });
+        })();
+    </script>
 
     @stack('scripts')
 </body>
