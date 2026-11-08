@@ -198,6 +198,8 @@
                             id="main-room-gallery"
                             src="{{ $galleryJsItems[0]['url'] ?? $image }}"
                             alt="{{ $name }}"
+                            fetchpriority="high"
+                            decoding="async"
                             onclick="openRoomLightbox()"
                             class="w-full h-full object-cover transition-opacity duration-300"
                             onerror="handleImgError(this)"
@@ -263,7 +265,14 @@
                                 class="gallery-thumb flex items-center gap-2 sm:gap-3 p-1.5 sm:p-2 rounded-xl sm:rounded-2xl {{ $gIdx === 0 ? 'border-2 border-[#006c49] bg-emerald-50/50' : 'border border-gray-200 hover:border-gray-300 bg-white' }} focus:outline-none transition-all cursor-pointer text-left min-w-0 w-full overflow-hidden"
                             >
                                 <div class="w-12 h-10 sm:w-16 sm:h-12 rounded-lg sm:rounded-xl overflow-hidden shrink-0 bg-slate-200">
-                                    <img src="{{ $gItem['url'] }}" class="w-full h-full object-cover" alt="{{ $gItem['label'] }}" onerror="handleImgError(this)">
+                                    <img
+                                        src="{{ ($gIdx === 0 && str_starts_with($gItem['url'], 'data:')) ? 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7' : $gItem['url'] }}"
+                                        loading="{{ $gIdx === 0 ? 'eager' : 'lazy' }}"
+                                        decoding="async"
+                                        class="w-full h-full object-cover"
+                                        alt="{{ $gItem['label'] }}"
+                                        onerror="handleImgError(this)"
+                                    >
                                 </div>
                                 <div class="min-w-0 flex-1">
                                     <span class="text-[11px] sm:text-xs font-bold text-gray-900 block truncate">{{ $gIdx + 1 }}. {{ $gItem['label'] }}</span>
@@ -862,8 +871,9 @@
         <div class="w-full flex items-center justify-center bg-[#f8f9fb] rounded-xl sm:rounded-2xl overflow-hidden p-1 sm:p-2">
             <img 
                 id="lightbox-room-img" 
-                src="{{ $galleryJsItems[0]['url'] ?? $image }}" 
+                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" 
                 alt="{{ $name }}" 
+                decoding="async"
                 class="max-h-[68svh] sm:max-h-[72vh] w-auto max-w-full rounded-lg sm:rounded-xl object-contain"
                 onerror="handleImgError(this)"
             >
@@ -879,6 +889,21 @@
 <script>
     const galleryItems = @json(array_map(fn($it) => ['title' => $it['title']], $galleryJsItems));
     let currentGalleryIdx = 0;
+
+    // Reuse main gallery image src for thumb-0 and lightbox to avoid duplicating Base64 payloads in HTML
+    (function syncPrimaryGalleryImage() {
+        const mainImg = document.getElementById('main-room-gallery');
+        const thumb0 = document.querySelector('#thumb-btn-0 img');
+        const lbImg = document.getElementById('lightbox-room-img');
+        if (mainImg && mainImg.src) {
+            if (thumb0 && thumb0.src.startsWith('data:image/gif;base64')) {
+                thumb0.src = mainImg.src;
+            }
+            if (lbImg) {
+                lbImg.src = mainImg.src;
+            }
+        }
+    })();
 
     function setGalleryIndex(idx) {
         if (idx < 0) idx = galleryItems.length - 1;

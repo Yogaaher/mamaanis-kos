@@ -8,20 +8,26 @@ class PublicPageController extends Controller
 {
     public function home()
     {
-        Room::normalizeSequentialIds();
+        $rooms = Room::query()->select(Room::SUMMARY_COLUMNS)->orderBy('id')->take(3)->get();
+        if (Room::normalizeIfGapped($rooms)) {
+            $rooms = Room::query()->select(Room::SUMMARY_COLUMNS)->orderBy('id')->take(3)->get();
+        }
 
         return view('pages.home', [
-            'rooms' => Room::query()->orderBy('id')->take(3)->get(),
+            'rooms' => $rooms,
             'currentTab' => 'home',
         ]);
     }
 
     public function catalog()
     {
-        Room::normalizeSequentialIds();
+        $rooms = Room::query()->select(Room::SUMMARY_COLUMNS)->orderBy('id')->get();
+        if (Room::normalizeIfGapped($rooms)) {
+            $rooms = Room::query()->select(Room::SUMMARY_COLUMNS)->orderBy('id')->get();
+        }
 
         return view('pages.catalog', [
-            'rooms' => Room::query()->orderBy('id')->get(),
+            'rooms' => $rooms,
             'currentTab' => 'catalog',
         ]);
     }
@@ -33,21 +39,24 @@ class PublicPageController extends Controller
 
     public function show(string $room)
     {
-        Room::normalizeSequentialIds();
-
         $resolvedRoom = null;
 
         if (ctype_digit($room)) {
             $roomId = (int) $room;
             $resolvedRoom = Room::query()->find($roomId);
 
-            // Fallback resolution when an ID was skipped (e.g. room #2 and #3 referring to the same 2nd room)
+            // Fallback resolution & normalization only when a room ID is missing/skipped
             if (! $resolvedRoom && $roomId > 0) {
-                $allRooms = Room::query()->orderBy('id')->get()->values();
-                if ($roomId <= $allRooms->count()) {
-                    $resolvedRoom = $allRooms->get($roomId - 1);
-                } elseif ($allRooms->count() >= 2 && $roomId === $allRooms->count() + 1) {
-                    $resolvedRoom = $allRooms->last();
+                Room::normalizeSequentialIds();
+                $resolvedRoom = Room::query()->find($roomId);
+
+                if (! $resolvedRoom) {
+                    $allRooms = Room::query()->orderBy('id')->get()->values();
+                    if ($roomId <= $allRooms->count()) {
+                        $resolvedRoom = $allRooms->get($roomId - 1);
+                    } elseif ($allRooms->count() >= 2 && $roomId === $allRooms->count() + 1) {
+                        $resolvedRoom = $allRooms->last();
+                    }
                 }
             }
         }
@@ -66,26 +75,29 @@ class PublicPageController extends Controller
         }
 
         return view('pages.room_detail', [
-            'room' => $resolvedRoom->fresh(),
+            'room' => $resolvedRoom,
             'currentTab' => 'catalog',
         ]);
     }
 
     public function trackWaClick(string $room)
     {
-        Room::normalizeSequentialIds();
-
         $resolvedRoom = null;
         if (ctype_digit($room)) {
             $roomId = (int) $room;
-            $resolvedRoom = Room::query()->find($roomId);
+            $resolvedRoom = Room::query()->select(['id', 'wa_clicks'])->find($roomId);
 
             if (! $resolvedRoom && $roomId > 0) {
-                $allRooms = Room::query()->orderBy('id')->get()->values();
-                if ($roomId <= $allRooms->count()) {
-                    $resolvedRoom = $allRooms->get($roomId - 1);
-                } elseif ($allRooms->count() >= 2 && $roomId === $allRooms->count() + 1) {
-                    $resolvedRoom = $allRooms->last();
+                Room::normalizeSequentialIds();
+                $resolvedRoom = Room::query()->select(['id', 'wa_clicks'])->find($roomId);
+
+                if (! $resolvedRoom) {
+                    $allRooms = Room::query()->select(['id', 'wa_clicks'])->orderBy('id')->get()->values();
+                    if ($roomId <= $allRooms->count()) {
+                        $resolvedRoom = $allRooms->get($roomId - 1);
+                    } elseif ($allRooms->count() >= 2 && $roomId === $allRooms->count() + 1) {
+                        $resolvedRoom = $allRooms->last();
+                    }
                 }
             }
         }
@@ -105,15 +117,13 @@ class PublicPageController extends Controller
 
         return response()->json([
             'ok' => true,
-            'wa_clicks' => (int) $resolvedRoom->fresh()->wa_clicks,
+            'wa_clicks' => (int) $resolvedRoom->wa_clicks,
         ]);
     }
 
     public function sitemap()
     {
-        Room::normalizeSequentialIds();
-
-        $rooms = Room::query()->orderBy('id')->get();
+        $rooms = Room::query()->select(['id', 'updated_at'])->orderBy('id')->get();
         $baseUrl = rtrim(url('/'), '/');
         $nowAtom = now()->toAtomString();
 

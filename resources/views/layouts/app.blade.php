@@ -70,10 +70,11 @@
     <link rel="manifest" href="{{ asset('site.webmanifest') }}">
     <meta name="theme-color" content="#006c49">
 
-    <!-- Google Fonts: Montserrat & Plus Jakarta Sans (Modern, Relaxed, Elegant & Friendly) -->
+    <!-- Google Fonts & CDN Preconnect -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600;1,700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 
     <!-- Tailwind CSS CDN (Guaranteed to render under any environment without Vite dependency) -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -273,18 +274,9 @@
             top: 100px;
         }
 
-        /* SPA-style page transition overlay */
+        /* Instant page transition (no artificial 300ms click delay) */
         .page-transition-overlay {
-            position: fixed;
-            inset: 0;
-            background-color: #f8f9fb;
-            z-index: 9999;
-            pointer-events: none;
-            opacity: 1;
-            transition: opacity 0.3s ease-in-out;
-        }
-        .page-transition-overlay.fade-out {
-            opacity: 0;
+            display: none;
         }
     </style>
     @stack('styles')
@@ -294,9 +286,6 @@
 
     <!-- Global Security & Anti-Fraud Advisory (Top Banner + First-Visit Pop-Up Modal) -->
     <x-security-advisory-modal />
-
-    <!-- Page transition overlay -->
-    <div id="transition-overlay" class="page-transition-overlay"></div>
 
     <!-- Global Header Navbar Component -->
     <x-navbar :currentTab="$currentTab ?? 'home'" />
@@ -326,48 +315,6 @@
         </svg>
         <span class="hidden sm:inline font-sans font-bold text-xs tracking-wide">Tanya via WA</span>
     </a>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const overlay = document.getElementById('transition-overlay');
-            if (overlay) {
-                // Fade out overlay on load
-                setTimeout(() => {
-                    overlay.classList.add('fade-out');
-                }, 50);
-            }
-
-            // Fade in overlay on local page transitions
-            const links = document.querySelectorAll('a[href^="/"]');
-            links.forEach(link => {
-                const target = link.getAttribute('target');
-                const href = link.getAttribute('href');
-                if (target === '_blank' || href.startsWith('#') || href.includes(':')) return;
-
-                link.addEventListener('click', function(e) {
-                    if (e.button === 0 && !e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey) {
-                        e.preventDefault();
-                        if (overlay) {
-                            overlay.classList.remove('fade-out');
-                        }
-                        setTimeout(() => {
-                            window.location.href = href;
-                        }, 300); // Matches transition duration
-                    }
-                });
-            });
-        });
-
-        // Prevent bfcache lock on back/forward navigation
-        window.addEventListener('pageshow', function(event) {
-            if (event.persisted) {
-                const overlay = document.getElementById('transition-overlay');
-                if (overlay) {
-                    overlay.classList.add('fade-out');
-                }
-            }
-        });
-    </script>
 
     @stack('scripts')
 </body>

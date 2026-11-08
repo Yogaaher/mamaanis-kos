@@ -9,6 +9,23 @@ use Illuminate\Support\Facades\Schema;
 
 class Room extends Model
 {
+    /**
+     * Lightweight columns for card listings (excludes heavy Base64 gallery_images & bathroom_image_url).
+     */
+    public const SUMMARY_COLUMNS = [
+        'id', 'name', 'type', 'location', 'price', 'status', 'rating', 'views', 'wa_clicks',
+        'image_url', 'min_stay', 'max_occupants', 'amenities', 'size', 'beds', 'description',
+        'created_at', 'updated_at',
+    ];
+
+    /**
+     * Ultra-lightweight columns for analytics/stats (excludes all Base64 image columns).
+     */
+    public const STATS_COLUMNS = [
+        'id', 'name', 'type', 'location', 'price', 'status', 'rating', 'views', 'wa_clicks',
+        'size', 'beds', 'min_stay', 'max_occupants', 'created_at', 'updated_at',
+    ];
+
     protected $fillable = [
         'id', 'name', 'type', 'location', 'price', 'status', 'rating', 'views', 'wa_clicks',
         'image_url', 'bathroom_image_url', 'gallery_images', 'min_stay', 'max_occupants',
@@ -32,21 +49,11 @@ class Room extends Model
 
     /**
      * Ensure room IDs are strictly sequential (1, 2, 3...) without gaps
-     * and synchronize the database auto-increment sequence.
+     * and synchronize the database auto-increment sequence only when a gap is repaired.
      */
     public static function normalizeSequentialIds(): void
     {
         try {
-            if (! Schema::hasTable('rooms')) {
-                return;
-            }
-
-            if (! Schema::hasColumn('rooms', 'wa_clicks')) {
-                Schema::table('rooms', function (Blueprint $table) {
-                    $table->unsignedInteger('wa_clicks')->default(0)->after('views');
-                });
-            }
-
             $ids = DB::table('rooms')->orderBy('id')->pluck('id')->map(fn ($id) => (int) $id)->values()->all();
             $hasGap = false;
 
@@ -58,12 +65,28 @@ class Room extends Model
                 }
             }
 
-            if ($hasGap || count($ids) <= 1) {
+            if ($hasGap) {
                 self::syncAutoIncrementSequence(count($ids));
             }
         } catch (\Throwable $e) {
-            // Safely ignore if database connection is read-only
+            // Safely ignore if database connection is read-only or table does not exist yet
         }
+    }
+
+    /**
+     * Normalize IDs only if a collection of rooms exhibits non-sequential IDs.
+     */
+    public static function normalizeIfGapped(\Illuminate\Support\Collection $rooms): bool
+    {
+        $ids = $rooms->pluck('id')->map(fn ($id) => (int) $id)->values()->all();
+        foreach ($ids as $index => $currentId) {
+            if ($currentId !== $index + 1) {
+                self::normalizeSequentialIds();
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -113,12 +136,10 @@ class Room extends Model
     }
 
     /**
-     * Custom route model binding that normalizes skipped IDs and resolves fallback index.
+     * Custom route model binding that normalizes skipped IDs only when a lookup misses.
      */
     public function resolveRouteBinding($value, $field = null)
     {
-        self::normalizeSequentialIds();
-
         if ($field) {
             return $this->where($field, $value)->first();
         }
@@ -126,13 +147,18 @@ class Room extends Model
         $room = $this->find($value);
 
         if (! $room && is_scalar($value) && ctype_digit((string) $value)) {
-            $roomId = (int) $value;
-            if ($roomId > 0) {
-                $allRooms = self::query()->orderBy('id')->get()->values();
-                if ($roomId <= $allRooms->count()) {
-                    $room = $allRooms->get($roomId - 1);
-                } elseif ($allRooms->count() >= 2 && $roomId === $allRooms->count() + 1) {
-                    $room = $allRooms->last();
+            self::normalizeSequentialIds();
+            $room = $this->find($value);
+
+            if (! $room) {
+                $roomId = (int) $value;
+                if ($roomId > 0) {
+                    $allRooms = self::query()->orderBy('id')->get()->values();
+                    if ($roomId <= $allRooms->count()) {
+                        $room = $allRooms->get($roomId - 1);
+                    } elseif ($allRooms->count() >= 2 && $roomId === $allRooms->count() + 1) {
+                        $room = $allRooms->last();
+                    }
                 }
             }
         }

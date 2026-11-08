@@ -16,9 +16,11 @@ class AdminRoomController extends Controller
 {
     public function index()
     {
-        Room::normalizeSequentialIds();
+        $rooms = Room::query()->select(Room::SUMMARY_COLUMNS)->orderBy('id')->get();
+        if (Room::normalizeIfGapped($rooms)) {
+            $rooms = Room::query()->select(Room::SUMMARY_COLUMNS)->orderBy('id')->get();
+        }
 
-        $rooms = Room::query()->orderBy('id')->get();
         $total = $rooms->count();
         $occupied = $rooms->where('status', 'Terisi')->count();
         $available = $rooms->where('status', 'Tersedia')->count();
@@ -32,10 +34,13 @@ class AdminRoomController extends Controller
 
     public function rooms()
     {
-        Room::normalizeSequentialIds();
+        $rooms = Room::query()->select(Room::SUMMARY_COLUMNS)->orderBy('id')->get();
+        if (Room::normalizeIfGapped($rooms)) {
+            $rooms = Room::query()->select(Room::SUMMARY_COLUMNS)->orderBy('id')->get();
+        }
 
         return view('admin.rooms_index', [
-            'rooms' => Room::query()->orderBy('id')->get(),
+            'rooms' => $rooms,
         ]);
     }
 
@@ -88,9 +93,10 @@ class AdminRoomController extends Controller
 
     public function analytics()
     {
-        Room::normalizeSequentialIds();
-
-        $rooms = Room::query()->orderBy('id')->get();
+        $rooms = Room::query()->select(Room::STATS_COLUMNS)->orderBy('id')->get();
+        if (Room::normalizeIfGapped($rooms)) {
+            $rooms = Room::query()->select(Room::STATS_COLUMNS)->orderBy('id')->get();
+        }
         $total = $rooms->count();
         $occupied = $rooms->where('status', 'Terisi')->count();
         $available = $rooms->where('status', 'Tersedia')->count();
